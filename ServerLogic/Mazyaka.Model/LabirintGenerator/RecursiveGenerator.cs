@@ -80,7 +80,8 @@ namespace Mazyaka.Model.LabirintGenerator
             {
                 for (int j = 0; j < Cells.GetLength(1); j++)
                 {
-                    if (visited[i, j] == true) return true; // Возвращаем, что ещё есть
+                    if (visited[i, j] == false)
+                        return true; // Возвращаем, что ещё есть
                 }
             }
 
@@ -99,8 +100,8 @@ namespace Mazyaka.Model.LabirintGenerator
             int curColumn = curCell.Address.Column;
 
             if (curLine!=0 && !visited[curLine - 1, curColumn]) return true; // Проверяем верхнюю клетку
-            if (curColumn!=visited.GetLength(1) && !visited[curLine, curColumn + 1]) return true; // Проверяем правую клетку
-            if (curLine!=visited.GetLength(0) && !visited[curLine + 1, curColumn]) return true; // Проверяем нижнюю клетку
+            if (curColumn!=visited.GetLength(1)-1 && !visited[curLine, curColumn + 1]) return true; // Проверяем правую клетку
+            if (curLine!=visited.GetLength(0)-1 && !visited[curLine + 1, curColumn]) return true; // Проверяем нижнюю клетку
             if (curColumn!=0 && !visited[curLine, curColumn - 1]) return true; // Проверяем левую клетку
 
             return false; // Непосещённых соседей нет
@@ -119,8 +120,8 @@ namespace Mazyaka.Model.LabirintGenerator
 
             // Добавляем возможные направления
             if (curLine != 0 && !visited[curLine - 1, curColumn]) listDirection.Add(MoveDirection.UP);
-            if (curColumn != visited.GetLength(1) && !visited[curLine, curColumn + 1]) listDirection.Add(MoveDirection.RIGHT);
-            if (curLine != visited.GetLength(0) && !visited[curLine + 1, curColumn]) listDirection.Add(MoveDirection.DONW);
+            if (curColumn != visited.GetLength(1)-1 && !visited[curLine, curColumn + 1]) listDirection.Add(MoveDirection.RIGHT);
+            if (curLine != visited.GetLength(0)-1 && !visited[curLine + 1, curColumn]) listDirection.Add(MoveDirection.DONW);
             if (curColumn != 0 && !visited[curLine, curColumn - 1]) listDirection.Add(MoveDirection.LEFT);
 
             MoveDirection direction = listDirection[T.Next(listDirection.Count)]; // Выбираем случайное направление

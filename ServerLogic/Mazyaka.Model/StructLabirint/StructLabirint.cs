@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Mazyaka.Model.LabirintGenerator;
 
 namespace Mazyaka.Model.StructLabirint
 {
@@ -15,11 +16,17 @@ namespace Mazyaka.Model.StructLabirint
         /// Ячейки
         /// </summary>
         private Cell[,] Cells { get; set; }
-        private int size;
+        public int Size { get; private set; }
 
         public StructLabirint(int sizeLabirint = 10)
         {
-            size = sizeLabirint; 
+            Size = sizeLabirint; 
+        }
+
+        public void GenerateLabirint()
+        {
+            RecursiveGenerator generator = new RecursiveGenerator(Size);
+            Cells = generator.Generate();
         }
     }
 }
