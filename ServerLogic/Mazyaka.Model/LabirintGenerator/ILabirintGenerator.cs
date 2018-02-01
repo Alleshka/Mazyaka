@@ -9,6 +9,6 @@ namespace Mazyaka.Model.LabirintGenerator
 {
     public interface ILabirintGenerator
     {
-        Cell[,] Generate();
+        Cell[,] Generate(int size);
     }
 }

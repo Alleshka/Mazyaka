@@ -23,10 +23,12 @@ namespace Mazyaka.Model.StructLabirint
             Size = sizeLabirint; 
         }
 
-        public void GenerateLabirint()
+        public void GenerateLabirint(ILabirintGenerator generator)
         {
-            RecursiveGenerator generator = new RecursiveGenerator(Size);
-            Cells = generator.Generate();
+            Cells = generator.Generate(Size); // Генерим лабиринт
         }
+
+        public Cell this [int line, int column] => Cells[line, column];
+        public Cell this [Point position] => Cells[position.Line, position.Column];
     }
 }

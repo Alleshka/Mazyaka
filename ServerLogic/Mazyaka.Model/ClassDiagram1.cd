@@ -1,85 +1,99 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
-  <Class Name="Mazyaka.Model.GameObject">
-    <Position X="5.5" Y="0.5" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
-      <FileName>GameObject.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Mazyaka.Model.Point" Collapsed="true">
-    <Position X="13.75" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
-      <FileName>Point.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Mazyaka.Model.LiveGameObject">
-    <Position X="2.25" Y="2.75" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAQIAAIAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>LiveGameObject.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Mazyaka.Model.GameObjects.FalseKey">
-    <Position X="7.5" Y="2.75" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
-      <FileName>GameObjects\FalseKey.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Mazyaka.Model.GameObjects.Key">
-    <Position X="10.5" Y="2.75" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
-      <FileName>GameObjects\Key.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Mazyaka.Model.LiveGameObjects.Human">
-    <Position X="0.5" Y="5.5" Width="2.75" />
+    <Position X="13" Y="8.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>LiveGameObjects\Human.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Mazyaka.Model.LiveGameObjects.Minotaur">
-    <Position X="4" Y="5.5" Width="2.75" />
+    <Position X="16.5" Y="8.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>LiveGameObjects\Minotaur.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Mazyaka.Model.StructLabirint.Cell">
-    <Position X="13.75" Y="5" Width="1.5" />
+  <Class Name="Mazyaka.Model.StructLabirint.Cell" Collapsed="true">
+    <Position X="26.25" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAgAAAAAAAAAAAAICAAAiAAACAAAAAAA=</HashCode>
+      <HashCode>AAIAAAAAAgAAAgAAAAAAAAAAAAICAAAiAAACAAAAAAA=</HashCode>
       <FileName>StructLabirint\Cell.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Mazyaka.Model.StructLabirint.StructLabirint">
-    <Position X="13.75" Y="2.5" Width="1.5" />
+  <Class Name="Mazyaka.Model.StructLabirint.StructLabirint" Collapsed="true">
+    <Position X="28" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAIIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAEAAAAAgAAACAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>StructLabirint\StructLabirint.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Mazyaka.Model.LabirintGenerator.RecursiveGenerator" BaseTypeListCollapsed="true">
-    <Position X="16.25" Y="2.25" Width="1.5" />
+  <Class Name="Mazyaka.Model.LabirintGenerator.RecursiveGenerator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AABAAAAAAAAAAAAAAAIAAAAAAAAgIAAAAAAAAEAEAAA=</HashCode>
+      <HashCode>AABAAAAAAAAAAAAAAAIAAAAgAAAkIAAAAAACAEAEAAA=</HashCode>
       <FileName>LabirintGenerator\RecursiveGenerator.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Interface Name="Mazyaka.Model.LabirintGenerator.ILabirintGenerator">
-    <Position X="16.25" Y="0.75" Width="1.5" />
+  <Class Name="Mazyaka.Model.GameObjects.Exit">
+    <Position X="20" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>GameObjects\Exit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mazyaka.Model.GameObjects.FalseKey">
+    <Position X="23" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>GameObjects\FalseKey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mazyaka.Model.GameObjects.Key">
+    <Position X="10" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>GameObjects\Key.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mazyaka.Model.GameObject">
+    <Position X="16.5" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAgAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>GameObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mazyaka.Model.GameLabirint" Collapsed="true">
+    <Position X="28" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Labirint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mazyaka.Model.LiveGameObject">
+    <Position X="14.75" Y="6" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQIAAIAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LiveGameObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mazyaka.Model.Point" Collapsed="true">
+    <Position X="29.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Point.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Mazyaka.Model.LabirintGenerator.ILabirintGenerator" Collapsed="true">
+    <Position X="26.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
       <FileName>LabirintGenerator\ILabirintGenerator.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="Mazyaka.Model.MoveDirection" Collapsed="true">
-    <Position X="13.75" Y="0.75" Width="1.5" />
+    <Position X="26.25" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAIAAQAgAAAAAAAAAAA=</HashCode>
       <FileName>LiveGameObject.cs</FileName>

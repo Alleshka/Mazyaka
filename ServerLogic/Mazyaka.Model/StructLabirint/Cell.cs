@@ -46,5 +46,10 @@ namespace Mazyaka.Model.StructLabirint
             RIGHT = null;
             DOWN = null;
         }
+
+        public void Add(GameObject obj)
+        {
+            Content.Add(obj);
+        }
     }
 }

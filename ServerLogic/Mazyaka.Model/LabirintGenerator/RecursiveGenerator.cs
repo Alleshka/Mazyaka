@@ -7,6 +7,10 @@ using Mazyaka.Model.StructLabirint;
 
 namespace Mazyaka.Model.LabirintGenerator
 {
+
+    /// <summary>
+    /// Генерирует лабиринт рекурсивным методом
+    /// </summary>
     public class RecursiveGenerator : ILabirintGenerator
     {
         /// <summary>
@@ -18,7 +22,7 @@ namespace Mazyaka.Model.LabirintGenerator
         private Random T;
         private int sizeLabirint;
 
-        public RecursiveGenerator(int size)
+        private void Init(int size)
         {
             visited = new bool[size, size];
             Cells = new Cell[size, size];
@@ -36,8 +40,10 @@ namespace Mazyaka.Model.LabirintGenerator
             sizeLabirint = size;
         }
 
-        public Cell[,] Generate()
+        public Cell[,] Generate(int size)
         {
+            Init(size);
+
             Stack<Cell> StackCell = new Stack<Cell>();
 
             int startLine = T.Next(0, sizeLabirint);
