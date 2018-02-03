@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Mazyaka.Model.LabirintGenerator;
 
-namespace Mazyaka.Model.StructLabirint
+namespace Mazyaka.Server.Model.MazeModel
 {
     /// <summary>
     /// Структура лабиринта
@@ -21,11 +20,6 @@ namespace Mazyaka.Model.StructLabirint
         public StructLabirint(int sizeLabirint = 10)
         {
             Size = sizeLabirint; 
-        }
-
-        public void GenerateLabirint(ILabirintGenerator generator)
-        {
-            Cells = generator.Generate(Size); // Генерим лабиринт
         }
 
         public Cell this [int line, int column] => Cells[line, column];

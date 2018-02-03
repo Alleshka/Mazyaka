@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mazyaka.Model.GameObjects
+namespace Mazyaka.Server.Model.MazeModel.GameObjects
 {
     public class Key : GameObject
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mazyaka.Model
+namespace Mazyaka.Server.Model.MazeModel
 {
     public enum MoveDirection { UP, RIGHT, DONW, LEFT }
 

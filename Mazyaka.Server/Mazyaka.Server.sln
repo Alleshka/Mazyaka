@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mazyaka.Server.GameService", "Mazyaka.Server.GameService\Mazyaka.Server.GameService.csproj", "{1CA04B2F-577B-464D-9929-77F3EDB91528}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mazyaka.Server.Model.MazeModel", "Mazyaka.Server.Model.MazeModel\Mazyaka.Server.Model.MazeModel.csproj", "{D4D50F5D-A46C-4A1D-BC83-794C24AF059B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mazyaka.Server.Model.GameServiceModel", "Mazyaka.Server.Model.GameServiceModel\Mazyaka.Server.Model.GameServiceModel.csproj", "{FB22C2C3-1AE0-42C9-A387-07F7FFD7D42F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1CA04B2F-577B-464D-9929-77F3EDB91528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CA04B2F-577B-464D-9929-77F3EDB91528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CA04B2F-577B-464D-9929-77F3EDB91528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CA04B2F-577B-464D-9929-77F3EDB91528}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4D50F5D-A46C-4A1D-BC83-794C24AF059B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4D50F5D-A46C-4A1D-BC83-794C24AF059B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4D50F5D-A46C-4A1D-BC83-794C24AF059B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4D50F5D-A46C-4A1D-BC83-794C24AF059B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB22C2C3-1AE0-42C9-A387-07F7FFD7D42F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB22C2C3-1AE0-42C9-A387-07F7FFD7D42F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB22C2C3-1AE0-42C9-A387-07F7FFD7D42F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB22C2C3-1AE0-42C9-A387-07F7FFD7D42F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {135E5776-EA0A-440F-90F6-6048520D9377}
+	EndGlobalSection
+EndGlobal

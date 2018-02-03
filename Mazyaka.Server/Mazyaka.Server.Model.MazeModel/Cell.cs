@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Generic;
 
-namespace Mazyaka.Model.StructLabirint
+namespace Mazyaka.Server.Model.MazeModel
 {
     /// <summary>
     /// Ячейка лабиринта    

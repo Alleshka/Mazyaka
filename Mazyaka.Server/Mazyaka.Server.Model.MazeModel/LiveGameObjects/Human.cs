@@ -1,6 +1,6 @@
-﻿namespace Mazyaka.Model.LiveGameObjects
+﻿namespace Mazyaka.Server.Model.MazeModel.LiveGameObjects
 {
-    public class Minotaur : LiveGameObject
+    public class Human : LiveGameObject
     {
         public override void Action(GameObject obj)
         {
