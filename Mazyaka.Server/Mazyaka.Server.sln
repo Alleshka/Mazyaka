@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mazyaka.Server.GameService", "Mazyaka.Server.GameService\Mazyaka.Server.GameService.csproj", "{1CA04B2F-577B-464D-9929-77F3EDB91528}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mazyaka.Server.MazeServerWork.Framework", "Mazyaka.Server.MazeServerWork.Framework\Mazyaka.Server.MazeServerWork.Framework.csproj", "{02CFBF9C-5B0B-4D17-9A66-8D160C4CDDAA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mazyaka.Server.Model.MazeModel", "Mazyaka.Server.Model.MazeModel\Mazyaka.Server.Model.MazeModel.csproj", "{D4D50F5D-A46C-4A1D-BC83-794C24AF059B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mazyaka.Server.MazeServerWork.Framework.Test", "Mazyaka.Server.MazeServerWork.Framework.Test\Mazyaka.Server.MazeServerWork.Framework.Test.csproj", "{7464F5A5-38DE-43CF-81F4-1BBB4D811C8B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mazyaka.Server.Model.GameServiceModel", "Mazyaka.Server.Model.GameServiceModel\Mazyaka.Server.Model.GameServiceModel.csproj", "{FB22C2C3-1AE0-42C9-A387-07F7FFD7D42F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mazyaka.Server.LoginService", "Mazyaka.Server.LoginService\Mazyaka.Server.LoginService.csproj", "{75F0D8D9-A8E5-4693-9D4D-6AA23965DF45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mazyaka.Server.GameService", "Mazyaka.Server.GameService\Mazyaka.Server.GameService.csproj", "{97E14829-FCC1-436A-B507-27EA1360FA42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,23 +17,27 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1CA04B2F-577B-464D-9929-77F3EDB91528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1CA04B2F-577B-464D-9929-77F3EDB91528}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1CA04B2F-577B-464D-9929-77F3EDB91528}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1CA04B2F-577B-464D-9929-77F3EDB91528}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4D50F5D-A46C-4A1D-BC83-794C24AF059B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4D50F5D-A46C-4A1D-BC83-794C24AF059B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4D50F5D-A46C-4A1D-BC83-794C24AF059B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4D50F5D-A46C-4A1D-BC83-794C24AF059B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB22C2C3-1AE0-42C9-A387-07F7FFD7D42F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB22C2C3-1AE0-42C9-A387-07F7FFD7D42F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB22C2C3-1AE0-42C9-A387-07F7FFD7D42F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB22C2C3-1AE0-42C9-A387-07F7FFD7D42F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02CFBF9C-5B0B-4D17-9A66-8D160C4CDDAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02CFBF9C-5B0B-4D17-9A66-8D160C4CDDAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02CFBF9C-5B0B-4D17-9A66-8D160C4CDDAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02CFBF9C-5B0B-4D17-9A66-8D160C4CDDAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7464F5A5-38DE-43CF-81F4-1BBB4D811C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7464F5A5-38DE-43CF-81F4-1BBB4D811C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7464F5A5-38DE-43CF-81F4-1BBB4D811C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7464F5A5-38DE-43CF-81F4-1BBB4D811C8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75F0D8D9-A8E5-4693-9D4D-6AA23965DF45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75F0D8D9-A8E5-4693-9D4D-6AA23965DF45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75F0D8D9-A8E5-4693-9D4D-6AA23965DF45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75F0D8D9-A8E5-4693-9D4D-6AA23965DF45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97E14829-FCC1-436A-B507-27EA1360FA42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97E14829-FCC1-436A-B507-27EA1360FA42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97E14829-FCC1-436A-B507-27EA1360FA42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97E14829-FCC1-436A-B507-27EA1360FA42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {135E5776-EA0A-440F-90F6-6048520D9377}
+		SolutionGuid = {66A044D0-ADCB-4FFF-BE0E-EA39840A502A}
 	EndGlobalSection
 EndGlobal
