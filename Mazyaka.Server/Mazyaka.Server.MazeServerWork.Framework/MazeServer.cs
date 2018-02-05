@@ -85,6 +85,10 @@ namespace Mazyaka.Server.MazeServerWork.Framework
                         }
                     case TypeCommand.creategame:
                         {
+                            PackCommand asw = new PackCommand(TypeCommand.creategame);
+
+                           
+
                             break;
                         }
                 }
