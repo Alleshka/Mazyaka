@@ -54,6 +54,7 @@
     <Compile Include="IGameService.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestGameService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

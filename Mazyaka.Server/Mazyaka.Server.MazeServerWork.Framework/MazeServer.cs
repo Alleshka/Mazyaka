@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
 using Mazyaka.Server.LoginService;
+using Mazyaka.Server.GameService;
 using Mazyaka.CommonModel.MazeConnection;
 
 namespace Mazyaka.Server.MazeServerWork.Framework
@@ -21,19 +22,21 @@ namespace Mazyaka.Server.MazeServerWork.Framework
         private bool workServer;
 
         private ILoginService loginService;
+        private IGameService gameService;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="port">Слушаемый порт</param>
         /// <param name="login">Объект логинсервиса</param>
-        public MazeServer(ILoginService login, int port = 1337)
+        public MazeServer(ILoginService login, IGameService game, int port = 1337)
         {
             socket = new Socket(SocketType.Stream, ProtocolType.Tcp); // Создаём сокет для приёма подключения
             socket.Bind(new IPEndPoint(IPAddress.Any, port));
             socket.Listen(0);
 
             loginService = login;
+            gameService = game;
         }
 
 
@@ -47,6 +50,8 @@ namespace Mazyaka.Server.MazeServerWork.Framework
         public void Stop()
         {
             workServer = false;
+            //socket.Disconnect(true);
+            //socket.Dispose();
         }
 
         /// <summary>
@@ -58,6 +63,8 @@ namespace Mazyaka.Server.MazeServerWork.Framework
             Socket client = socket.EndAccept(result); // Получаем входящий сокет
             Thread thread = new Thread(new ParameterizedThreadStart(HandleClient)); // Выделяем игроку свой поток
             thread.Start(client); // Запускаем поток
+
+            socket.BeginAccept(AcceptCallBack, null); // Устанавливаем прослушивание заново
         }
 
         void HandleClient(object obj)
@@ -72,6 +79,7 @@ namespace Mazyaka.Server.MazeServerWork.Framework
 
                 switch (command.type)
                 {
+                    // TODO: Всю реализацию вынести в отдельные методы
                     case TypeCommand.login:
                         {
                             PackCommand answ = new PackCommand(TypeCommand.login);
@@ -85,14 +93,41 @@ namespace Mazyaka.Server.MazeServerWork.Framework
                         }
                     case TypeCommand.creategame:
                         {
-                            PackCommand asw = new PackCommand(TypeCommand.creategame);
+                            // Создаём комнату
+                            Guid.TryParse(command.args[0], out Guid userID);
+                            GameRoom room = gameService.CreateGame(userID);
 
-                           
+                            PackCommand answ = new PackCommand(TypeCommand.creategame);
+                            answ.AddArgument(room.RoomID.ToString()); // Отправляем ID комнаты
+
+                            client.Send(PackCommand.ToBytes(answ)); // Отправляем ответ
+
+                            break;
+                        }
+                    case TypeCommand.joingame:
+                        {
+                            // Достаём данные
+                            Guid.TryParse(command.args[0], out Guid gameID);
+                            Guid.TryParse(command.args[1], out Guid userID);
+
+                            bool status = gameService.JoinGame(gameID, userID); // Пытаемся присоединиться к комнате
+
+                            // TODO: Пока допустим, что всегда хорошо
+                            //if (status == true)
+                            //{
+                                PackCommand answ = new PackCommand(TypeCommand.joingame);
+                                answ.AddArgument(gameID.ToString()); // Отправляем ID комнаты
+                            //}
 
                             break;
                         }
                 }
             }
+
+            // После остановки сервера отключаем соединение
+            client.Shutdown(SocketShutdown.Both);
+            client.Disconnect(false);
+            client.Dispose();
         }
     }
 }

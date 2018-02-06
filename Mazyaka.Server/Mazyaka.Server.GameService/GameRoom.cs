@@ -23,5 +23,15 @@ namespace Mazyaka.Server.GameService
             PlayerList = new List<Player>();
             MazeList = new List<MazeArea>();
         }
+
+        public void AddPlayer(Player player)
+        {
+            PlayerList.Add(player);
+        }
+
+        public void AddMaze(MazeArea maze)
+        {
+            MazeList.Add(maze);   
+        }
     }
 }

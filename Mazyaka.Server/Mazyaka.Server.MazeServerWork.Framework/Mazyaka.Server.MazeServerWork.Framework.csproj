@@ -55,6 +55,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mazyaka.Server.GameService\Mazyaka.Server.GameService.csproj">
+      <Project>{97e14829-fcc1-436a-b507-27ea1360fa42}</Project>
+      <Name>Mazyaka.Server.GameService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mazyaka.Server.LoginService\Mazyaka.Server.LoginService.csproj">
       <Project>{75f0d8d9-a8e5-4693-9d4d-6aa23965df45}</Project>
       <Name>Mazyaka.Server.LoginService</Name>

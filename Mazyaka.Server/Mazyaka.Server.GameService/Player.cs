@@ -11,8 +11,13 @@ namespace Mazyaka.Server.GameService
     /// </summary>
     public class Player
     {
-        public Guid PlayerID { get; private set; } = Guid.NewGuid();
+        public Guid PlayerID { get; private set; }
         public Guid LabirintID { get; set; } // Лабиринт, в котором пользователь передвигает объект
         public Guid ObjectID { get; set; } // Объект, который пользователь передвигает в лабиринте
+
+        public Player(Guid player)
+        {
+            PlayerID = player;
+        }
     }
 }

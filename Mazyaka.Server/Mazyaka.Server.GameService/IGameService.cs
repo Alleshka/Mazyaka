@@ -8,6 +8,7 @@ namespace Mazyaka.Server.GameService
 {
     public interface IGameService
     {
-        
+        GameRoom CreateGame(Guid userID);
+        bool JoinGame(Guid gameID, Guid userID);
     }
 }
