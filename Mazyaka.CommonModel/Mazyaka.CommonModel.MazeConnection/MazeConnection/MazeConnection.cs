@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Mazyaka.CommonModel.GameModel;
 
 namespace Mazyaka.CommonModel.MazeConnection
 {
@@ -20,7 +21,7 @@ namespace Mazyaka.CommonModel.MazeConnection
         /// <returns></returns>
         public Guid Login(String login, String password)
         {
-            PackCommand command = new PackCommand(TypeCommand.login); // Создаём команду 
+            PackCommand command = new PackCommand(TypeCommand.Login); // Создаём команду 
 
             // Добавляем параметры
             command.AddArgument(login);
@@ -36,7 +37,7 @@ namespace Mazyaka.CommonModel.MazeConnection
 
         public Guid CreateGame(Guid userID)
         {
-            PackCommand command = new PackCommand(TypeCommand.creategame); // Создаём команду
+            PackCommand command = new PackCommand(TypeCommand.CreateGame); // Создаём команду
 
             // Добавляем ID пользователя в параметры
             command.AddArgument(userID.ToString());
@@ -49,13 +50,67 @@ namespace Mazyaka.CommonModel.MazeConnection
 
         public Guid JoinGame(Guid gameID, Guid userID)
         {
-            PackCommand command = new PackCommand(TypeCommand.joingame);
+            PackCommand command = new PackCommand(TypeCommand.JoinGame);
 
             command.AddArgument(gameID.ToString());
             command.AddArgument(userID.ToString());
 
             Guid.TryParse(command.args[0], out Guid id);
             return id;
+        }
+
+        /// <summary>
+        /// Проверяет началась ли игра
+        /// </summary>
+        /// <param name="idGame"></param>
+        /// <returns>true - если игра началась, false - если набор ещё идёт</returns>
+        public bool GameIsStart(Guid idGame)
+        {
+            PackCommand command = new PackCommand(TypeCommand.IsGameStart);
+            command.AddArgument(idGame.ToString());
+
+            command = connection.SendCommand(command);
+
+            bool status = Convert.ToBoolean(command[0]);
+            return status;
+        }
+        
+        public void SendMaze(Guid gameID, Guid userID, MazeArea maze)
+        {
+            PackCommand command = new PackCommand(TypeCommand.SendMaze);
+
+            command.AddArgument(gameID.ToString());
+            command.AddArgument(userID.ToString());
+            command.AddArgument(MazeArea.ToJson(maze));
+
+            connection.SendMessage(command);
+        }
+
+        public bool IsMyStep(Guid gameID, Guid userID)
+        {
+            PackCommand command = new PackCommand(TypeCommand.IsMyStep);
+
+            command.AddArgument(gameID.ToString());
+            command.AddArgument(userID.ToString());
+
+            command = connection.SendCommand(command);
+
+            bool step = Convert.ToBoolean(command[0]);
+            return step;
+        }
+
+        public bool MoveObject(Guid gameID, Guid userID, Guid objecID)
+        {
+            PackCommand command = new PackCommand(TypeCommand.MoveObject);
+
+            command.AddArgument(gameID.ToString());
+            command.AddArgument(userID.ToString());
+            command.AddArgument(objecID.ToString());
+
+            command = connection.SendCommand(command);
+
+            bool status = Convert.ToBoolean(command[0]);
+            return status;
         }
     }
 }

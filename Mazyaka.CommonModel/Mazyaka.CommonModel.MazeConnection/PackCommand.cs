@@ -6,10 +6,46 @@ namespace Mazyaka.CommonModel.MazeConnection
 {
     /// <summary>
     /// Возможные команды
-    /// login - получить ID
-    /// creategame - Создать игру
     /// </summary>
-    public enum TypeCommand { login, creategame, joingame }
+    public enum TypeCommand
+    {
+        /// <summary>
+        /// Получить ID
+        /// </summary>
+        Login, 
+        /// <summary>
+        /// Создать игру
+        /// </summary>
+        CreateGame,
+        /// <summary>
+        /// Присоединиться к игре
+        /// </summary>
+        JoinGame,
+        /// <summary>
+        /// Выйти из сети
+        /// </summary>
+        Disconnect,
+        /// <summary>
+        /// Проверка наалась ли игра
+        /// </summary>
+        IsGameStart,
+        /// <summary>
+        /// Проверка мой ли ход
+        /// </summary>
+        IsMyStep,
+        /// <summary>
+        /// Сделать ход
+        /// </summary>
+        MoveObject,
+        /// <summary>
+        /// Ответ
+        /// </summary>
+        Response,
+        /// <summary>
+        /// Отправить лабиринт
+        /// </summary>
+        SendMaze
+    }
 
     /// <summary>
     /// Передаваемый пакет данных
@@ -22,6 +58,7 @@ namespace Mazyaka.CommonModel.MazeConnection
         [DataMember]
         public List<String> args { get; private set; } // список аргументов
 
+        public String this[int index] => args[index];
 
         public PackCommand(TypeCommand type)
         {
@@ -33,54 +70,5 @@ namespace Mazyaka.CommonModel.MazeConnection
         {
             args.Add(arg);
         }
-
-        //public static PackCommand ToPack(String json)
-        //{
-        //    using (MemoryStream stream = new MemoryStream())
-        //    {
-        //        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(json);
-        //        stream.Write(bytes, 0, bytes.Length);
-        //        stream.Position = 0;
-
-        //        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(PackCommand));
-        //        return ser.ReadObject(stream) as PackCommand;
-        //    }
-        //}
-
-        //public static String ToJson(PackCommand pack)
-        //{
-        //    using (MemoryStream stream = new MemoryStream())
-        //    {
-        //        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(PackCommand));
-        //        ser.WriteObject(stream, pack);
-
-        //        return System.Text.Encoding.UTF8.GetString(stream.ToArray());
-        //    }
-        //}
-
-        //public static byte[] ToBytes(PackCommand pack)
-        //{
-        //    using (MemoryStream stream = new MemoryStream())
-        //    {
-        //        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(PackCommand));
-        //        ser.WriteObject(stream, pack);
-
-        //        return stream.ToArray();
-        //    }
-        //}
-
-        //public static PackCommand ToPack(byte[] bytes)
-        //{
-        //    bytes = bytes.Where(x => x != 0).ToArray(); // <=== Удаляем лишние данные
-
-        //    using (MemoryStream stream = new MemoryStream())
-        //    {
-        //        stream.Write(bytes, 0, bytes.Length);
-        //        stream.Position = 0;
-
-        //        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(PackCommand));
-        //        return ser.ReadObject(stream) as PackCommand;
-        //    }
-        //}
     }
 }

@@ -10,5 +10,8 @@ namespace Mazyaka.Server.GameService
     {
         GameRoom CreateGame(Guid userID);
         bool JoinGame(Guid gameID, Guid userID);
+
+        bool CheckIsGameStart(Guid gameID);
+        bool CheckIsMyStep(Guid gameID, Guid userID);
     }
 }
