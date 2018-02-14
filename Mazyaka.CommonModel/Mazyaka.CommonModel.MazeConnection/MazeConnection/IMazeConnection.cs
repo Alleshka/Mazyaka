@@ -15,8 +15,11 @@ namespace Mazyaka.CommonModel.MazeConnection
         bool IsMyStep(Guid gameID, Guid userID); // Проверить мой ли ход
 
         bool MoveObject(Guid gameID, Guid userID, Guid objecID); // Передвинуть объект 
-        
+
         // TODO: Можно передават олько игру и пользователя, так как id объекта лежит внутри
         // TODO: С другой стороны можно оставить, так как пользователь может двигать разные объекты
+
+        bool WaitMyStep(Guid gameID, Guid userID); // Отправить команду на ожидание своего хода
+        bool WaitStartGame(Guid gameID); // Отправить команду на ожидание старта игры
     }
 }

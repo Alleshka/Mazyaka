@@ -44,7 +44,9 @@ namespace Mazyaka.CommonModel.MazeConnection
         /// <summary>
         /// Отправить лабиринт
         /// </summary>
-        SendMaze
+        SendMaze,
+        // Отправить сообщение об ошибке
+        Exception
     }
 
     /// <summary>

@@ -17,9 +17,14 @@ namespace Mazyaka.Server.GameService
         public List<Player> PlayerList { get; private set; } // Список игроков в данной комнате 
         public List<MazeArea> MazeList { get; private set; } // Список лабиринтов в данной комнате
 
+        public List<LiveGameObject> GameObjects { get; private set; } // Список всех объектов в комнате, которые могут двигаться
+
+        public Guid curStepUser; // Ход игрока с ID
+
         public GameRoom()
         {
             RoomID = Guid.NewGuid();
+
             PlayerList = new List<Player>();
             MazeList = new List<MazeArea>();
         }
