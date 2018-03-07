@@ -31,13 +31,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mazyaka.CommonModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MazeCommonModel.702.0.0-220\lib\net47\Mazyaka.CommonModel.dll</HintPath>
+      <HintPath>..\packages\MazeCommonModel.803.0.0-100\lib\net47\Mazyaka.CommonModel.dll</HintPath>
     </Reference>
     <Reference Include="Mazyaka.CommonModel.GameModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MazeCommonModel.702.0.0-220\lib\net47\Mazyaka.CommonModel.GameModel.dll</HintPath>
+      <HintPath>..\packages\MazeCommonModel.803.0.0-100\lib\net47\Mazyaka.CommonModel.GameModel.dll</HintPath>
     </Reference>
     <Reference Include="Mazyaka.CommonModel.MazeConnection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MazeCommonModel.702.0.0-220\lib\net47\Mazyaka.CommonModel.MazeConnection.dll</HintPath>
+      <HintPath>..\packages\MazeCommonModel.803.0.0-100\lib\net47\Mazyaka.CommonModel.MazeConnection.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

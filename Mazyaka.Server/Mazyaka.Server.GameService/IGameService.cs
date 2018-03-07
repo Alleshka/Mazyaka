@@ -14,7 +14,8 @@ namespace Mazyaka.Server.GameService
 
         void SendMaze(Guid gameID, Guid userID, MazeArea area); // Отправить структуру лабиринта в игру
         void SendStartPoint(Guid gameID, Guid userID, Point point); // Отправить начальные координаты
-        Player GetStartDate(Guid gameID, Guid userID); // Получить начальные данные
+
+        Player GameStartData(Guid gameID, Guid userID); // Получить начальные данные
 
         bool MoveObject(Guid gameID, Guid userID, Guid objectID, MoveDirection direction);
     }

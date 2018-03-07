@@ -10,6 +10,7 @@ using System.Threading;
 using Mazyaka.Server.LoginService;
 using Mazyaka.Server.GameService;
 using Mazyaka.CommonModel.MazeConnection;
+using Mazyaka.CommonModel.GameModel;
 
 namespace Mazyaka.Server.MazeServerWork.Framework
 {
@@ -151,20 +152,29 @@ namespace Mazyaka.Server.MazeServerWork.Framework
                             client.Send(PackCommand.ToBytes(answ));
                             break;
                         }
-                    case TypeCommand.IsGameStart:
+                    case TypeCommand.SendStartMaze:
                         {
-                            break;
-                        }
-                    case TypeCommand.IsMyStep:
-                        {
-                            break;
-                        }
-                    case TypeCommand.SendMaze:
-                        {
+                            Guid.TryParse(command.args[0], out Guid gameID);
+                            Guid.TryParse(command.args[1], out Guid userId);
+                            MazeArea maze = MazeArea.ToObject(command.args[2]);
+
+                            gameService.SendMaze(gameID, userId, maze);
+
+                            // Ответ не шлём
                             break;
                         }
                     case TypeCommand.MoveObject:
                         {
+                            break;
+                        }
+                    case TypeCommand.SendStarPoint:
+                        {
+                            Guid.TryParse(command.args[0], out Guid gameID);
+                            Guid.TryParse(command.args[1], out Guid userId);
+                            Point point = Point.ToObject(command.args[2]);
+
+                            gameService.SendStartPoint(gameID, userId, point);
+
                             break;
                         }
                     default:
@@ -175,7 +185,7 @@ namespace Mazyaka.Server.MazeServerWork.Framework
                 EventAddCommand();
             }
 
-            // После остановки сервера отключаем соединение
+            // После остановки сервера отключаем соединения
             DisconnectClient(client);
         }
 

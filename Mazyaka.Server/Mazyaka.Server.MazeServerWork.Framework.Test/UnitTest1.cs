@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
 using Mazyaka;
+using Mazyaka.CommonModel.MazeConnection;
 using Mazyaka.Server.LoginService;
 using Mazyaka.Server.GameService;
 
@@ -19,66 +20,33 @@ namespace Mazyaka.Server.MazeServerWork.Framework.Test
     public class UnitTest1
     {
         [TestMethod]
-        public void GetID()
-        {
-            // Arrange
-            //MazeServer server = new MazeServer(new TestLoginService(), new TestGameService()); // Создаём сервер
-            //server.Start(); // Запускаем
-
-            // Создаём клиента
-            Mazyaka.CommonModel.MazeConnection.MazeConnection connection = new CommonModel.MazeConnection.MazeConnection();
-            connection.Connect("127.0.0.1", 1337);
-            Guid id = connection.Login("Alleshka", "Alleshka");
-
-            //server.Stop();
-
-            Assert.AreEqual(id.GetType().ToString(), "System.Guid");
-        }
-
-        [TestMethod]
-        public void CreateAndJoinGame()
-        {
-            // Arrange
-            //MazeServer server = new MazeServer(new TestLoginService(), new TestGameService()); // Создаём сервер
-            //server.Start(); // Запускаем
-
-            // Создаём клиента
-            Mazyaka.CommonModel.MazeConnection.MazeConnection connection = new CommonModel.MazeConnection.MazeConnection();
-            connection.Connect("127.0.0.1", 1337);
-            Guid id1 = connection.Login("Alleshka", "Alleshka");
-            Guid gameID1 = connection.CreateGame(id1);
-
-            //Thread.Sleep(1000);
-
-            Mazyaka.CommonModel.MazeConnection.MazeConnection connection2 = new CommonModel.MazeConnection.MazeConnection();
-            connection2.Connect("127.0.0.1", 1337);
-            Guid id2 = connection2.Login("Alleshka2", "Alleshka");
-            Guid gameID2 = connection2.JoinGame(gameID1, id2);
-
-            //server.Stop();
-
-            Assert.AreEqual(gameID1, gameID2);
-        }
-
-        [TestMethod]
         public void TestPlayGame()
         {
-            MazeServer server = new MazeServer(new TestLoginService(), new TestGameService()); // Создаём сервер
-            server.Start(); // Запускаем
+            // Arrange
 
-            // Создаём игру с первого клиента
-            Mazyaka.CommonModel.MazeConnection.MazeConnection connection = new CommonModel.MazeConnection.MazeConnection();
-            connection.Connect("127.0.0.1", 1337);
-            Guid id1 = connection.Login("Alleshka", "Alleshka");
-            Guid gameID1 = connection.CreateGame(id1);
+            MazeServer server = new MazeServer(new TestLoginService(), new TestGameService(), 1337); // Create server
+            server.Start(); // Start server
 
-            // Создаём игру со второго клиента
-            Mazyaka.CommonModel.MazeConnection.MazeConnection connection2 = new CommonModel.MazeConnection.MazeConnection();
-            connection2.Connect("127.0.0.1", 1337);
-            Guid id2 = connection2.Login("Alleshka2", "Alleshka");
-            Guid gameID2 = connection2.JoinGame(gameID1, id2);
+            // Act
+            MazeConnection client1 = new MazeConnection(); // Create clients
+            MazeConnection client2 = new MazeConnection();
 
 
+            client1.Connect("127.0.0.1", 1337); // Connect to Server
+            client2.Connect("127.0.0.1", 1337);
+
+
+            Guid idClient1 = client1.Login("testUser1", "testpassword1"); // get users id
+            Guid idClient2 = client2.Login("testUser2", "testpassword2");
+
+
+            Guid roomId = client1.CreateGame(idClient1); // Create game
+            client2.JoinGame(idClient2, roomId); // Join game
+
+            client1.SendMaze(roomId, idClient1, null);
+            client1.SendMaze(roomId, idClient2, null);
+
+            
         }
     }
 }

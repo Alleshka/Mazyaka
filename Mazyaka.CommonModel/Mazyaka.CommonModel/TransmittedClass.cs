@@ -15,13 +15,13 @@ namespace Mazyaka.CommonModel
         /// <summary>
         /// Переводит json строку в объект
         /// </summary>
-        /// <param name="json">Строка</param>
+        /// <param name="xml">Строка</param>
         /// <returns></returns>
-        public static T ToOject(String json, Type[] types = null)
+        public static T ToObject(String xml, Type[] types = null)
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(json);
+                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(xml);
                 stream.Write(bytes, 0, bytes.Length);
                 stream.Position = 0;
 
@@ -36,7 +36,7 @@ namespace Mazyaka.CommonModel
         /// <param name="pack"></param>
         /// <param name="types"></param>
         /// <returns></returns>
-        public static String ToJson(T pack, Type[] types = null)
+        public static String ToXML(T pack, Type[] types = null)
         {
             using (MemoryStream stream = new MemoryStream())
             {

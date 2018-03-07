@@ -44,7 +44,7 @@ namespace Mazyaka.CommonModel.MazeConnection
             byte[] bytes = new byte[1024];
 
             client.Receive(bytes);
-            bytes = bytes.Where(x => x != 0).ToArray();
+            bytes = bytes.Where(x => x != 0).ToArray(); // Удаляем лишние нули
 
             return PackCommand.ToPack(bytes); // Возвращаем объект
         }

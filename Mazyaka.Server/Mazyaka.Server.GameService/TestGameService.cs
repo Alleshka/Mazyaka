@@ -33,9 +33,12 @@ namespace Mazyaka.Server.GameService
             return room;
         }
 
-        public Player GetStartDate(Guid gameID, Guid userID)
+        public Player GameStartData(Guid gameID, Guid userID)
         {
-            throw new NotImplementedException();
+            GameRoom room = actionGameList.Where(x => x.RoomID == gameID).First(); // Находим игру
+            Player player = room.PlayerList.Where(x => x.PlayerID == userID).First(); // Находим игрока
+
+            return player;
         }
 
         public bool JoinGame(Guid gameID, Guid userID)
@@ -57,7 +60,10 @@ namespace Mazyaka.Server.GameService
 
         public bool MoveObject(Guid gameID, Guid userID, Guid objectID, MoveDirection direction)
         {
-            throw new NotImplementedException();
+            GameRoom room = actionGameList.Where(x => x.RoomID == gameID).First();
+            Player player = room.PlayerList.Where(x => x.PlayerID == userID).First();
+            MazeArea area = room.MazeList.Where(x => x.MazeID == player.LabirintID).First();
+            return area.MoveLiveObject(objectID, direction); // Двигаем объект
         }
 
         /// <summary>
@@ -69,9 +75,23 @@ namespace Mazyaka.Server.GameService
         public void SendMaze(Guid gameID, Guid userID, MazeArea area)
         {
             GameRoom room = actionGameList.Where(x => x.RoomID == gameID).First(); // Находим игру
-            room.AddMaze(area);
-
             Player player = room.PlayerList.Where(x => x.PlayerID != userID).First(); // Выбираем игрока, для которого лабиринт
+
+            if (area == null)
+            {
+                // TODO : Вынести в аргументы
+                RecursiveGenerator generator = new RecursiveGenerator();
+
+                // TODO : Тоже вынести
+                area = new MazeArea();
+                area.SetStructLab(generator.Generate(10));
+                area.SetExit(MoveDirection.DONW, 5);
+                area.SetExit(MoveDirection.LEFT, 5);
+                area.SetExit(MoveDirection.RIGHT, 5);
+                area.SetExit(MoveDirection.UP, 5);
+            }
+
+            room.AddMaze(area);
             player.LabirintID = area.MazeID;
         }
 

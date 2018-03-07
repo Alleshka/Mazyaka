@@ -9,44 +9,16 @@ namespace Mazyaka.CommonModel.MazeConnection
     /// </summary>
     public enum TypeCommand
     {
-        /// <summary>
-        /// Получить ID
-        /// </summary>
-        Login, 
-        /// <summary>
-        /// Создать игру
-        /// </summary>
+        // ServerTypes
+        Responce,
+        Error,
+        // ClientTypes
+        Login,
         CreateGame,
-        /// <summary>
-        /// Присоединиться к игре
-        /// </summary>
         JoinGame,
-        /// <summary>
-        /// Выйти из сети
-        /// </summary>
-        Disconnect,
-        /// <summary>
-        /// Проверка наалась ли игра
-        /// </summary>
-        IsGameStart,
-        /// <summary>
-        /// Проверка мой ли ход
-        /// </summary>
-        IsMyStep,
-        /// <summary>
-        /// Сделать ход
-        /// </summary>
+        SendStartMaze,
+        SendStartPoint,
         MoveObject,
-        /// <summary>
-        /// Ответ
-        /// </summary>
-        Response,
-        /// <summary>
-        /// Отправить лабиринт
-        /// </summary>
-        SendMaze,
-        // Отправить сообщение об ошибке
-        Exception
     }
 
     /// <summary>
@@ -56,21 +28,21 @@ namespace Mazyaka.CommonModel.MazeConnection
     public class PackCommand : TransmittedClass<PackCommand>
     {
         [DataMember]
-        public TypeCommand type { get; private set; } // Тип команды
+        public TypeCommand Type { get; private set; } // Тип команды
         [DataMember]
-        public List<String> args { get; private set; } // список аргументов
+        public List<String> Args { get; private set; } // список аргументов
 
-        public String this[int index] => args[index];
+        public String this[int index] => Args[index];
 
         public PackCommand(TypeCommand type)
         {
-            this.type = type;
-            args = new List<string>();
+            this.Type = type;
+            Args = new List<string>();
         }
 
         public void AddArgument(String arg)
         {
-            args.Add(arg);
+            Args.Add(arg);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Mazyaka.CommonModel.GameModel
     /// Координаты в лабиринте
     /// </summary>
     [DataContract(IsReference = true)]
-    public class Point
+    public class Point : TransmittedClass<Point>
     {
         [DataMember]
         public int Line { get; set; }
