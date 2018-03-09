@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("Mazyaka.Server.LoginService")]
+[assembly: AssemblyTitle("Mazyaka.Server.ServerWork")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Mazyaka.Server.LoginService")]
+[assembly: AssemblyProduct("Mazyaka.Server.ServerWork")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("8a62d964-59e7-4233-8701-5c14dd1344ef")]
+[assembly: Guid("2b8b0e88-742c-48aa-8d5c-b4bd4172f9a5")]
 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //

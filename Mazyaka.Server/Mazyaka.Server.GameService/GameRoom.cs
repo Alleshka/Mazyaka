@@ -3,21 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mazyaka.CommonModel.GameModel;
+using Mazyaka.MazeGeneral.GameModel;
+using Mazyaka.MazeGeneral.MazeModel;
 
 namespace Mazyaka.Server.GameService
 {
-    /// <summary>
-    /// Информация об игровой комнате
-    /// </summary>
+    // Игровая комната
     public class GameRoom
     {
         public Guid RoomID { get; private set; }
 
         public List<Player> PlayerList { get; private set; } // Список игроков в данной комнате 
         public List<MazeArea> MazeList { get; private set; } // Список лабиринтов в данной комнате
-
-        public List<LiveGameObject> GameObjects { get; private set; } // Список всех объектов в комнате, которые могут двигаться
 
         public Guid curStepUser; // Ход игрока с ID
 
@@ -36,7 +33,7 @@ namespace Mazyaka.Server.GameService
 
         public void AddMaze(MazeArea maze)
         {
-            MazeList.Add(maze);   
+            MazeList.Add(maze);
         }
     }
 }
