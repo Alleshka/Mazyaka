@@ -58,7 +58,7 @@ namespace Mazyaka.MazeGeneral
                 var ser = new DataContractSerializer(typeof(T), types);
                 ser.WriteObject(stream, pack);
 
-                return stream.ToArray();
+                return stream.GetBuffer();
             }
         }
 
@@ -67,9 +67,9 @@ namespace Mazyaka.MazeGeneral
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public static T ToPack(byte[] bytes, Type[] types = null)
+        public static T ToPack(byte[] data, Type[] types = null)
         {
-            bytes = bytes.Where(x => x != 0).ToArray(); // <=== Удаляем лишние данные
+            var bytes = data.TakeWhile(x => x != 0).ToArray(); // <=== Удаляем лишние данные
 
             using (MemoryStream stream = new MemoryStream())
             {
@@ -77,7 +77,8 @@ namespace Mazyaka.MazeGeneral
                 stream.Position = 0;
 
                 var ser = new DataContractSerializer(typeof(T), types);
-                return (T)ser.ReadObject(stream);
+                var pack = (T)ser.ReadObject(stream);
+                return pack;
             }
         }
     }

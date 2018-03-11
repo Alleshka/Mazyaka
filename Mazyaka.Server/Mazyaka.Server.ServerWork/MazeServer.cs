@@ -5,6 +5,8 @@ using System.Threading;
 using Mazyaka.MazeGeneral;
 using Mazyaka.Server.GameService;
 using Mazyaka.Server.LoginService;
+using Mazyaka.MazeGeneral.MazeModel;
+using Mazyaka.MazeGeneral.GameModel;
 
 namespace Mazyaka.Server.ServerWork
 {
@@ -19,11 +21,14 @@ namespace Mazyaka.Server.ServerWork
         private IGameService gameService;
         private ILoginService loginService;
 
-        public MazeServer(int port = 1337)
+        public MazeServer(IGameService game, ILoginService login, int port = 1337)
         {
             socket = new Socket(SocketType.Stream, ProtocolType.Tcp); // Создаём сокет для приёма подключения
             socket.Bind(new IPEndPoint(IPAddress.Any, port));
             socket.Listen(0);
+
+            gameService = game;
+            loginService = login;
         }
 
         /// <summary>
@@ -38,6 +43,7 @@ namespace Mazyaka.Server.ServerWork
         public void Stop()
         {
             IsServerWork = false;
+            socket.Dispose();
         }
 
         void AcceptCallBack(IAsyncResult result)
@@ -48,7 +54,6 @@ namespace Mazyaka.Server.ServerWork
 
             socket.BeginAccept(AcceptCallBack, null); // Устанавливаем прослушивание заново
         }
-
         void HandleClient(object obj)
         {
             Socket client = obj as Socket;
@@ -58,6 +63,7 @@ namespace Mazyaka.Server.ServerWork
             {
                 try
                 {
+                    temp = new byte[2048];
                     client.Receive(temp); // Принимаем сообщение
                 }
                 catch
@@ -87,7 +93,7 @@ namespace Mazyaka.Server.ServerWork
                         {
                             Guid.TryParse(command[0], out Guid userID);
 
-                            Guid gameID = gameService.CreateGame(userID); // Создаём игру
+                            Guid gameID = gameService.CreateGame(userID).RoomID; // Создаём игру
                             PackCommand pack = new PackCommand(TypeCommand.Responce);
                             pack.AddArgument(gameID.ToString());
 
@@ -96,18 +102,48 @@ namespace Mazyaka.Server.ServerWork
                         }
                     case TypeCommand.JoinGame:
                         {
+                            Guid.TryParse(command[0], out Guid gameID);
+                            Guid.TryParse(command[1], out Guid userID);
+
+                            bool status = gameService.JoinGame(gameID, userID);
+                            PackCommand pack = new PackCommand(TypeCommand.Responce);
+                            pack.AddArgument(status.ToString());
+
+                            client.Send(PackCommand.ToBytes(pack));
                             break;
                         }
                     case TypeCommand.SendStartMaze:
                         {
+                            Guid.TryParse(command[0], out Guid gameID);
+                            Guid.TryParse(command[1], out Guid userID);
+                            MazeArea area = MazeArea.ToObject(command[2]);
+
+                            gameService.SendStartMaze(gameID, userID, area);
+
+                            client.Send(PackCommand.ToBytes(new PackCommand(TypeCommand.Responce))); // Отправляем пустой ответ
                             break;
                         }
                     case TypeCommand.SendStartPoint:
                         {
+                            Guid.TryParse(command[0], out Guid gameID);
+                            Guid.TryParse(command[1], out Guid userID);
+                            Point point = Point.ToObject(command[2]);
+
+                            gameService.SendStartPoint(gameID, userID, point);
+
+                            client.Send(PackCommand.ToBytes(new PackCommand(TypeCommand.Responce))); // Отправляем пустой ответ
                             break;
                         }
                     case TypeCommand.GetInitData:
                         {
+                            Guid.TryParse(command[0], out Guid gameID);
+                            Guid.TryParse(command[1], out Guid userID);
+
+                            Player startInfo = gameService.GetInitData(gameID, userID);
+                            PackCommand sendInfo = new PackCommand(TypeCommand.Responce);
+                            sendInfo.AddArgument(Player.ToXML(startInfo));
+
+                            client.Send(PackCommand.ToBytes(sendInfo));                        
                             break;
                         }
                     default:
@@ -119,6 +155,8 @@ namespace Mazyaka.Server.ServerWork
                             break;
                         }
                 }
+
+                command = null;
             }
 
             // После остановки сервера отключаем соединения

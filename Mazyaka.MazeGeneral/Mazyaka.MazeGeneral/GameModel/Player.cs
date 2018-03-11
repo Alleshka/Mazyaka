@@ -5,7 +5,7 @@ namespace Mazyaka.MazeGeneral.GameModel
     /// <summary>
     /// Класс, описывающий игрока
     /// </summary>
-    public class Player
+    public class Player : TransmittedClass<Player>
     {
         public Guid PlayerID { get; private set; }
         public Guid LabirintID { get; set; } // Лабиринт, в котором пользователь передвигает объект

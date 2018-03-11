@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mazyaka.MazeGeneral, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MazeGeneral.903.0.0-1900\lib\net47\Mazyaka.MazeGeneral.dll</HintPath>
+      <HintPath>..\packages\MazeGeneral.1103.0.0-2225\lib\net47\Mazyaka.MazeGeneral.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameRoom.cs" />
+    <Compile Include="GameServiceFirst.cs" />
     <Compile Include="IGameService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

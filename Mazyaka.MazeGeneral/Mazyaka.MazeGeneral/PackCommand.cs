@@ -28,6 +28,7 @@ namespace Mazyaka.MazeGeneral
         [DataMember]
         public TypeCommand Type { get; private set; } // Тип команды
 
+        // TODO: Возможно, можно держать лист байтов
         [DataMember]
         public List<String> Args { get; private set; } = null; // список аргументов
 

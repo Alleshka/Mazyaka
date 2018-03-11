@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mazyaka.Server.LoginService
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mazyaka.Server.GameService", "Mazyaka.Server.GameService\Mazyaka.Server.GameService.csproj", "{F4FA20C3-2019-4468-8A87-5BF058C022A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mazyaka.Server.ServerWork.Test", "Mazyaka.Server.ServerWork.Test\Mazyaka.Server.ServerWork.Test.csproj", "{9A4C5CC6-2260-46BF-8C4B-B68C1ED9FBEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F4FA20C3-2019-4468-8A87-5BF058C022A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4FA20C3-2019-4468-8A87-5BF058C022A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4FA20C3-2019-4468-8A87-5BF058C022A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A4C5CC6-2260-46BF-8C4B-B68C1ED9FBEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A4C5CC6-2260-46BF-8C4B-B68C1ED9FBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A4C5CC6-2260-46BF-8C4B-B68C1ED9FBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A4C5CC6-2260-46BF-8C4B-B68C1ED9FBEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

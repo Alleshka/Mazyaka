@@ -9,7 +9,7 @@ namespace Mazyaka.Server.GameService
 {
     public interface IGameService
     {
-        Guid CreateGame(Guid userID); // Создать игру
+        GameRoom CreateGame(Guid userID); // Создать игру
         bool JoinGame(Guid gameID, Guid userID); // Присоединиться к игре
 
         /// <summary>
@@ -19,5 +19,7 @@ namespace Mazyaka.Server.GameService
         void SendStartPoint(Guid gameID, Guid userID, Point point = null);
 
         Player GetInitData(Guid gameID, Guid userID); // Получить начальные данные в игре
+
+        bool MoveObject(Guid gameID, Guid playerID, MoveDirection direction); // Передвинуть объект
     }
 }
