@@ -21,7 +21,6 @@ namespace Mazyaka.MazeClientLibrary
         void SendStartMaze(Guid gameID, Guid userID, MazeArea maze); // Отправить лабиринт в игру
         void SendStartPoint(Guid gameID, Guid userID, Point point); // Отправить начальную точку
 
-        Player GetInitData(Guid gameID, Guid userID); // Запросить начальные данные игры
         bool MoveObject(Guid gameID, Guid userID, MoveDirection direction); // Передвинуть объект
     }
 }

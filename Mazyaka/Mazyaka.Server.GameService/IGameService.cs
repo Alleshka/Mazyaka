@@ -11,21 +11,18 @@ namespace Mazyaka.Server.GameService
     {
         GameRoom CreateGame(Guid userID); // Создать игру
         bool JoinGame(Guid gameID, Guid userID); // Присоединиться к игре
+        bool LeaveGame(Guid gameID, Guid userID); // Покинуть игру
 
-        int GetAllGameCount();
-        int GetWaitGameCount();
-        int GetActGameCount();
+        Guid StartGame(Guid gameID);
+
+        // TODO : Точно должно быть не тут
 
         /// <summary>
         /// Отправить в игру начальные данные
         /// </summary>
         void SendStartMaze(Guid gameID, Guid userID, MazeArea area = null);
-        void SendStartPoint(Guid gameID, Guid userID, Point point = null);
+        bool SendStartPoint(Guid gameID, Guid userID, Point point = null);
 
-
-
-        // TODO : Точно должно быть не тут
         bool MoveObject(Guid gameID, Guid playerID, MoveDirection direction); // Передвинуть объект
-        Player GetInitData(Guid gameID, Guid userID); // Получить начальные данные в игре
     }
 }

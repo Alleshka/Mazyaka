@@ -14,11 +14,13 @@ namespace Mazyaka.Server.GameService
     /// </summary>
     public class GameServiceFirst : IGameService
     {
+        private Random T;
         private List<GameRoom> waitGameList;
         private List<GameRoom> actionGameList;
 
         public GameServiceFirst()
         {
+            T = new Random();
             waitGameList = new List<GameRoom>();
             actionGameList = new List<GameRoom>();
         }
@@ -29,16 +31,8 @@ namespace Mazyaka.Server.GameService
             room.AddPlayer(new Player(userID)); // Добавляем игрока
 
             waitGameList.Add(room); // Добавляем в список ожидающих
-            room.Status = GameStatus.PlayersWait;
 
             return room;
-        }
-
-        public Player GetInitData(Guid gameID, Guid userID)
-        {
-            GameRoom room = actionGameList.Where(x => x.RoomID == gameID).First(); // Находим игру
-            Player player = room.PlayerList.Where(x => x.PlayerID == userID).First(); // Находим игрока
-            return player;
         }
 
         public bool JoinGame(Guid gameID, Guid userID)
@@ -48,6 +42,7 @@ namespace Mazyaka.Server.GameService
 
             room.AddPlayer(new Player(userID));
             actionGameList.Add(room); // TODO: В других режимах необходимо проверять количество игроков
+
 
             return true;
         }
@@ -73,7 +68,7 @@ namespace Mazyaka.Server.GameService
             room.AddMaze(area);  
         }
 
-        public void SendStartPoint(Guid gameID, Guid userID, Point point = null)
+        public bool SendStartPoint(Guid gameID, Guid userID, Point point = null)
         {
             GameRoom room = actionGameList.Where(x => x.RoomID == gameID).First();
             Player player = room.PlayerList.Where(x => x.PlayerID == userID).First();
@@ -91,9 +86,13 @@ namespace Mazyaka.Server.GameService
             player.ObjectID = human.ID;
 
             area.AddGameObject(human);
+            player.IsReady = true;
+
+            // TODO : Уберём, если сделаем по кнопке
+            if (room.PlayerList.All(x => x.IsReady == true)) return true;
+            else return false;
         }
 
-        
         public bool MoveObject(Guid gameID, Guid playerID, MoveDirection direction)
         {
             GameRoom room = actionGameList.Where(x => x.RoomID == gameID).First();
@@ -103,19 +102,16 @@ namespace Mazyaka.Server.GameService
             return area.MoveLiveObject(player.ObjectID, direction); // TODO: Решить, нужна ли возможность движения разных объектов
         }
 
-        public int GetAllGameCount()
+        public bool LeaveGame(Guid gameID, Guid userID)
         {
-            return actionGameList.Count() + waitGameList.Count();
+            throw new NotImplementedException();
         }
 
-        public int GetWaitGameCount()
+        public Guid StartGame(Guid gameID)
         {
-            return waitGameList.Count();
-        }
-
-        public int GetActGameCount()
-        {
-            return actionGameList.Count();
+            GameRoom room = actionGameList.Where(x => x.RoomID == gameID).First();
+            room.curStepUser = room.PlayerList[T.Next(room.PlayerList.Count - 1)].PlayerID;
+            return room.curStepUser;
         }
     }
 }

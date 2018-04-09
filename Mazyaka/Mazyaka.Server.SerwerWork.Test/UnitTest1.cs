@@ -38,10 +38,6 @@ namespace Mazyaka.Server.ServerWork.Test
             var gameID = client.CreateGame(temp);
 
             server.Stop();
-
-            Assert.AreEqual(1, server.GetAllGameCount());
-            Assert.AreEqual(1, server.GetWaitGameCount());
-            Assert.AreEqual(0, server.GetActGameCount());
         }
 
         [TestMethod]
@@ -56,18 +52,26 @@ namespace Mazyaka.Server.ServerWork.Test
             var user1 = client.Login("Alleshka", "Alleshka13372");
             var user2 = client.Login("Alleshka", "Alleshka13372");
             var gameID = client.CreateGame(user1);
-
-            Assert.AreEqual(1, server.GetAllGameCount());
-            Assert.AreEqual(1, server.GetWaitGameCount());
-            Assert.AreEqual(0, server.GetActGameCount());
-
             var temp = client.JoinGame(gameID, user2);
 
             server.Stop();
+        }
 
-            Assert.AreEqual(1, server.GetAllGameCount());
-            Assert.AreEqual(0, server.GetWaitGameCount());
-            Assert.AreEqual(1, server.GetActGameCount());
+        [TestMethod]
+        public void TestGame()
+        {
+            MazeServer server = new MazeServer(new GameService.GameServiceFirst(), new LoginService.LoginServiceFirst(), port); // Create server
+            server.Start();
+
+
+            MazeClient client = new MazeClient();
+            client.Connect(ip, port);
+
+            var user1 = client.Login("Alleshka", "Alleshka13372");
+            var user2 = client.Login("Alleshka", "Alleshka13372");
+
+            var gameID = client.CreateGame(user1);
+            var temp = client.JoinGame(gameID, user2);
         }
     }
 }

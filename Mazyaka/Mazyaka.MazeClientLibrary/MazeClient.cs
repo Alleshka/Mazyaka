@@ -31,15 +31,15 @@ namespace Mazyaka.MazeClientLibrary
             return gameID;
         }
 
-        public Player GetInitData(Guid gameID, Guid userID)
-        {
-            PackCommand command = new PackCommand(TypeCommand.GetInitData);
-            command.AddArgument(gameID.ToString());
-            command.AddArgument(userID.ToString());
+        //public Player GetInitData(Guid gameID, Guid userID)
+        //{
+        //    PackCommand command = new PackCommand(TypeCommand.GetInitData);
+        //    command.AddArgument(gameID.ToString());
+        //    command.AddArgument(userID.ToString());
 
-            var responce = connection.SendCommand(command);
-            return Player.ToObject(responce[0]);
-        }
+        //    var responce = connection.SendCommand(command);
+        //    return Player.ToObject(responce[0]);
+        //}
 
         public bool JoinGame(Guid gameID, Guid userID)
         {

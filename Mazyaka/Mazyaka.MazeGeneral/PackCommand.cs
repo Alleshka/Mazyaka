@@ -10,13 +10,14 @@ namespace Mazyaka.MazeGeneral
         // ServerTypes
         Error,
         Responce,
+        GameIsStart,
         // ClientTypes
-        Login,
-        CreateGame,
-        JoinGame,
-        SendStartMaze,
-        SendStartPoint,
-        GetInitData
+        Login, // +
+        CreateGame, // +
+        JoinGame, // +
+        SendStartMaze, // ~
+        SendStartPoint, // ~
+        StartGame,
     }
 
     /// <summary>
@@ -31,6 +32,7 @@ namespace Mazyaka.MazeGeneral
         // TODO: Возможно, можно держать лист байтов
         [DataMember]
         public List<String> Args { get; private set; } = null; // список аргументов
+        
 
         public String this[int index] => Args[index];
 

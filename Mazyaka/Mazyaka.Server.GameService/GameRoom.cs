@@ -22,7 +22,7 @@ namespace Mazyaka.Server.GameService
     public class GameRoom
     {
         public Guid RoomID { get; private set; }
-        public GameStatus Status { get; set; }
+        //public GameStatus Status { get; set; }
 
         public List<Player> PlayerList { get; private set; } // Список игроков в данной комнате 
         public List<MazeArea> MazeList { get; private set; } // Список лабиринтов в данной комнате
@@ -35,7 +35,7 @@ namespace Mazyaka.Server.GameService
 
             PlayerList = new List<Player>();
             MazeList = new List<MazeArea>();
-            Status = GameStatus.Created;
+            //Status = GameStatus.Created;
         }
 
         public void AddPlayer(Player player)
