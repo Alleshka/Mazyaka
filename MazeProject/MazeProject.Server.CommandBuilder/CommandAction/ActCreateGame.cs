@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 using MazeProject.MazeGeneral.Command;
 using MazeProject.Server.GameService;
+using MazeProject.Server.MessageSender;
 
 namespace MazeProject.Server.CommandBuilder.CommandAction
 {
     public class ActCreateGame : ActGameAbstract
     {
-        public ActCreateGame(CreateGameRequest gameRequest, IGameService game) : base(gameRequest, game)
+        public ActCreateGame(CreateGameRequest gameRequest, IGameService game, Sender sender) : base(gameRequest, game, sender)
         {
 
         }
@@ -22,7 +23,7 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
             Guid gameID = this.gameService.CreateGame(userID);
             response = new CreateGameResponse(gameID);
 
-            MessageSender.Sender.GetInstanse().SendMessage(userID, response); // Отправляем клиенту ID игры
+            SendMessage(userID); // Отправляем сформированный ответ
         }
     }
 }

@@ -11,7 +11,7 @@ namespace MazeProject.MazeGeneral.Command
     /// Сообзает пользователю, что его ход
     /// </summary>
     [DataContract]
-    public class YourStep : AbstractMessage
+    public class YourStep : AbstractResponse
     {
 
     }

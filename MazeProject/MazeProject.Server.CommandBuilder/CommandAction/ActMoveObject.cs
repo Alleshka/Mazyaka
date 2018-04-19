@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using MazeProject.Server.MessageSender;
 using MazeProject.MazeGeneral.Command;
 using MazeProject.Server.GameService;
 
@@ -11,7 +12,7 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
 {
     public class ActMoveObject : ActGameAbstract
     {
-        public ActMoveObject(MoveObjectRequest gameRequest, IGameService game) : base(gameRequest, game)
+        public ActMoveObject(MoveObjectRequest gameRequest, IGameService game, Sender sender) : base(gameRequest, game, sender)
         {
 
         }
@@ -22,10 +23,10 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
             bool IsMoved = gameService.MoveObject(moveObjectRequest.GameID, moveObjectRequest.UserID, moveObjectRequest.Direction);
             response = new MoveObjectResponse(IsMoved);
 
-            MessageSender.Sender.GetInstanse().SendMessage(moveObjectRequest.UserID, response); // Шлём пользователю ответ на его ход
+            SendMessage(moveObjectRequest.UserID);
 
             Guid curUser = gameService.StepByUser(moveObjectRequest.GameID);
-            MessageSender.Sender.GetInstanse().SendMessage(curUser, new YourStep()); // Шлём другому пользователю, что может ходить
+            SendMessage(curUser, new YourStep()); // Шлём другому пользователю, что может ходить
         }
     }
 }

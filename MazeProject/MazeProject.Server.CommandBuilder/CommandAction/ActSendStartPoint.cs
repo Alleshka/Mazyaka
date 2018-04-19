@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using MazeProject.MazeGeneral.Maze;
 using MazeProject.MazeGeneral.Command;
 using MazeProject.Server.GameService;
+using MazeProject.Server.MessageSender;
 
 namespace MazeProject.Server.CommandBuilder.CommandAction
 {
     public class ActSendStartPoint : ActGameAbstract
     {
-        public ActSendStartPoint(SendStartPositionRequest gameRequest, IGameService game) : base(gameRequest, game)
+        public ActSendStartPoint(SendStartPositionRequest gameRequest, IGameService game, Sender sender) : base(gameRequest, game, sender)
         {
 
         }
@@ -24,11 +24,8 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
             var point = (request as SendStartPositionRequest).Point;
 
             gameService.AddLive(gameID, userID, point);
-
-            response = new SendStartPositionResponce();
-
-            var sender = MessageSender.Sender.GetInstanse();
-            sender.SendMessage(userID, response); // Говорим, что приняли
+            //response = new SendStartPositionResponce();
+            //sender.SendMessage(userID, response); // Говорим, что приняли
 
             GameRoom room = gameService.FindGameByID(gameID);
             if(room.Status==StatusGame.STARTED)

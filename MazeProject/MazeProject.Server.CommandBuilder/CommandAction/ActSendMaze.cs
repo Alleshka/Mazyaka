@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using MazeProject.MazeGeneral.Maze;
 using MazeProject.MazeGeneral.Command;
 using MazeProject.Server.GameService;
+using MazeProject.Server.MessageSender;
 
 namespace MazeProject.Server.CommandBuilder.CommandAction
 {
     public class ActSendMaze : ActGameAbstract
     {
-        public ActSendMaze(SendMazeRequest gameRequest, IGameService game) : base(gameRequest, game)
+        public ActSendMaze(SendMazeRequest gameRequest, IGameService game, Sender sender) : base(gameRequest, game, sender)
         {
 
         }
@@ -26,8 +27,6 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
             gameService.AddMaze(gameID, userID, maze);
             response = new SendMazeResponse();
 
-
-            var sender = MessageSender.Sender.GetInstanse();
             sender.SendMessage(userID, response);
 
             GameRoom room = gameService.FindGameByID(gameID);

@@ -10,7 +10,7 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
 {
     public class ActUserCount : ActAbstract
     {
-        public ActUserCount(UserCountRequest command) : base(command)
+        public ActUserCount(UserCountRequest command, MessageSender.Sender sender) : base(command, sender)
         {
 
         }
@@ -18,7 +18,6 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
         public override void Execute()
         {
             UserCountRequest command = this.request as UserCountRequest;
-            MessageSender.Sender sender = MessageSender.Sender.GetInstanse();
 
             int count = sender.GetUserCount();
 

@@ -12,9 +12,9 @@ namespace MazeProject.Server.GUIConsole
         static void Main(string[] args)
         {
             var server = new Server.MazeServer.MazeServer(1337);
-            server.NewRequest += Printrequest;
-            server.NewResponse += PrintResponse;
-            server.CliendDisconnect += PrintDisconnect;
+
+            server.NewRequest += Server_NewRequest;
+            server.NewResponse += Server_NewResponse;
 
             server.Start();
 
@@ -23,19 +23,16 @@ namespace MazeProject.Server.GUIConsole
             Console.ReadKey();
         }
 
-        static void Printrequest(String msg)
+        private static void Server_NewResponse(DateTime date, Guid Id)
         {
-            Console.WriteLine("Получен новый запрос: " + msg);
+            Console.WriteLine($"[{date.ToString()}] Запрос {Id} обработан");
+            Console.WriteLine();
         }
 
-        static void PrintDisconnect()
+        private static void Server_NewRequest(DateTime date, string request, Guid id)
         {
-            Console.WriteLine("Клиент отключился");
-        }
-
-        static void PrintResponse()
-        {
-            Console.WriteLine("Обработано");
+            Console.WriteLine();
+            Console.WriteLine($"[{date.ToString()}] Получен запрос {request} с ID = {id}");
         }
     }
 }

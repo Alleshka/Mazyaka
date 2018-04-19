@@ -97,6 +97,8 @@ namespace MazeProject.Server.GameService
         public PlayerInfo GetPlayerByID(Guid id) => PlayerList.Where(x => x.PlayerID == id).First();
         public PlayerInfo GetPlayerByIndex(int index) => PlayerList[index];
 
+        public List<Guid> UsersIDList() => PlayerList.Select(x => x.PlayerID).ToList();
+
         public void StartGame()
         {
             Random T = new Random();

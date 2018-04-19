@@ -19,6 +19,9 @@ namespace MazeProject.Server.GameService
             actionGameList = new List<GameRoom>(10);
         }
 
+        public event HasUserConnected HasUserConnectedEvent;
+        public event GameIsWaitMaize GameIsWaitMazeEvent;
+
         public void AddLive(Guid gameID, Guid userID, MazePoint point = null)
         {
             if (point == null) point = new MazePoint(5, 5);
@@ -77,9 +80,16 @@ namespace MazeProject.Server.GameService
                 actionGameList.Add(room);
 
                 room.Status = StatusGame.WAITMAZES;
+
+                HasUserConnectedEvent?.Invoke(userID, true);
+                GameIsWaitMazeEvent?.Invoke(room.UsersIDList());
                 return true;
             }
-            else return false;
+            else
+            {
+                HasUserConnectedEvent?.Invoke(userID, false);
+                return false;
+            }
         }
 
         public bool MoveObject(Guid gameID, Guid userID, MoveDirection direction)

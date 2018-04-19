@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+using MazeProject.Server.MessageSender;
 using MazeProject.MazeGeneral.Command;
 using MazeProject.Server.GameService;
 
@@ -12,7 +12,7 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
 {
     public class ActGamesList : ActGameAbstract
     {
-        public ActGamesList(GameListRequest gameRequest, IGameService game) : base(gameRequest, game)
+        public ActGamesList(GameListRequest gameRequest, IGameService game, Sender sender) : base(gameRequest, game, sender)
         {
 
         }
@@ -21,7 +21,7 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
         {
             GameListRequest listRequest = request as GameListRequest;
             response = new GameListResponse(gameService.GamesList());
-            MessageSender.Sender.GetInstanse().SendMessage(listRequest.UserID, response);
+            SendMessage(listRequest.UserID);
         }
     }
 }

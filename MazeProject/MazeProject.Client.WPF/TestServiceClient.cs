@@ -16,7 +16,6 @@ namespace MazeProject.Client.WPF
         Thread listenThread;
         bool IsWork = true;
 
-
         private Guid curUser;
         private Guid curGame;
 

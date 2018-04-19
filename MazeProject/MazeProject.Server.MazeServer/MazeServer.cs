@@ -20,9 +20,12 @@ namespace MazeProject.Server.MazeServer
         private ICommandParser commandParser;
         private Sender sender;
 
-        public delegate void NewRequestDelegate(String request);
+        public delegate void NewRequestDelegate(DateTime date, String request, Guid id);
         public event NewRequestDelegate NewRequest;
-        public event Action NewResponse = delegate {};
+
+        public delegate void NewResponseDelegate(DateTime date, Guid Id);
+        public event NewResponseDelegate NewResponse;
+
         public event Action CliendDisconnect = delegate { };
 
         public MazeServer(int port = 1337)
@@ -31,8 +34,8 @@ namespace MazeProject.Server.MazeServer
             socketListener.Bind(new IPEndPoint(IPAddress.Any, port));
             socketListener.Listen(0);
 
-            sender = MessageSender.Sender.GetInstanse();
-            commandParser = new CommandParser();
+            sender = new Sender();
+            commandParser = new CommandParser(sender);
         }
 
         public void Start()
@@ -68,21 +71,23 @@ namespace MazeProject.Server.MazeServer
                     byte[] buffer = new byte[1024];
                     client.Receive(buffer); // Принимаем данные
 
+                    Guid id = Guid.NewGuid();
 
                     ActAbstract command = commandParser.ParseCommand(buffer, client);
-                    NewRequest?.Invoke(command.GetType().ToString()); // Событие нового сообщения
+                    NewRequest?.Invoke(DateTime.Now, command.ToString().Split('.').Last(), id); // Событие нового сообщения
                     command.Execute();
 
-                    NewResponse?.Invoke();
+                    NewResponse?.Invoke(DateTime.Now, id);
                 }
                 catch (SocketException)
                 {
-                    CliendDisconnect?.Invoke(); // Сообщем, что клиент отсоединился
                     break; // Выходим из цикла
                 }
             }
 
             // Заканчиваем подключение
+            sender.RemoveUser(client);
+            CliendDisconnect.Invoke();
             client.Shutdown(SocketShutdown.Both);
             client.Disconnect(false);
             client.Dispose();
