@@ -8,22 +8,22 @@ namespace MazeProject.MazeGeneral.Maze.Serializier
 {
     public class CompressNewtosoftSerializer : ISerializer
     {
-        public byte[] ToByte<T>(T obj)
+        public byte[] ToBytes<T>(T obj, Type[] types = null)
         {
             throw new NotImplementedException();
         }
 
-        public T ToObject<T>(byte[] bytes)
+        public T ToObject<T>(byte[] bytes, Type[] types = null)
         {
             throw new NotImplementedException();
         }
 
-        public T ToObject<T>(string strFormat)
+        public T ToObject<T>(string strFormat, Type[] types = null)
         {
             throw new NotImplementedException();
         }
 
-        public string ToStringFormat<T>(T obj)
+        public string ToStringFormat<T>(T obj, Type[] types = null)
         {
             throw new NotImplementedException();
         }

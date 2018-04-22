@@ -44,7 +44,7 @@ namespace MazeProject.MazeGeneral.Maze.Serializier
 
         public T ToObject<T>(string strFormat, Type[] types = null)
         {
-            return ToObject(Encoding.UTF8.GetBytes(xml), types);
+            return ToObject<T>(Encoding.UTF8.GetBytes(strFormat), types);
         }
 
         public string ToStringFormat<T>(T obj, Type[] types = null)
