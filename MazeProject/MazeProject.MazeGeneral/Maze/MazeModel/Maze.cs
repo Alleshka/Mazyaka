@@ -14,12 +14,11 @@ namespace MazeProject.MazeGeneral.Maze
     [DataContract]
     public class Maze
     {
-        [DataMember]
         public Guid MazeID { get; private set; }
 
         [DataMember]
         private MazeStruct mazeStruct; // Структура лабиринта
-        [DataMember]
+        //[DataMember]
         private List<LiveGameObject> liveObjects; // Тут лежат все живые объекты
         [DataMember]
         private Cell exitCell; // Тут лежит ячейка с выходом
@@ -134,12 +133,16 @@ namespace MazeProject.MazeGeneral.Maze
             if (@object is LiveGameObject) liveObjects.Add(@object as LiveGameObject);
         }
         
+        
         public MazeStruct GetMazeStruct() => mazeStruct;
 
         public MazePoint ExitUp => exitCell.Down.Address;
         public MazePoint ExitDown => exitCell.Up.Address;
         public MazePoint ExitLeft => exitCell.Right.Address;
         public MazePoint ExitRight => exitCell.Left.Address;
+
+        public int MazeSize => mazeStruct.Size;
+        public Cell this[int line, int column] => mazeStruct[line, column];
 
         public delegate void GameIsEnd();
         private event GameIsEnd gameIsEndEvent;

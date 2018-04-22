@@ -49,7 +49,7 @@ namespace MazeProject.Client.WPF
         public delegate void GivePointDelegate();
         public event GivePointDelegate GivePointEvent; // Готовы принять начальную позицию
 
-        public delegate void GameIsFinished(String message);
+        public delegate void GameIsFinished(String message, MazeProject.MazeGeneral.Maze.MazeStruct maze);
         public event GameIsFinished GameIsFinishedEvent; // Сообщение о конце игры
 
         public TestServiceClient()
@@ -87,7 +87,14 @@ namespace MazeProject.Client.WPF
         public void SendMaze(MazeProject.MazeGeneral.Maze.Maze maze = null)
         {
             SendMazeRequest request = new SendMazeRequest(curUser, curGame, maze);
-            client.Send(AbstractMessage.ToBytes(request));
+
+            using (var stream = new System.IO.StreamWriter(new System.IO.FileStream((Guid.NewGuid().ToString() + ".txt"), System.IO.FileMode.Create)))
+            {
+                stream.Write(AbstractMessage.ToXml(request));
+            }
+
+            var data = AbstractMessage.ToBytes(request);
+            client.Send(data);
         }
 
         //Отправляем начальную позицию
@@ -114,9 +121,11 @@ namespace MazeProject.Client.WPF
 
             while (IsWork)
             {
-                byte[] bytes = new byte[1024];
+                byte[] bytes = new byte[6500]; // <-- Пиздец, а не число          
                 socket.Receive(bytes);
+
                 var response = AbstractMessage.ToObject(bytes); // Парсим ответ
+                System.Diagnostics.Trace.WriteLine($"Размер потока - " + bytes.TakeWhile(x=>x!=0).Count());
                 ResponseParse(response);
             }
         }
@@ -165,22 +174,22 @@ namespace MazeProject.Client.WPF
             {
                 GivePointEvent?.Invoke();
             }
-            else if (response is CumulativeResponse)
-            {
-                foreach (var resp in (response as CumulativeResponse).ResponseList)
-                {
-                    ResponseParse(resp);
-                }
-            }
+            //else if (response is CumulativeResponse)
+            //{
+            //    foreach (var resp in (response as CumulativeResponse).ResponseList)
+            //    {
+            //        ResponseParse(resp);
+            //    }
+            //}
             else if (response is GameFinished)
             {
                 if ((response as GameFinished).Winner.CompareTo(curUser)==0)
                 {
-                    GameIsFinishedEvent?.Invoke("Вы победили");
+                    GameIsFinishedEvent?.Invoke("Вы победили", (response as GameFinished).FullMaze);
                 }
                 else
                 {
-                    GameIsFinishedEvent?.Invoke("Вы проиграли");
+                    GameIsFinishedEvent?.Invoke("Вы проиграли", (response as GameFinished).FullMaze);
                 }
             }
             else throw new Exception("Неизвестный пакет: " + response.GetType());

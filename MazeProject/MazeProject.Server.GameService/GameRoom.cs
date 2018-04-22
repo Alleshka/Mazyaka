@@ -18,6 +18,8 @@ namespace MazeProject.Server.GameService
 
     public class GameRoom
     {
+        public static Random T = new Random();
+
         public object locker = new object(); // Локер
         public StatusGame Status { get; set; } // Статус игры
 
@@ -68,20 +70,20 @@ namespace MazeProject.Server.GameService
             }
             else
             {
-                IMazeGenerator generator = new MazeGeneral.Maze.MazeGenerators.ReqursiveGenerator();
+                IMazeGenerator generator = new MazeGeneral.Maze.MazeGenerators.ReqursiveGenerator(T);
                 // TODO : Размер лабиринта задавать снаружи
                 temp = new Maze(generator, 10); // Добавляем лабиринт
 
                 // Устанавливаем выход
-                temp.SetExit(MoveDirection.UP, 5);
-                temp.SetExit(MoveDirection.RIGHT, 5);
-                temp.SetExit(MoveDirection.LEFT, 5);
-                temp.SetExit(MoveDirection.DOWN, 5);
+                temp.SetExit(MoveDirection.UP, T.Next(10));
+                temp.SetExit(MoveDirection.RIGHT, T.Next(10));
+                temp.SetExit(MoveDirection.LEFT, T.Next(10));
+                temp.SetExit(MoveDirection.DOWN, T.Next(10));
             }
 
             MazeList.Add(temp); // Добавляем лабиринт в список лабиринтов
 
-            PlayerInfo player = PlayerList.Where(x => x.PlayerID != IDCreator)./*Where(x => x.MazeID == Guid.Empty)*/First(); // Находим пользователя без лабиринта
+            PlayerInfo player = PlayerList.Where(x => x.PlayerID != IDCreator).Where(x => x.MazeID == Guid.Empty).First(); // Находим пользователя без лабиринта
             player.MazeID = temp.MazeID; // Привязываем лабиринт
         }
         public void AddLiveObject(Guid userID, LiveGameObject @object)

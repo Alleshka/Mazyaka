@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MazeProject.MazeGeneral.Command;
-using System.Runtime.Serialization;
 using System.IO;
+using System.Runtime.Serialization;
 
-namespace MazeProject.MazeGeneral
+namespace MazeProject.MazeGeneral.Maze.Serializier
 {
-    // TODO: Сделать свой сериализатор, используя TOString и парсить на клиентах
-
-    public class Serializer<T>
+    public class CompressXmlSerializer : ISerializer
     {
-        public static byte[] ToBytes(T obj, Type[] types = null)
+        public byte[] ToBytes<T>(T obj, Type[] types = null)
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -27,12 +24,7 @@ namespace MazeProject.MazeGeneral
             }
         }
 
-        public static String ToXml(T obj, Type[] types = null)
-        {
-            return Encoding.UTF8.GetString(ToBytes(obj, types));
-        }
-
-        public static T ToObject(byte[] bytes, Type[] types = null)
+        public T ToObject<T>(byte[] bytes, Type[] types = null)
         {
             using (MemoryStream stream = new MemoryStream(bytes))
             {
@@ -50,9 +42,14 @@ namespace MazeProject.MazeGeneral
             }
         }
 
-        public static T ToObject(String xml, Type[] types = null)
+        public T ToObject<T>(string strFormat, Type[] types = null)
         {
             return ToObject(Encoding.UTF8.GetBytes(xml), types);
+        }
+
+        public string ToStringFormat<T>(T obj, Type[] types = null)
+        {
+            return Encoding.UTF8.GetString(ToBytes(obj, types));
         }
     }
 }

@@ -13,7 +13,6 @@ namespace MazeProject.MazeGeneral.Command
     [DataContract]
     public class YourStep : AbstractResponse
     {
-
     }
 
     /// <summary>
@@ -22,7 +21,6 @@ namespace MazeProject.MazeGeneral.Command
     [DataContract]
     public class GiveMaze : AbstractResponse
     {
-
     }
 
     /// <summary>
@@ -34,35 +32,28 @@ namespace MazeProject.MazeGeneral.Command
 
     }
 
-
-    /// <summary>
-    /// Пакет с несколькими командами, чтобы послать 1 сообщением
-    /// </summary>
-    [DataContract]
-    public class CumulativeResponse : AbstractResponse
-    {
-        public List<AbstractResponse> ResponseList;
-
-        public CumulativeResponse() : base()
-        {
-            ResponseList = new List<AbstractResponse>();
-        }
-
-        public void AddResponse(AbstractResponse response)
-        {
-            ResponseList.Add(response);
-        }
-    }
-
     [DataContract]
     public class GameFinished : AbstractResponse
     {
         [DataMember]
         public Guid Winner { get; set; }
+        
+        [DataMember]
+        public Maze.MazeStruct FullMaze { get; set; }
 
-        public GameFinished(Guid id) : base()
+        public GameFinished(Guid id, Maze.MazeStruct fullMaze) : base()
         {
             Winner = id;
+            FullMaze = fullMaze;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(base.ToString());
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append($"[Winner:{Winner.ToString()}");
+            return stringBuilder.ToString();
         }
     }
 }

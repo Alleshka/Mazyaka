@@ -24,6 +24,9 @@ namespace MazeProject.Client.WPF
     /// </summary>
     public partial class MazeArea : UserControl
     {
+        public int offsetX = 10;
+        public int offsetY = 10;
+
         private Random T = new Random();
 
         private TestServiceClient client = new TestServiceClient();
@@ -57,9 +60,29 @@ namespace MazeProject.Client.WPF
             ReplaseHuman(1, 1);
         }
 
-        private void Client_GameIsFinishedEvent(string message)
+        private void Client_GameIsFinishedEvent(string message, MazeGeneral.Maze.MazeStruct area)
         {
+            for(int i = 0; i<area.Size; i++)
+            {
+                for(int j=0; j<area.Size; j++)
+                {
+                    var cell = area[i, j];
+
+                    if (cell.Up  == null) AddUpWall(i, j);
+                    if (cell.Down == null) AddDownWall(i, j);
+                    if (cell.Left == null) AddLeftWall(i, j);
+                    if (cell.Right == null) AddRightWall(i, j);
+                }
+
+            }
+
             MessageBox.Show(message);
+            Dispatcher.BeginInvoke(new ThreadStart(delegate
+            {
+                maze.Children.Clear();
+                maze.Children.Add(new Line());
+                ReplaseHuman(1, 1);
+            }));
         }
 
         private void Client_GetLoginEvent(Guid userID)
@@ -83,7 +106,15 @@ namespace MazeProject.Client.WPF
 
         private void Client_GiveMazeEvent()
         {
-            client.SendMaze(null);
+            var generator = new MazeGeneral.Maze.MazeGenerators.ReqursiveGenerator(T);
+
+            Maze maze = new Maze(generator.GenerateMazeCells(10));
+            maze.SetExit(MoveDirection.DOWN, T.Next(10));
+            maze.SetExit(MoveDirection.LEFT, T.Next(10));
+            maze.SetExit(MoveDirection.RIGHT, T.Next(10));
+            maze.SetExit(MoveDirection.UP, T.Next(10));
+
+            client.SendMaze(maze);
         }
 
         private void Client_YourStepEvent()
@@ -136,10 +167,16 @@ namespace MazeProject.Client.WPF
 
         private void Client_GetGameListEvent(List<Guid> gameList)
         {
-            foreach (var game in gameList)
+
+            Dispatcher.BeginInvoke(new ThreadStart(delegate
             {
-                Dispatcher.BeginInvoke(new ThreadStart(delegate { gamesID.Items.Add(game); }));
-            }
+                gamesID.Items.Clear();
+                foreach (var game in gameList)
+                {
+                    gamesID.Items.Add(game);
+                }
+            }));
+
         }
 
         private void GetNewPoint(MoveDirection direction)
@@ -202,11 +239,11 @@ namespace MazeProject.Client.WPF
 
                 var figure = maze.Children[0] as Line;
 
-                figure.X1 = column * CELLWIDTH + CELLWIDTH/3;
-                figure.X2 = (column + 1) * CELLWIDTH - CELLWIDTH/3;
+                figure.X1 = offsetX + column * CELLWIDTH + CELLWIDTH/3;
+                figure.X2 = offsetX + (column + 1) * CELLWIDTH - CELLWIDTH/3;
 
-                figure.Y1 = (line) * CELLHEIGHT + CELLHEIGHT / 2;
-                figure.Y2 = (line) * CELLHEIGHT + CELLHEIGHT / 2;
+                figure.Y1 = offsetY + (line) * CELLHEIGHT + CELLHEIGHT / 2;
+                figure.Y2 = offsetY + (line) * CELLHEIGHT + CELLHEIGHT / 2;
 
                 figure.Stroke = Brushes.Green;
 
@@ -224,10 +261,10 @@ namespace MazeProject.Client.WPF
             Dispatcher.BeginInvoke(new ThreadStart(delegate {
                 Line temp = new Line
                 {
-                    X1 = column * CELLWIDTH,
-                    X2 = column * CELLWIDTH,
-                    Y1 = line * CELLHEIGHT,
-                    Y2 = (line + 1) * CELLHEIGHT,
+                    X1 = offsetX + column * CELLWIDTH,
+                    X2 = offsetX + column * CELLWIDTH,
+                    Y1 = offsetY + line * CELLHEIGHT,
+                    Y2 = offsetY + (line + 1) * CELLHEIGHT,
                     Stroke = Brushes.Red,
                 };
 
@@ -240,10 +277,10 @@ namespace MazeProject.Client.WPF
             Dispatcher.BeginInvoke(new ThreadStart(delegate {
                 maze.Children.Add(new Line()
                 {
-                    X1 = CELLWIDTH * (column + 1),
-                    X2 = CELLWIDTH * (column + 1),
-                    Y1 = CELLHEIGHT * line,
-                    Y2 = CELLHEIGHT * (line + 1),
+                    X1 = offsetX + CELLWIDTH * (column + 1),
+                    X2 = offsetX + CELLWIDTH * (column + 1),
+                    Y1 = offsetY + CELLHEIGHT * line,
+                    Y2 = offsetY + CELLHEIGHT * (line + 1),
                     Stroke = Brushes.Red
                 });
             }));
@@ -255,10 +292,10 @@ namespace MazeProject.Client.WPF
             Dispatcher.BeginInvoke(new ThreadStart(delegate {
                 maze.Children.Add(new Line()
                 {
-                    X1 = CELLWIDTH * column,
-                    X2 = CELLWIDTH * (column + 1),
-                    Y1 = CELLHEIGHT * line,
-                    Y2 = CELLHEIGHT * line,
+                    X1 = offsetX + CELLWIDTH * column,
+                    X2 = offsetX + CELLWIDTH * (column + 1),
+                    Y1 = offsetY + CELLHEIGHT * line,
+                    Y2 = offsetY + CELLHEIGHT * line,
                     Stroke = Brushes.Red
                 });
             }));
@@ -269,10 +306,10 @@ namespace MazeProject.Client.WPF
             Dispatcher.BeginInvoke(new ThreadStart(delegate {
                 maze.Children.Add(new Line()
                 {
-                    X1 = CELLWIDTH * column,
-                    X2 = CELLWIDTH * (column + 1),
-                    Y1 = CELLHEIGHT * (line + 1),
-                    Y2 = CELLHEIGHT * (line + 1),
+                    X1 = offsetX + CELLWIDTH * column,
+                    X2 = offsetX + CELLWIDTH * (column + 1),
+                    Y1 = offsetY + CELLHEIGHT * (line + 1),
+                    Y2 = offsetY + CELLHEIGHT * (line + 1),
                     Stroke = Brushes.Red
                 });
             }));

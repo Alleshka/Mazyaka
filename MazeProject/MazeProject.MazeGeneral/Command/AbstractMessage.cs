@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using MazeProject.MazeGeneral.Maze;
+using MazeProject.MazeGeneral.Maze.GameObjects;
+using MazeProject.MazeGeneral.Maze.Effects;
 
 namespace MazeProject.MazeGeneral.Command
 {
@@ -37,14 +40,29 @@ namespace MazeProject.MazeGeneral.Command
             typeof(GiveMaze),
             typeof(GivePoint),
             typeof(YourStep),
-            typeof(CumulativeResponse),
             typeof(GameFinished),
+            typeof(BaseGameObject),
+            typeof(LiveGameObject),
+            typeof(Exit),
+            typeof(Human),
+            typeof(BaseEffect),
+            typeof(WinEffect),
+            typeof(BaseEffect),
+            typeof(Cell),
+            typeof(Maze.Maze),
+            typeof(MazePoint),
+            typeof(MazeStruct),
         };
 
         public static byte[] ToBytes(AbstractMessage obj) => Serializer<AbstractMessage>.ToBytes(obj, types);
         public static String ToXml(AbstractMessage obj) => Serializer<AbstractMessage>.ToXml(obj, types);
         public static AbstractMessage ToObject(byte[] bytes) => Serializer<AbstractMessage>.ToObject(bytes, types);
         public static AbstractMessage ToObject(String xml) => Serializer<AbstractMessage>.ToObject(xml, types);
+
+        public override string ToString()
+        {
+            return $"[Type:{this.GetType().ToString().Split('.').Last()}]";
+        }
     }
 
     [DataContract]

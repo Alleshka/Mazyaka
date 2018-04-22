@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace MazeProject.MazeGeneral.Maze
 {
+    [DataContract]
     public abstract class BaseGameObject
     {
+        //[DataMember]
         public Guid ObjectID { get; set; }
         /// <summary>
         /// Текущий адрес объекта
         /// </summary>
         /// 
 
+        [DataMember]
         private MazePoint curAddres;
         public MazePoint CurAddres
         {

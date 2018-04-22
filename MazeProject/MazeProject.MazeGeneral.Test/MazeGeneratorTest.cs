@@ -13,7 +13,7 @@ namespace MazeProject.MazeGeneral.Test
         public void GenerateTest1()
         {
             // Arrange
-            IMazeGenerator mazeGenerator = new ReqursiveGenerator();
+            IMazeGenerator mazeGenerator = new ReqursiveGenerator(null);
             int mazeSize = 5;
 
             // Act

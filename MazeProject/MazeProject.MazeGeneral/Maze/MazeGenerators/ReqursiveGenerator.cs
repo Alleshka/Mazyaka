@@ -16,6 +16,12 @@ namespace MazeProject.MazeGeneral.Maze.MazeGenerators
 
         private Random T;
 
+        public ReqursiveGenerator(Random random)
+        {
+            if (random == null) T = new Random();
+            else T = random;
+        }
+
         public MazeStruct GenerateMazeStruct(int size)
         {
             return new MazeStruct(GenerateMazeCells(size));
@@ -72,8 +78,6 @@ namespace MazeProject.MazeGeneral.Maze.MazeGenerators
                     visited[i, j] = false;
                 }
             }
-
-            T = new Random();
         }
 
 

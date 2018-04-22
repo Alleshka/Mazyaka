@@ -35,8 +35,11 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
             else
             {
                 // TODO: Можно сделать два разных пакета для победителя и проигравшего
-                response = new GameFinished(moveObjectRequest.UserID);
-                SendMessage(room.GetUsersID, response);
+                foreach (var us in room.GetUsersID)
+                {
+                    response = new GameFinished(moveObjectRequest.UserID, room.FindMazeByID(room.FindUserByID(us).MazeID).GetMazeStruct());
+                    SendMessage(us, response);
+                }
             }
         }
     }

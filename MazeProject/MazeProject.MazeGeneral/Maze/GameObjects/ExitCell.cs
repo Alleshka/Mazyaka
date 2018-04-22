@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MazeProject.MazeGeneral.Maze.Effects;
+using System.Runtime.Serialization;
 
 namespace MazeProject.MazeGeneral.Maze.GameObjects
 {
+    [DataContract]
     public class Exit : BaseGameObject
     {
         public Exit(MazePoint point) : base(point)

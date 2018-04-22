@@ -31,7 +31,7 @@ namespace MazeProject.MazeGeneral.Maze
         }
         public MazeStruct(Cell[][] @struct)
         {
-            cells = @struct;
+            cells = @struct.ToArray();
         }
         public MazeStruct(MazeStruct @struct)
         {

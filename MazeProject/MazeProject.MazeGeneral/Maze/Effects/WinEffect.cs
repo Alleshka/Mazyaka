@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace MazeProject.MazeGeneral.Maze.Effects
 {
     /// <summary>
     /// Добавляется к победившему пользователю
     /// </summary>
+    [DataContract]
     public class WinEffect : BaseEffect
     {
         public WinEffect() : base("Пользователь выиграл матч")

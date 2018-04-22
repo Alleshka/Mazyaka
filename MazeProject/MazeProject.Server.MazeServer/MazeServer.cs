@@ -68,7 +68,7 @@ namespace MazeProject.Server.MazeServer
             {
                 try
                 {
-                    byte[] buffer = new byte[1024];
+                    byte[] buffer = new byte[6500];
                     client.Receive(buffer); // Принимаем данные
 
                     Guid id = Guid.NewGuid();
