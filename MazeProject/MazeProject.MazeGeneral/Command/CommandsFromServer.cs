@@ -33,4 +33,36 @@ namespace MazeProject.MazeGeneral.Command
     {
 
     }
+
+
+    /// <summary>
+    /// Пакет с несколькими командами, чтобы послать 1 сообщением
+    /// </summary>
+    [DataContract]
+    public class CumulativeResponse : AbstractResponse
+    {
+        public List<AbstractResponse> ResponseList;
+
+        public CumulativeResponse() : base()
+        {
+            ResponseList = new List<AbstractResponse>();
+        }
+
+        public void AddResponse(AbstractResponse response)
+        {
+            ResponseList.Add(response);
+        }
+    }
+
+    [DataContract]
+    public class GameFinished : AbstractResponse
+    {
+        [DataMember]
+        public Guid Winner { get; set; }
+
+        public GameFinished(Guid id) : base()
+        {
+            Winner = id;
+        }
+    }
 }

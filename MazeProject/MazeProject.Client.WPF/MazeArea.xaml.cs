@@ -48,12 +48,18 @@ namespace MazeProject.Client.WPF
             client.SendMazeEvent += Client_SendMazeEvent;
             client.SendPointEvent += Client_SendPointEvent;
             client.YourStepEvent += Client_YourStepEvent;
+            client.GameIsFinishedEvent += Client_GameIsFinishedEvent;
 
             client.Login();
             StatusInterface(false);
 
             maze.Children.Add(new Line());
             ReplaseHuman(1, 1);
+        }
+
+        private void Client_GameIsFinishedEvent(string message)
+        {
+            MessageBox.Show(message);
         }
 
         private void Client_GetLoginEvent(Guid userID)

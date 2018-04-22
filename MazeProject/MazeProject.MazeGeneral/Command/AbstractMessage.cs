@@ -23,7 +23,7 @@ namespace MazeProject.MazeGeneral.Command
             typeof(GameListRequest),
             typeof(GameListResponse),
             typeof(JoinGameRequest),
-            typeof(JoinGameResponse),
+            //typeof(JoinGameResponse),
             typeof(LoginRequest),
             typeof(LoginResponse),
             typeof(MoveObjectRequest),
@@ -37,6 +37,8 @@ namespace MazeProject.MazeGeneral.Command
             typeof(GiveMaze),
             typeof(GivePoint),
             typeof(YourStep),
+            typeof(CumulativeResponse),
+            typeof(GameFinished),
         };
 
         public static byte[] ToBytes(AbstractMessage obj) => Serializer<AbstractMessage>.ToBytes(obj, types);

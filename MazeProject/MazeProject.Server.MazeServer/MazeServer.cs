@@ -20,7 +20,7 @@ namespace MazeProject.Server.MazeServer
         private ICommandParser commandParser;
         private Sender sender;
 
-        public delegate void NewRequestDelegate(DateTime date, String request, Guid id);
+        public delegate void NewRequestDelegate(DateTime date, String request, Guid commandID, Guid userID);
         public event NewRequestDelegate NewRequest;
 
         public delegate void NewResponseDelegate(DateTime date, Guid Id);
@@ -74,9 +74,11 @@ namespace MazeProject.Server.MazeServer
                     Guid id = Guid.NewGuid();
 
                     ActAbstract command = commandParser.ParseCommand(buffer, client);
-                    NewRequest?.Invoke(DateTime.Now, command.ToString().Split('.').Last(), id); // Событие нового сообщения
-                    command.Execute();
+                    
+                    if(sender.ExistUser(client)) NewRequest?.Invoke(DateTime.Now, command.ToString().Split('.').Last(), id, sender.GetUserID(client)); // Событие нового сообщения
+                    else NewRequest?.Invoke(DateTime.Now, command.ToString().Split('.').Last(), id, Guid.Empty); // Событие нового сообщения
 
+                    command.Execute();
                     NewResponse?.Invoke(DateTime.Now, id);
                 }
                 catch (SocketException)

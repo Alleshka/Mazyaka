@@ -9,6 +9,8 @@ using System.IO;
 
 namespace MazeProject.MazeGeneral
 {
+    // TODO: Сделать свой сериализатор, используя TOString и парсить на клиентах
+
     public class Serializer<T>
     {
         public static byte[] ToBytes(T obj, Type[] types = null)

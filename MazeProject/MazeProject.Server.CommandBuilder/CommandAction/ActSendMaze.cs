@@ -23,17 +23,16 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
             Guid userID = (request as SendMazeRequest).UserID;
             Guid gameID = (request as SendMazeRequest).GameID;
             Maze maze = (request as SendMazeRequest).Maze;
+            gameService.FindGameByID(gameID).GameIsWaitPointEvent += GameService_GameIsWaitPointEvent;
 
             gameService.AddMaze(gameID, userID, maze);
-            response = new SendMazeResponse();
+        }
 
-            sender.SendMessage(userID, response);
-
-            GameRoom room = gameService.FindGameByID(gameID);
-            if(room.Status== StatusGame.WAINPOINTS)
-            {
-                sender.SendMessage(room.PlayerList.Select(x => x.PlayerID).ToList(), new GivePoint());
-            }
+        private void GameService_GameIsWaitPointEvent(List<Guid> userList)
+        {
+            System.Diagnostics.Trace.WriteLine($"       ActSendMaze.GameService_GameIsWaitPointEvent - начало");
+            sender.SendMessage(userList, new GivePoint());
+            System.Diagnostics.Trace.WriteLine($"       ActSendMaze.GameService_GameIsWaitPointEvent - конец");
         }
     }
 }

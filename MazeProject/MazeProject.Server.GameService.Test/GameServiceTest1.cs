@@ -73,17 +73,17 @@ namespace MazeProject.Server.GameService.Test
             gameService.AddLive(gameID, player1);
             gameService.AddLive(gameID, player2);
 
-            bool step1_1 = gameService.MoveObject(gameID, player1, MazeGeneral.MoveDirection.UP);
-            bool step2_1 = gameService.MoveObject(gameID, player2, MazeGeneral.MoveDirection.UP);
+            bool step1_1 = (bool) gameService.MoveObject(gameID, player1, MazeGeneral.MoveDirection.UP);
+            bool step2_1 = (bool) gameService.MoveObject(gameID, player2, MazeGeneral.MoveDirection.UP);
 
-            bool step1_2 = gameService.MoveObject(gameID, player1, MazeGeneral.MoveDirection.RIGHT);
-            bool step2_2 = gameService.MoveObject(gameID, player2, MazeGeneral.MoveDirection.RIGHT);
+            bool step1_2 = (bool) gameService.MoveObject(gameID, player1, MazeGeneral.MoveDirection.RIGHT);
+            bool step2_2 = (bool) gameService.MoveObject(gameID, player2, MazeGeneral.MoveDirection.RIGHT);
 
-            bool step1_3 = gameService.MoveObject(gameID, player1, MazeGeneral.MoveDirection.LEFT);
-            bool step2_3 = gameService.MoveObject(gameID, player2, MazeGeneral.MoveDirection.LEFT);
+            bool step1_3 = (bool) gameService.MoveObject(gameID, player1, MazeGeneral.MoveDirection.LEFT);
+            bool step2_3 = (bool) gameService.MoveObject(gameID, player2, MazeGeneral.MoveDirection.LEFT);
 
-            bool step1_4 = gameService.MoveObject(gameID, player1, MazeGeneral.MoveDirection.DOWN);
-            bool step2_4 = gameService.MoveObject(gameID, player2, MazeGeneral.MoveDirection.DOWN);
+            bool step1_4 = (bool) gameService.MoveObject(gameID, player1, MazeGeneral.MoveDirection.DOWN);
+            bool step2_4 = (bool) gameService.MoveObject(gameID, player2, MazeGeneral.MoveDirection.DOWN);
 
             bool step1 = step1_1 || step1_2 || step1_3 || step1_4;
             bool step2 = step2_1 || step2_2 || step2_3 || step2_4;

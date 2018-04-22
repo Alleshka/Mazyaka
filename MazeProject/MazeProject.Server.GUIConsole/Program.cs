@@ -29,10 +29,10 @@ namespace MazeProject.Server.GUIConsole
             Console.WriteLine();
         }
 
-        private static void Server_NewRequest(DateTime date, string request, Guid id)
+        private static void Server_NewRequest(DateTime date, string request, Guid id, Guid userID)
         {
             Console.WriteLine();
-            Console.WriteLine($"[{date.ToString()}] Получен запрос {request} с ID = {id}");
+            Console.WriteLine($"[{date.ToString()}] Получен запрос {request} от пользователя с ID = {userID} (Запрос №{id}");
         }
     }
 }

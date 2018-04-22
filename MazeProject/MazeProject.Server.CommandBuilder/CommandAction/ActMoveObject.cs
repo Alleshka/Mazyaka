@@ -20,13 +20,24 @@ namespace MazeProject.Server.CommandBuilder.CommandAction
         public override void Execute()
         {
             MoveObjectRequest moveObjectRequest = request as MoveObjectRequest;
-            bool IsMoved = gameService.MoveObject(moveObjectRequest.GameID, moveObjectRequest.UserID, moveObjectRequest.Direction);
-            response = new MoveObjectResponse(IsMoved);
+            var room = gameService.FindGameByID(moveObjectRequest.GameID);
 
-            SendMessage(moveObjectRequest.UserID);
+            bool? IsMoved = gameService.MoveObject(moveObjectRequest.GameID, moveObjectRequest.UserID, moveObjectRequest.Direction);
 
-            Guid curUser = gameService.StepByUser(moveObjectRequest.GameID);
-            SendMessage(curUser, new YourStep()); // Шлём другому пользователю, что может ходить
+            if (room.Status != StatusGame.FINISHED)
+            {
+                response = new MoveObjectResponse(IsMoved);
+                SendMessage(moveObjectRequest.UserID);
+
+                Guid curUser = gameService.CurUser(moveObjectRequest.GameID);
+                SendMessage(curUser, new YourStep()); // Шлём другому пользователю, что может ходить
+            }
+            else
+            {
+                // TODO: Можно сделать два разных пакета для победителя и проигравшего
+                response = new GameFinished(moveObjectRequest.UserID);
+                SendMessage(room.GetUsersID, response);
+            }
         }
     }
 }

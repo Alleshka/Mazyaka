@@ -117,6 +117,10 @@ namespace MazeProject.MazeGeneral.Maze
             if (newCell == null) return false;
             else
             {
+                // Сначала выполняем действие
+                CheckCellContent(newCell, gameObject);
+
+                // Добавляем в новую и удаляем из старой
                 newCell.AddObject(gameObject);
                 gameObject.CurAddres = newCell.address;
 
@@ -138,6 +142,15 @@ namespace MazeProject.MazeGeneral.Maze
             Right = null;
             Up = null;
             Down = null;
+        }
+
+        private void CheckCellContent(Cell cell, BaseGameObject @object)
+        {
+            // Проходим по всему содержимому ячейки
+            foreach(var item in cell.content)
+            {
+                item.Action(@object); // Взаимодействуем с содержимым
+            }
         }
     }
 }

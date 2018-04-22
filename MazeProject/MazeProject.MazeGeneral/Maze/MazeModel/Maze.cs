@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using MazeProject.MazeGeneral.Maze.Effects;
 
 namespace MazeProject.MazeGeneral.Maze
 {
@@ -22,6 +23,21 @@ namespace MazeProject.MazeGeneral.Maze
         private List<LiveGameObject> liveObjects; // Тут лежат все живые объекты
         [DataMember]
         private Cell exitCell; // Тут лежит ячейка с выходом
+
+        private BaseEffect winEffect = new WinEffect();
+
+        private void InitMaze()
+        {
+            mazeStruct = null;
+            liveObjects = new List<LiveGameObject>();
+            MazeID = Guid.NewGuid();
+
+            // TODO : Добавить ячейку выхода
+            exitCell = new Cell(int.MaxValue, int.MaxValue);
+
+            GameObjects.Exit exit = new GameObjects.Exit(exitCell.Address);
+            exitCell.AddObject(exit); // Ставим выход в ячейку    
+        }
 
         public Maze(MazeStruct maze)
         {
@@ -88,15 +104,24 @@ namespace MazeProject.MazeGeneral.Maze
             }
         }
 
-        public bool MoveObject(Guid objectID, MoveDirection direction)
+        public bool? MoveObject(Guid objectID, MoveDirection direction)
         {
-            LiveGameObject gameObject = liveObjects.Where(x => x.ObjectID == objectID).First();
-            return MoveObject(gameObject, direction);
+            LiveGameObject gameObject = liveObjects.Where(x => x.ObjectID == objectID).First(); // Достаём объект
+            bool moved =  MoveObject(gameObject, direction);
+
+            // Если висит эффект победы 
+            if(gameObject.Effects.Contains(winEffect))
+            {
+                gameIsEndEvent?.Invoke(); // Срабатывает событие
+                return null;
+            }
+            else return moved;
         }
-        public bool MoveObject(LiveGameObject liveGame, MoveDirection direction)
+        private bool MoveObject(LiveGameObject liveGame, MoveDirection direction)
         {
             Cell curcell = mazeStruct[liveGame.CurAddres]; // Достаём ячейку, в которой объект
-            return curcell.ReplaceObject(liveGame, direction); // Пытаемся сдвинуть
+            bool moved = curcell.ReplaceObject(liveGame, direction); // Пытаемся сдвинуть
+            return moved;
         }
 
         public void AddObject(BaseGameObject @object, MazePoint position)
@@ -116,15 +141,23 @@ namespace MazeProject.MazeGeneral.Maze
         public MazePoint ExitLeft => exitCell.Right.Address;
         public MazePoint ExitRight => exitCell.Left.Address;
 
-        private void InitMaze()
+        public delegate void GameIsEnd();
+        private event GameIsEnd gameIsEndEvent;
+        public event GameIsEnd GameIsEndEvent
         {
-            mazeStruct = null;
-            liveObjects = new List<LiveGameObject>();
-            MazeID = Guid.NewGuid();
+            add
+            {
+                gameIsEndEvent = value;
+            }
+            remove
+            {
+                gameIsEndEvent -= value;
+            }
+        }
 
-            // TODO : Добавить ячейку выхода
-            exitCell = new Cell(int.MaxValue, int.MaxValue);
-            //exitCell.AddObject();
+        private void Exit_GameIsEndEvent()
+        {
+            gameIsEndEvent?.Invoke(); // Сообщаем, что игра закончена
         }
 
         private void SetMazeStruct(MazeStruct maze)

@@ -49,9 +49,12 @@ namespace MazeProject.Client.WPF
         public delegate void GivePointDelegate();
         public event GivePointDelegate GivePointEvent; // Готовы принять начальную позицию
 
+        public delegate void GameIsFinished(String message);
+        public event GameIsFinished GameIsFinishedEvent; // Сообщение о конце игры
+
         public TestServiceClient()
         {
-            client.Connect("127.0.0.1", 1337); // Подключаемся к серверу
+            client.Connect("25.67.51.48", 1337); // Подключаемся к серверу
 
             listenThread = new Thread(new ParameterizedThreadStart(HandleClient)); // Выделяем игроку свой поток
             listenThread.Start(client); // Запускаем прослушивание
@@ -114,62 +117,73 @@ namespace MazeProject.Client.WPF
                 byte[] bytes = new byte[1024];
                 socket.Receive(bytes);
                 var response = AbstractMessage.ToObject(bytes); // Парсим ответ
-
-                if (response is LoginResponse)
-                {
-                    Guid userID = (response as LoginResponse).UserID;
-                    curUser = userID;
-
-                    GetLoginEvent.Invoke(userID);
-                }
-                else if (response is CreateGameResponse)
-                {
-                    Guid gameID = (response as CreateGameResponse).GameID;
-                    curGame = gameID;
-
-                    CreateGameEvent?.Invoke(gameID);
-                }
-                else if (response is GameListResponse)
-                {
-                    GetGameListEvent?.Invoke((response as GameListResponse).GameList);
-                }
-                else if (response is JoinGameResponse)
-                {
-                    bool status = (response as JoinGameResponse).IsAccepted;
-
-                    if (!status) // Если не подключились
-                    {
-                        // TODO: В ответе на подключение тоже надо слать ID игры
-                        curGame = Guid.Empty;
-                    }
-                    JoinGameEvent?.Invoke(status);
-                }
-                else if (response is SendMazeResponse)
-                {
-                    SendMazeEvent?.Invoke();
-                }
-                else if (response is YourStep)
-                {
-                    YourStepEvent?.Invoke();
-                }
-                else if (response is SendStartPositionResponce)
-                {
-                    SendPointEvent?.Invoke();
-                }
-                else if (response is MoveObjectResponse)
-                {
-                    MoveObjectEvent?.Invoke((response as MoveObjectResponse).IsMoved);
-                }
-                else if (response is GiveMaze)
-                {
-                    GiveMazeEvent?.Invoke();
-                }
-                else if (response is GivePoint)
-                {
-                    GivePointEvent?.Invoke();
-                }
-
+                ResponseParse(response);
             }
+        }
+
+        private void ResponseParse(AbstractMessage response)
+        {
+            if (response is LoginResponse)
+            {
+                Guid userID = (response as LoginResponse).UserID;
+                curUser = userID;
+
+                GetLoginEvent.Invoke(userID);
+            }
+            else if (response is CreateGameResponse)
+            {
+                Guid gameID = (response as CreateGameResponse).GameID;
+                curGame = gameID;
+
+                CreateGameEvent?.Invoke(gameID);
+            }
+            else if (response is GameListResponse)
+            {
+                GetGameListEvent?.Invoke((response as GameListResponse).GameList);
+            }
+            else if (response is SendMazeResponse)
+            {
+                SendMazeEvent?.Invoke();
+            }
+            else if (response is YourStep)
+            {
+                YourStepEvent?.Invoke();
+            }
+            else if (response is SendStartPositionResponce)
+            {
+                SendPointEvent?.Invoke();
+            }
+            else if (response is MoveObjectResponse)
+            {
+                MoveObjectEvent?.Invoke((bool)(response as MoveObjectResponse).IsMoved);
+            }
+            else if (response is GiveMaze)
+            {
+                GiveMazeEvent?.Invoke();
+            }
+            else if (response is GivePoint)
+            {
+                GivePointEvent?.Invoke();
+            }
+            else if (response is CumulativeResponse)
+            {
+                foreach (var resp in (response as CumulativeResponse).ResponseList)
+                {
+                    ResponseParse(resp);
+                }
+            }
+            else if (response is GameFinished)
+            {
+                if ((response as GameFinished).Winner.CompareTo(curUser)==0)
+                {
+                    GameIsFinishedEvent?.Invoke("Вы победили");
+                }
+                else
+                {
+                    GameIsFinishedEvent?.Invoke("Вы проиграли");
+                }
+            }
+            else throw new Exception("Неизвестный пакет: " + response.GetType());
         }
     }
 }

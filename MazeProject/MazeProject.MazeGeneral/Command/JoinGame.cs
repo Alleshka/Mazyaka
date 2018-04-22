@@ -22,15 +22,15 @@ namespace MazeProject.MazeGeneral.Command
         }
     }
 
-    [DataContract]
-    public class JoinGameResponse : AbstractResponse
-    {
-        [DataMember]
-        public bool IsAccepted { get; set; }
+    //[DataContract]
+    //public class JoinGameResponse : AbstractResponse
+    //{
+    //    [DataMember]
+    //    public bool IsAccepted { get; set; }
         
-        public JoinGameResponse(bool assepted) : base ()
-        {
-            IsAccepted = assepted;
-        }
-    }
+    //    public JoinGameResponse(bool assepted) : base ()
+    //    {
+    //        IsAccepted = assepted;
+    //    }
+    //}
 }

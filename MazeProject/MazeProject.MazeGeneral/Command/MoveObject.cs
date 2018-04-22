@@ -29,10 +29,10 @@ namespace MazeProject.MazeGeneral.Command
     public class MoveObjectResponse : AbstractResponse
     {
         [DataMember]
-        public bool IsMoved { get; set; }
+        public bool? IsMoved { get; set; }
         // TODO : Возможно, стоит возвращать позицию
 
-        public MoveObjectResponse(bool moved) : base()
+        public MoveObjectResponse(bool? moved) : base()
         {
             IsMoved = moved;
         }
