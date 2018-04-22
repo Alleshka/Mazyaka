@@ -8,14 +8,20 @@ using MazeProject.MazeGeneral.Maze;
 using MazeProject.MazeGeneral.Maze.GameObjects;
 using MazeProject.MazeGeneral.Maze.Effects;
 
+using MazeProject.MazeGeneral.Serializier;
+
 namespace MazeProject.MazeGeneral.Command
 {
     /// <summary>
     /// От данного класса наследуются все передаваемые сообщения
     /// </summary>
+    /// 
+
     [DataContract]
     public abstract class AbstractMessage
     {
+        private static ISerializer serializer = new CompressXmlSerializer();
+
         protected static Type[] types = new Type[]
         {
             typeof(AbstractMessage),
@@ -54,10 +60,10 @@ namespace MazeProject.MazeGeneral.Command
             typeof(MazeStruct),
         };
 
-        public static byte[] ToBytes(AbstractMessage obj) => Serializer<AbstractMessage>.ToBytes(obj, types);
-        public static String ToXml(AbstractMessage obj) => Serializer<AbstractMessage>.ToXml(obj, types);
-        public static AbstractMessage ToObject(byte[] bytes) => Serializer<AbstractMessage>.ToObject(bytes, types);
-        public static AbstractMessage ToObject(String xml) => Serializer<AbstractMessage>.ToObject(xml, types);
+        public static byte[] ToBytes(AbstractMessage obj) => serializer.ToBytes(obj, types);
+        public static String ToXml(AbstractMessage obj) => serializer.ToStringFormat(obj, types);
+        public static AbstractMessage ToObject(byte[] bytes) => serializer.ToObject<AbstractMessage>(bytes, types);
+        public static AbstractMessage ToObject(String xml) => serializer.ToObject<AbstractMessage>(xml, types);
 
         public override string ToString()
         {

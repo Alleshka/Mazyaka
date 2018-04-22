@@ -3,7 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using MazeProject.MazeGeneral.Command;
 using MazeProject.MazeGeneral.Maze;
-using Newtonsoft.Json;
+using MazeProject.MazeGeneral.Serializier;
+
 
 namespace MazeProject.MazeGeneral.Test
 {
@@ -20,11 +21,18 @@ namespace MazeProject.MazeGeneral.Test
         [TestMethod]
         public void NewtosoftSer()
         {
-            MazeStruct @str = new MazeStruct(new MazeGeneral.Maze.MazeGenerators.ReqursiveGenerator(null).GenerateMazeCells(10));
-            String json = Newtonsoft.Json.JsonConvert.SerializeObject(str);
-            String xml = Serializer<MazeStruct>.ToXml(str);
+            MazeStruct str = new MazeStruct(new MazeGeneral.Maze.MazeGenerators.ReqursiveGenerator(null).GenerateMazeCells(10));
 
-            if (json.Length < xml.Length) Assert.Fail();   
+            CompressXmlSerializer xml = new CompressXmlSerializer();
+            NewtosoftJsonSerialzer newtosoftJson = new NewtosoftJsonSerialzer();
+            CompressNewtosoftSerializer compressNewtosoftSerializer = new CompressNewtosoftSerializer();
+
+            string strXml = xml.ToStringFormat<MazeStruct>(str);
+            string strJSON = newtosoftJson.ToStringFormat<MazeStruct>(str);
+            string strCompressJSON = compressNewtosoftSerializer.ToStringFormat<MazeStruct>(str);
+
+            if (strJSON.Length < strXml.Length) Assert.Fail();
+            if (strCompressJSON.Length > strXml.Length) Assert.Fail();
         }
     }
 }

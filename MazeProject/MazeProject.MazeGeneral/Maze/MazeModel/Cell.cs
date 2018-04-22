@@ -81,6 +81,12 @@ namespace MazeProject.MazeGeneral.Maze
             }
         }
 
+       
+        private Cell()
+        {
+
+        }
+
         public Cell(int line, int column)
         {
             InitCell(line, column);

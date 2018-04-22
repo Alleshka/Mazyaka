@@ -38,6 +38,11 @@ namespace MazeProject.MazeGeneral.Maze
             exitCell.AddObject(exit); // Ставим выход в ячейку    
         }
 
+
+        public Maze()
+        {
+        }
+
         public Maze(MazeStruct maze)
         {
             InitMaze();

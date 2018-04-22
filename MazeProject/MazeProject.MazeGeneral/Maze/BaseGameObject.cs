@@ -33,6 +33,11 @@ namespace MazeProject.MazeGeneral.Maze
         }
         public abstract void Action(BaseGameObject obj);
 
+        public BaseGameObject()
+        {
+
+        }
+
         public BaseGameObject(int line, int column)
         {
             ObjectID = Guid.NewGuid();

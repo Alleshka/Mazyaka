@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MazeProject.MazeGeneral.Maze.Serializier
+namespace MazeProject.MazeGeneral.Serializier
 {
     public interface ISerializer
     {

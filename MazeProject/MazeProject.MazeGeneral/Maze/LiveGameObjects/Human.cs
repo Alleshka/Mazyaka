@@ -10,6 +10,12 @@ namespace MazeProject.MazeGeneral.Maze
     [DataContract]
     public class Human : LiveGameObject
     {
+
+        private Human() : base(-1, -1)
+        {
+
+        }
+
         public Human(int line, int point) : base(line, point)
         {
 

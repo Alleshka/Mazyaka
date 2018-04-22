@@ -29,6 +29,12 @@ namespace MazeProject.MazeGeneral.Maze
                 }
             }
         }
+
+        private MazeStruct()
+        {
+
+        }
+
         public MazeStruct(Cell[][] @struct)
         {
             cells = @struct.ToArray();

@@ -16,5 +16,10 @@ namespace MazeProject.MazeGeneral.Maze.Effects
         {
             Description = descr;
         }
+
+        private BaseEffect()
+        {
+
+        }
     }
 }

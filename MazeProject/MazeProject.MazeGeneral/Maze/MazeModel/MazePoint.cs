@@ -23,7 +23,7 @@ namespace MazeProject.MazeGeneral.Maze
             get => line;
             set
             {
-                if (value < 0) throw new Exception("Недопустимое значение Line");
+                if (value < -10) throw new Exception("Недопустимое значение Line");
                 else
                 {
                     line = value;
@@ -35,12 +35,18 @@ namespace MazeProject.MazeGeneral.Maze
             get => column;
             set
             {
-                if (value < 0) throw new Exception("Недопустимое значение Line");
+                if (value < -10) throw new Exception("Недопустимое значение Line");
                 else
                 {
                     column = value;
                 }
             }
+        }
+
+        public MazePoint()
+        {
+            line = -1;
+            column = -1;
         }
 
         public MazePoint(int line, int column)

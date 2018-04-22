@@ -11,6 +11,11 @@ namespace MazeProject.MazeGeneral.Maze.GameObjects
     [DataContract]
     public class Exit : BaseGameObject
     {
+        private Exit() : base(-1, -1)
+        {
+
+        }
+
         public Exit(MazePoint point) : base(point)
         {
 

@@ -33,5 +33,6 @@ namespace MazeProject.MazeGeneral.Maze.Effects
         {
             return this.Description;
         }
+
     }
 }

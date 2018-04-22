@@ -23,6 +23,11 @@ namespace MazeProject.MazeGeneral.Maze
             }
         }
 
+        private LiveGameObject() : base(-1, -1)
+        {
+
+        }
+
         public LiveGameObject(int line, int column) : base(line, column)
         {
             effectsList = new List<BaseEffect>();
