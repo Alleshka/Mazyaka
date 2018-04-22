@@ -12,7 +12,7 @@ namespace MazeProject.MazeGeneral.Serializier
     {
         public byte[] ToBytes<T>(T obj, Type[] types = null)
         {
-            String json = Newtonsoft.Json.JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings()
+            String json = Newtonsoft.Json.JsonConvert.SerializeObject(obj, Formatting.None, new JsonSerializerSettings()
             {
                 TypeNameHandling = TypeNameHandling.All
             });

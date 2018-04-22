@@ -20,7 +20,7 @@ namespace MazeProject.MazeGeneral.Command
     [DataContract]
     public abstract class AbstractMessage
     {
-        private static ISerializer serializer = new CompressXmlSerializer();
+        private static ISerializer serializer = new CompressNewtosoftSerializer();
 
         protected static Type[] types = new Type[]
         {

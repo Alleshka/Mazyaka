@@ -32,7 +32,7 @@ namespace MazeProject.MazeGeneral.Test
             string strCompressJSON = compressNewtosoftSerializer.ToStringFormat<MazeStruct>(str);
 
             if (strJSON.Length < strXml.Length) Assert.Fail();
-            if (strCompressJSON.Length > strXml.Length) Assert.Fail();
+            if (strCompressJSON.Length < strXml.Length) Assert.Fail();
         }
     }
 }
