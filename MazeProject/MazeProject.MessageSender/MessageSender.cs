@@ -55,7 +55,8 @@ namespace MazeProject.MessageSender
 
         public void SendMessage(Guid userID, String message)
         {
-            GetUserSocket(userID).Send(Encoding.UTF8.GetBytes(message));
+            // TODO: Возможно пригодится отправлять пустые пакеты
+            if((message!=null)&&(message!="")) GetUserSocket(userID).Send(Encoding.UTF8.GetBytes(message));
         }
         public void SendMessage(List<Guid> userList, String message)
         {

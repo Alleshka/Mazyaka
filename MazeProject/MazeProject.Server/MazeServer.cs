@@ -56,9 +56,7 @@ namespace MazeProject.Server
                     client.Receive(buffer);
 
                     ICommand command = commandParser.Parse(buffer);
-                    var list = command.Execute();
-                    if (list.Item2 != null) messageSender.SendMessage(list);
-
+                    messageSender.SendMessage(command.Execute());
                 }
                 catch (SocketException)
                 {

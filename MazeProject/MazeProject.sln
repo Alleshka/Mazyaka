@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeProject.CommandBuilder"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeProject.General", "MazeProject.General\MazeProject.General.csproj", "{382EC3DE-E29D-4686-824F-8AE1B84EE6D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeProject.Sender", "MazeProject.Sender\MazeProject.Sender.csproj", "{2D8F5D87-913B-4A56-8ECD-872F3B6C94E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeProject.MessageSender", "MazeProject.MessageSender\MazeProject.MessageSender.csproj", "{1D599921-0F25-4047-B386-1049AD6CD3E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{382EC3DE-E29D-4686-824F-8AE1B84EE6D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{382EC3DE-E29D-4686-824F-8AE1B84EE6D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{382EC3DE-E29D-4686-824F-8AE1B84EE6D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D8F5D87-913B-4A56-8ECD-872F3B6C94E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D8F5D87-913B-4A56-8ECD-872F3B6C94E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D8F5D87-913B-4A56-8ECD-872F3B6C94E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D8F5D87-913B-4A56-8ECD-872F3B6C94E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D599921-0F25-4047-B386-1049AD6CD3E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D599921-0F25-4047-B386-1049AD6CD3E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D599921-0F25-4047-B386-1049AD6CD3E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D599921-0F25-4047-B386-1049AD6CD3E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
