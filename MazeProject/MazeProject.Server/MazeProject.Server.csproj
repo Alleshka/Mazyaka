@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>1d599921-0f25-4047-b386-1049ad6cd3e4</ProjectGuid>
+    <ProjectGuid>c4bf1ceb-fb14-434f-a499-72e17b0b0ea8</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MazeProject.MessageSender</RootNamespace>
-    <AssemblyName>MazeProject.MessageSender</AssemblyName>
+    <RootNamespace>MazeProject.Server</RootNamespace>
+    <AssemblyName>MazeProject.Server</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("MazeProject.MessageSender")]
+[assembly: AssemblyTitle("MazeProject.CommandBuilder")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MazeProject.MessageSender")]
+[assembly: AssemblyProduct("MazeProject.CommandBuilder")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("1d599921-0f25-4047-b386-1049ad6cd3e4")]
+[assembly: Guid("23d09a84-1bc9-4f4a-a6fc-3866b4436356")]
 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //
