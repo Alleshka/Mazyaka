@@ -45,12 +45,21 @@
   <ItemGroup>
     <Compile Include="BaseCommand.cs" />
     <Compile Include="CommandParser.cs" />
+    <Compile Include="Commands\LoginCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MazeProject.General\MazeProject.General.csproj">
       <Project>{382ec3de-e29d-4686-824f-8ae1b84ee6d1}</Project>
       <Name>MazeProject.General</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MazeProject.LoginService\MazeProject.LoginService.csproj">
+      <Project>{5801961d-d60d-4c40-b7f3-dd14680acf6b}</Project>
+      <Name>MazeProject.LoginService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MazeProject.MessageSender\MazeProject.MessageSender.csproj">
+      <Project>{1d599921-0f25-4047-b386-1049ad6cd3e4}</Project>
+      <Name>MazeProject.MessageSender</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -8,12 +8,12 @@ namespace MazeProject.General.Package
     public class LoginRequest : BaseRequest
     {
         public String Login { get; private set; }
-        public String Passwod { get; private set; }
+        public String Password { get; private set; }
 
         public LoginRequest (String login, String password) : base("Login")
         {
             this.Login = login;
-            this.Passwod = password;
+            this.Password = password;
         }
 
         public override string ToString()

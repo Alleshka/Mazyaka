@@ -26,7 +26,7 @@ namespace MazeProject.CommandBuilder.Commands
         public override Tuple<List<Guid>, string> Execute()
         {
             LoginRequest loginRequest = this.Request as LoginRequest;
-            Guid userID = loginService.Login(loginRequest.Login, loginRequest.Passwod);
+            Guid userID = loginService.Login(loginRequest.Login, loginRequest.Password);
             messageSender.AddUser(socket, userID);
             LoginResponse loginResponse = new LoginResponse(loginRequest.Login, userID);
             return new Tuple<List<Guid>, string>(new List<Guid>() { userID }, loginResponse.ToString());

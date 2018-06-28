@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace MazeProject.LoginService
 {
-    class FirstLoginService
+    public class FirstLoginService : ILoginService
     {
+        public Guid Login(string login, string password)
+        {
+            return Guid.NewGuid();
+        }
     }
 }

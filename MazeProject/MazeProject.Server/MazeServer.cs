@@ -17,7 +17,9 @@ namespace MazeProject.Server
 
         public MazeServer(int port = 1337)
         {
-            //commandParser = new CommandParser();
+
+            messageSender = new MessageSender.MessageSender();
+            commandParser = new CommandParser(messageSender);
 
             socketListener = new Socket(SocketType.Stream, ProtocolType.Tcp);
             socketListener.Bind(new IPEndPoint(IPAddress.Any, port));
@@ -34,7 +36,7 @@ namespace MazeProject.Server
         {
             IsServerWork = false;
             socketListener.Dispose();
-        }
+        }   
 
         void AcceptCallBack(IAsyncResult result)
         {
@@ -54,8 +56,9 @@ namespace MazeProject.Server
                 {
                     byte[] buffer = new byte[6500];
                     client.Receive(buffer);
+                    System.Diagnostics.Trace.WriteLine("Приняли данные");
 
-                    ICommand command = commandParser.Parse(buffer);
+                    ICommand command = commandParser.Parse(buffer, client);
                     messageSender.SendMessage(command.Execute());
                 }
                 catch (SocketException)

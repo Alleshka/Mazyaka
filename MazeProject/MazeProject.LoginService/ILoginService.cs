@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MazeProject.LoginService
 {
-    public class Class1
+    public interface ILoginService
     {
+        Guid Login(String login, String password);
     }
 }
