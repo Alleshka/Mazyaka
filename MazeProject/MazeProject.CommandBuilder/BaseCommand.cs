@@ -9,7 +9,7 @@ namespace MazeProject.CommandBuilder
 {
     public interface ICommand
     {
-        Tuple<List<Guid>, String> Execute();
+        List<BaseResponse> Execute();
     }
 
     public abstract class BaseCommand : ICommand
@@ -21,6 +21,6 @@ namespace MazeProject.CommandBuilder
             this.Request = request;
         }
 
-        public abstract Tuple<List<Guid>, String> Execute();
+        public abstract List<BaseResponse> Execute();
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System.Net.Sockets;
+using System.Linq;
 using MazeProject.Server;
 using MazeProject.General.Package;
 using Newtonsoft.Json.Linq;
@@ -33,7 +34,8 @@ namespace MazeProject.Server.Test
             byte[] buffer = new byte[2048];
             socket.Receive(buffer);
 
-            String jsonString = System.Text.Encoding.UTF8.GetString(buffer);
+            String jsonString = System.Text.Encoding.UTF8.GetString(buffer.TakeWhile(x=>x!=0).ToArray());
+            System.Diagnostics.Trace.WriteLine(jsonString);
             server.Stop();
 
             JObject jObject = JObject.Parse(jsonString);

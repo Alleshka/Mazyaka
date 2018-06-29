@@ -36,7 +36,7 @@ namespace MazeProject.Server
         {
             IsServerWork = false;
             socketListener.Dispose();
-        }   
+        }
 
         void AcceptCallBack(IAsyncResult result)
         {
@@ -59,7 +59,9 @@ namespace MazeProject.Server
                     System.Diagnostics.Trace.WriteLine("Приняли данные");
 
                     ICommand command = commandParser.Parse(buffer, client);
-                    messageSender.SendMessage(command.Execute());
+
+                    var packages = command.Execute();
+                    foreach (var package in packages) messageSender.SendMessage(package.GetReceives(), package.ToString());
                 }
                 catch (SocketException)
                 {
