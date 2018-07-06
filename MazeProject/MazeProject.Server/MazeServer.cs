@@ -48,29 +48,19 @@ namespace MazeProject.Server
 
         void HandleClient(object obj)
         {
-            Socket client = obj as Socket;
-
-            while (IsServerWork)
+            using (var client = obj as Socket)
             {
-                try
+                while (IsServerWork)
                 {
                     byte[] buffer = new byte[6500];
                     client.Receive(buffer);
-                    System.Diagnostics.Trace.WriteLine("Приняли данные");
 
                     ICommand command = commandParser.Parse(buffer, client);
 
                     var packages = command.Execute();
                     foreach (var package in packages) messageSender.SendMessage(package.GetReceives(), package.ToString());
                 }
-                catch (SocketException)
-                {
-                    break;
-                }
             }
-            client.Shutdown(SocketShutdown.Both);
-            client.Disconnect(false);
-            client.Dispose();
         }
     }
 }
