@@ -9,12 +9,20 @@ namespace MazeProject.General.Mazes
     public class MazeArea
     {
         public Guid MazeID { get; private set; }
+        public Guid Creator { get; private set; }
+
         private MazeStructure mazeStruct;
 
         public MazeArea()
         {
             MazeID = Guid.NewGuid();
             mazeStruct = null;
+        }
+
+        public void AddHero(AliveGameObject liveObject, PositionInMaze position)
+        {
+            var cell = mazeStruct[position];
+            cell.AddGameObject(liveObject);
         }
 
         public bool ReplaceObject (Guid gameObjectID, MoveDirection direction)

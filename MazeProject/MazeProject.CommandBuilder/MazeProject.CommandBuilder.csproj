@@ -49,6 +49,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MazeProject.GameService\MazeProject.GameService.csproj">
+      <Project>{09c07558-4523-4004-9b5a-d8b92cd186d6}</Project>
+      <Name>MazeProject.GameService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MazeProject.General\MazeProject.General.csproj">
       <Project>{382ec3de-e29d-4686-824f-8ae1b84ee6d1}</Project>
       <Name>MazeProject.General</Name>

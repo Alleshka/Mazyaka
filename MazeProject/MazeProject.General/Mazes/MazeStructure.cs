@@ -1,4 +1,4 @@
-﻿using System;
+﻿            using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -31,6 +31,11 @@ namespace MazeProject.General.Mazes
         public MazeCell this [int line, int column]
         {
             get => cells[line][column];
+        }
+
+        public MazeCell this [PositionInMaze position]
+        {
+            get => cells[position.Line][position.Column];
         }
     }
 }

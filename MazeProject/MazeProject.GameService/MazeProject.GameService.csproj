@@ -40,8 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameServiceFirst.cs" />
+    <Compile Include="IGame.cs" />
     <Compile Include="IGameService.cs" />
+    <Compile Include="IManager.cs" />
+    <Compile Include="PlayerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PvPGame.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MazeProject.General\MazeProject.General.csproj">
+      <Project>{382ec3de-e29d-4686-824f-8ae1b84ee6d1}</Project>
+      <Name>MazeProject.General</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

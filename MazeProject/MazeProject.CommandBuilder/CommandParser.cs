@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using MazeProject.General.Package;
 using MazeProject.CommandBuilder.Commands;
+using MazeProject.GameService;
 using MazeProject.LoginService;
 using System.Net.Sockets;
 
@@ -20,6 +21,7 @@ namespace MazeProject.CommandBuilder
         public CommandParser(MessageSender.MessageSender sender)
         {
             loginService = new LoginService.FirstLoginService();
+
             this.sender = sender;
         }
 

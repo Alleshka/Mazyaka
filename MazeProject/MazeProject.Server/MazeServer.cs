@@ -4,7 +4,6 @@ using System.Net.Sockets;
 using System.Threading;
 using MazeProject.CommandBuilder;
 using MazeProject.MessageSender;
-
 namespace MazeProject.Server
 {
     public class MazeServer
@@ -14,6 +13,7 @@ namespace MazeProject.Server
 
         private CommandParser commandParser;
         private MessageSender.MessageSender messageSender;
+
 
         public MazeServer(int port = 1337)
         {
@@ -56,8 +56,8 @@ namespace MazeProject.Server
                     client.Receive(buffer);
 
                     ICommand command = commandParser.Parse(buffer, client);
-
                     var packages = command.Execute();
+
                     foreach (var package in packages) messageSender.SendMessage(package.GetReceives(), package.ToString());
                 }
             }

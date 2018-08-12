@@ -3,19 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MazeProject.General;
 
 namespace MazeProject.GameService
 {
-    public class GameServiceFirst : IGameService
+    public class GameServiceFirst : AbstractGameService
     {
-        public Guid CreateGame(Guid userID)
+        public GameServiceFirst(IManager<MazeLobby> manager)
         {
-            throw new NotImplementedException();
+            this.lobbyManager = manager;
         }
 
-        public Guid JoinGame(Guid userID, Guid gameID)
+        public override Guid CreateGame(Guid userID)
         {
-            throw new NotImplementedException();
+            MazeLobby lobby = new MazeLobby();
+            lobby.AddPlayer(userID);
+            this.lobbyManager.Add(lobby);
+            return lobby.LobbyID;
+        }
+
+        public override Guid JoinGame(Guid userID, Guid gameID)
+        {
+            var lobby = this.lobbyManager[gameID];
+            lobby.AddPlayer(userID);
+            return lobby.LobbyID;
+        }
+
+        public void StartGame(Guid gameID)
+        {
+
         }
     }
 }

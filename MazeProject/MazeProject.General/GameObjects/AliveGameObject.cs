@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MazeProject.General.GameObjects
 {
-    public class LiveGameObject : BaseGameObject
+    public class AliveGameObject : BaseGameObject
     {
-        public LiveGameObject () : base()
+        public AliveGameObject () : base()
         {
 
         }
