@@ -6,17 +6,42 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure
 {
     public class Cell
     {
-        public Relation UpRelation { get; protected internal set; }
-        public Relation RightRelation { get; protected internal set; }
-        public Relation DownRelation { get; protected internal set; }
-        public Relation LeftRelation { get; protected internal set; }
+        protected int line;
+        protected int column;
+
+        public bool Visited { get; set; }
+
+        protected internal Dictionary<Directions.DirectionEnum, Relation> _relations;
+
+        public Relation this[Directions.DirectionEnum direction]
+        {
+            get
+            {
+                return _relations[direction];
+            }
+            protected internal set
+            {
+                _relations[direction] = value;
+            }
+        }
 
         public Cell()
         {
-            UpRelation = null;
-            RightRelation = null;
-            DownRelation = null;
-            LeftRelation = null;
+            _relations = new Dictionary<Directions.DirectionEnum, Relation>()
+            {
+                { Directions.DirectionEnum.Up, null },
+                { Directions.DirectionEnum.Down, null },
+                {Directions.DirectionEnum.Right, null },
+                {Directions.DirectionEnum.Left, null }
+            };
+
+            Visited = false;
+        }
+
+        public Cell(int line, int column) : this()
+        {
+            this.line = line;
+            this.column = column;
         }
 
         /// <summary>
@@ -59,6 +84,12 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure
         {
             var direction = Directions.DirectionManager.GetDirection(@enum);
             direction?.SetMoveStatus(this, false);
+        }
+
+        public Cell GetNextCell(Directions.DirectionEnum @enum)
+        {
+            var direction = Directions.DirectionManager.GetDirection(@enum);
+            return direction.GetNextCell(this);
         }
     }
 }

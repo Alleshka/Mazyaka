@@ -4,12 +4,13 @@ using System.Text;
 
 namespace MazeSolution.MazeStruct.Core.MazeStructure.Directions
 {
+    [Flags]
     public enum DirectionEnum
     {
-        Up,
-        Right,
-        Down,
-        Left
+        Up = 1,
+        Right = 2,
+        Down = 4,
+        Left = 8
     }
 
     public class DirectionManager

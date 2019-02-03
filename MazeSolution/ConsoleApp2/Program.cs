@@ -10,8 +10,8 @@ namespace ConsoleApp2
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            var generator = new ManualMazeGenerator();
-            var structure = new MazeStruct(3, generator);
+            var generator = new RecursiveMazeGenerator();
+            var structure = new MazeStruct(5, generator);
             Console.WriteLine(GetStructString(structure));
         }
 
@@ -25,18 +25,18 @@ namespace ConsoleApp2
                 {
                     var cell = @struct[i, j];
 
-                    builder.Append(cell.LeftRelation.CanMove ? "←" : "|");
+                    builder.Append(cell[MazeSolution.MazeStruct.Core.MazeStructure.Directions.DirectionEnum.Left].CanMove ? "←" : "|");
                     builder.Append("[");
 
 
-                    if (cell.UpRelation.CanMove && cell.DownRelation.CanMove) builder.Append("↕");
-                    else if (cell.UpRelation.CanMove) builder.Append("↑");
-                    else if (cell.DownRelation.CanMove) builder.Append("↓");
+                    if (cell[MazeSolution.MazeStruct.Core.MazeStructure.Directions.DirectionEnum.Up].CanMove && cell[MazeSolution.MazeStruct.Core.MazeStructure.Directions.DirectionEnum.Down].CanMove) builder.Append("↕");
+                    else if (cell[MazeSolution.MazeStruct.Core.MazeStructure.Directions.DirectionEnum.Up].CanMove) builder.Append("↑");
+                    else if (cell[MazeSolution.MazeStruct.Core.MazeStructure.Directions.DirectionEnum.Down].CanMove) builder.Append("↓");
                     else builder.Append(" ");
 
                                        
                     builder.Append("]");
-                    builder.Append(cell.RightRelation.CanMove ? "→" : "|");
+                    builder.Append(cell[MazeSolution.MazeStruct.Core.MazeStructure.Directions.DirectionEnum.Right].CanMove ? "→" : "|");
                 }
 
                 builder.Append(System.Environment.NewLine);

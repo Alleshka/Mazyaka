@@ -27,5 +27,35 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure.Directions
         /// <param name="curCell">Ячейка</param>
         /// <param name="canMoveStatus">Статус перехода</param>
         void SetMoveStatus(Cell curCell, bool canMoveStatus);
+
+        Cell GetNextCell(Cell curCell);
+    }
+
+    public abstract class BaseDirection : IDirection
+    {
+        protected abstract DirectionEnum _relatedEnum { get; }
+
+        public bool AddRelation(Cell startCell, Cell nextCell, bool CanMove)
+        {
+            var relation = new Relation(startCell, nextCell, CanMove);
+            startCell[_relatedEnum] = relation;
+            return true;
+        }
+
+        public Cell GetNextCell(Cell curCell)
+        {
+            return curCell[_relatedEnum]?.NextCell ?? null;
+        }
+
+        public bool RemoveRelation(Cell curCell)
+        {
+            curCell[_relatedEnum] = null;
+            return true;
+        }
+
+        public void SetMoveStatus(Cell curCell, bool canMoveStatus)
+        {
+            curCell[_relatedEnum].CanMove = canMoveStatus;
+        }
     }
 }
