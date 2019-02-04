@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MazeSolution.MazeStruct.Core.MazeStructure
 {
-    public class Cell
+    public class Cell : BaseMazeObject
     {
         protected int line;
         protected int column;
