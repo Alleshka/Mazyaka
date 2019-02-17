@@ -7,17 +7,17 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure.MazeGenerators
 {
     public class ManualMazeGenerator : IMazeGenerator
     {
-        public Cell[][] GenerateMaze(int mazeSize)
+        public BaseCell[][] GenerateMaze(int mazeSize)
         {
             // if (mazeSize != 2) throw new Exception("Данный генератор тестовый, не подходит для генерации");
 
-            Cell[][] _cells = new Cell[mazeSize][];
+            BaseCell[][] _cells = new BaseCell[mazeSize][];
             for(int i=0; i<mazeSize; i++)
             {
-                _cells[i] = new Cell[mazeSize];
+                _cells[i] = new BaseCell[mazeSize];
                 for(int j = 0; j<mazeSize; j++)
                 {
-                    _cells[i][j] = new Cell();
+                    _cells[i][j] = new SquareCell();
                 }
             }
 

@@ -11,11 +11,11 @@ namespace ConsoleApp2
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var generator = new RecursiveMazeGenerator();
-            var structure = new MazeStruct(5, generator);
+            var structure = new MazeStructureClass(5, generator);
             Console.WriteLine(GetStructString(structure));
         }
 
-        public static string GetStructString(MazeStruct @struct)
+        public static string GetStructString(MazeStructureClass @struct)
         {
             var builder = new StringBuilder();
 

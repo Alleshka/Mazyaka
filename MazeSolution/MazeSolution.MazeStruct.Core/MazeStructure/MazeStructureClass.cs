@@ -8,18 +8,18 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure
     /// <summary>
     /// Структура лабиринта
     /// </summary>
-    public class MazeStruct
+    public class MazeStructureClass
     {
-        private Cell[][] _cells;
+        private BaseCell[][] _cells;
         private int _size;
 
-        public MazeStruct(int size, IMazeGenerator generator)
+        public MazeStructureClass(int size, IMazeGenerator generator)
         {
             _size = size;
             this._cells = generator.GenerateMaze(size);
         }
 
-        public Cell this[int line, int column] => _cells[line][column];
+        public BaseCell this[int line, int column] => _cells[line][column];
         public int Size => _size;
     }
 }

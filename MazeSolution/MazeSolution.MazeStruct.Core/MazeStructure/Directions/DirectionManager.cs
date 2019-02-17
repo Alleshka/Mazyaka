@@ -19,11 +19,13 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure.Directions
 
         static DirectionManager()
         {
-            _directions = new Dictionary<DirectionEnum, IDirection>();
-            _directions.Add(DirectionEnum.Up, new UpDirection());
-            _directions.Add(DirectionEnum.Right, new RightDirection());
-            _directions.Add(DirectionEnum.Down, new DownDirection());
-            _directions.Add(DirectionEnum.Left, new LeftDirection());
+            _directions = new Dictionary<DirectionEnum, IDirection>
+            {
+                { DirectionEnum.Up, new UpDirection() },
+                { DirectionEnum.Right, new RightDirection() },
+                { DirectionEnum.Down, new DownDirection() },
+                { DirectionEnum.Left, new LeftDirection() }
+            };
         }
 
         public static IDirection GetDirection(DirectionEnum @enum)

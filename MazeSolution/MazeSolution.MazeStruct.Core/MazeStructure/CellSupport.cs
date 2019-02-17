@@ -6,15 +6,15 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure
 {
     public class CellSupport
     {
-        public static void SetRelation(Cell startCell, Cell nextCell, Directions.DirectionEnum @enum, bool canMove)
+        public static void SetRelation(BaseCell startCell, BaseCell nextCell, Directions.DirectionEnum @enum, bool canMove)
         {
             startCell.AddRelation(nextCell, @enum, canMove);
         }
 
-        public static Relation GetCellsRelation(Cell startCell, Cell nextCell)
+        public static Relation GetCellsRelation(BaseCell startCell, BaseCell nextCell)
         {
             Relation relation = null;
-            foreach(var rel in startCell._relations)
+            foreach(var rel in startCell.Relations)
             {
                 if (rel.Value != null && rel.Value.NextCell != null && rel.Value.NextCell.Equals(nextCell))
                 {

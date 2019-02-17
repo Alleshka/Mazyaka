@@ -4,12 +4,15 @@ using System.Text;
 
 namespace MazeSolution.MazeStruct.Core.GameObjects
 {
+
     /// <summary>
     /// Базовый класс игрового объека
     /// </summary>
     public abstract class BaseGameObject : BaseMazeObject
     {
-        protected Dictionary<Type, Action> _executeList { get; } // Список типов и действий при взаимодействии
+        public delegate void BaseMazeAction<in T>(T obj);
+
+        protected Dictionary<Type, BaseMazeAction<BaseGameObject>> _executeList { get; } // Список типов и действий при взаимодействии
 
         /// <summary>
         /// Действие предмета на другой предмет
@@ -17,10 +20,16 @@ namespace MazeSolution.MazeStruct.Core.GameObjects
         /// <param name="gameObject"></param>
         public virtual void Exectue(BaseGameObject gameObject)
         {
-            if(_executeList.TryGetValue(gameObject.GetType(), out Action action))
+            if(_executeList.TryGetValue(gameObject.GetType(), out BaseMazeAction<BaseGameObject> action))
             {
-                action?.Invoke(); // Выполняем действие
+                action?.Invoke(gameObject); // Выполняем действие
             }
         }
+
+    }
+
+    public abstract class LiveGameObject : BaseGameObject
+    {
+
     }
 }

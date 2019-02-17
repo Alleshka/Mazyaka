@@ -9,13 +9,13 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure.MazeGenerators
     /// </summary>
     public class RecursiveMazeGenerator : IMazeGenerator
     {
-        private Cell[][] _cells;
+        private BaseCell[][] _cells;
 
         private int _size;
 
         private Random T = new Random();
 
-        public Cell[][] GenerateMaze(int mazeSize)
+        public BaseCell[][] GenerateMaze(int mazeSize)
         {
             _size = mazeSize;
             InitCells();
@@ -26,13 +26,13 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure.MazeGenerators
 
         private void InitCells()
         {
-            _cells = new Cell[_size][];
+            _cells = new BaseCell[_size][];
             for(int i=0; i<_size; i++)
             {
-                _cells[i] = new Cell[_size];
+                _cells[i] = new BaseCell[_size];
                 for(int j=0; j<_size; j++)
                 {
-                    _cells[i][j] = new Cell(i, j);
+                    _cells[i][j] = new SquareCell(i, j);
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure.MazeGenerators
             int curLine = T.Next(_size);
             int curColumn = T.Next(_size);
 
-            Stack<Cell> stackCells = new Stack<Cell>();
+            Stack<BaseCell> stackCells = new Stack<BaseCell>();
             
             var curCell = _cells[curLine][curColumn];
             curCell.Visited = true;
@@ -105,10 +105,10 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure.MazeGenerators
             return false;
         }
 
-        private Cell GetNotVisitedNeighbords(Cell curCell)
+        private BaseCell GetNotVisitedNeighbords(BaseCell curCell)
         {
-            List<Cell> neighbords = new List<Cell>();
-            foreach(var relation in curCell._relations)
+            List<BaseCell> neighbords = new List<BaseCell>();
+            foreach(var relation in curCell.Relations)
             {
                 var nextCell = curCell.GetNextCell(relation.Key);
                 if (nextCell != null && nextCell.Visited == false) neighbords.Add(nextCell);

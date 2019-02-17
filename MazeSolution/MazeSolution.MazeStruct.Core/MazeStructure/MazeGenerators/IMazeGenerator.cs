@@ -6,6 +6,6 @@ namespace MazeSolution.MazeStruct.Core.MazeStructure.MazeGenerators
 {
     public interface IMazeGenerator
     {
-        Cell[][] GenerateMaze(int mazeSize);
+        BaseCell[][] GenerateMaze(int mazeSize);
     }
 }
