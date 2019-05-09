@@ -1,4 +1,5 @@
 ﻿using MazeSolution.Core.GameObjects;
+using MazeSolution.Core.GameObjects.GameObjects;
 using MazeSolution.Core.MazeStructrure;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,11 @@ namespace MazeSolution.Core
 
         protected Dictionary<Direction, ICell> _mapExitCell;
 
-        public Maze(IMazeStructure mazeStructrure)
+        private Action<BaseLiveGameObject> _endGameAction;
+
+        public Maze(IMazeStructure mazeStructrure, Action<BaseLiveGameObject> endGameAction)
         {
+            _endGameAction = endGameAction;
             _mapExitCell = new Dictionary<Direction, ICell>();
             _mapGameObjects = new Dictionary<Guid, ICell>();
             _mazeStructrure = mazeStructrure;
@@ -25,6 +29,8 @@ namespace MazeSolution.Core
 
         private void SetExit(IMazeStructure structure)
         {
+            var exitObj = new ExitObject(_endGameAction);
+
             Random T = new Random();
             int index = T.Next(0, structure.LineCount);
 
@@ -33,33 +39,39 @@ namespace MazeSolution.Core
 
             ICell exitCell;
             exitCell = new T();
+            exitCell.AddGameObject(exitObj);
             structure[0, index].AddRelation(Direction.Up, relation, _mapExitCell[Direction.Up] = exitCell);
             exitCell.AddRelation(Direction.Down, relation, structure[0, index]);
 
             exitCell = new T();
+            exitCell.AddGameObject(exitObj);
             structure[index, 0].AddRelation(Direction.Left, relation, _mapExitCell[Direction.Left] = exitCell);
             exitCell.AddRelation(Direction.Right, relation, structure[index, 0]);
 
             exitCell = new T();
+            exitCell.AddGameObject(exitObj);
             structure[index, structure.ColumnCount - 1].AddRelation(Direction.Right, relation, _mapExitCell[Direction.Right] = exitCell);
             exitCell.AddRelation(Direction.Left, relation, structure[index, structure.ColumnCount - 1]);
 
             exitCell = new T();
+            exitCell.AddGameObject(exitObj);
             structure[structure.LineCount - 1, index].AddRelation(Direction.Down, relation, _mapExitCell[Direction.Down] = exitCell);
-            exitCell.AddRelation(Direction.Up, relation, structure[index, structure.LineCount - 1]);
+            exitCell.AddRelation(Direction.Up, relation, structure[structure.LineCount - 1, index]);
         }
 
-        public bool Move (Guid liveGameObjectID, Direction direction)
+        public bool MoveLiveGameObject(Guid liveGameObjectID, Direction direction)
         {
             var oldCell = _mapGameObjects[liveGameObjectID];
             var relation = oldCell.GetRelation(direction);
 
+            relation.Visible = true;
             if (relation?.CanMove == true)
             {
                 var newCell = relation.GetNextCell;
                 var gameObject = oldCell.RemoveGameObject(liveGameObjectID);
                 newCell.AddGameObject(gameObject);
                 _mapGameObjects[liveGameObjectID] = newCell;
+                ActivateGameObjectsInCell(newCell, gameObject as BaseLiveGameObject);
                 return true;
             }
             else return false;
@@ -70,6 +82,25 @@ namespace MazeSolution.Core
             var cell = this._mazeStructrure[line, column];
             cell.AddGameObject(gameObject);
             _mapGameObjects[gameObject.ObjectID] = cell;
+        }
+
+        public void ActivateGameObjectsInCell(ICell cell, BaseLiveGameObject activator)
+        {
+            foreach (var gameObject in cell.GetGameObjects())
+            {
+                gameObject.Execute(activator);
+            }
+        }
+
+        public void SetCellsVisible(bool visible, BaseLiveGameObject gameObject, int size)
+        {
+            for(int i = 0; i < _mazeStructrure.LineCount; i++)
+            {
+                for(int j=0; j<_mazeStructrure.ColumnCount; j++)
+                {
+                    this[i, j].SetRelationVisibleStatus(visible);
+                }
+            }
         }
     }
 }

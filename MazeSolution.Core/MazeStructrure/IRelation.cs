@@ -1,4 +1,5 @@
 ﻿using MazeSolution.Core.GameObjects;
+using System;
 
 namespace MazeSolution.Core.MazeStructrure
 {
@@ -18,6 +19,8 @@ namespace MazeSolution.Core.MazeStructrure
         ICell GetNextCell { get; }
 
         IRelationType RelationType { get; set; }
+
+        bool Visible { get; set; }
     }
 
     public class BaseRelation : IRelation
@@ -27,6 +30,7 @@ namespace MazeSolution.Core.MazeStructrure
         public BaseRelation(ICell cell)
         {
             _nextCell = cell;
+            Visible = false;
         }
 
         public ICell GetNextCell => _nextCell;
@@ -34,5 +38,7 @@ namespace MazeSolution.Core.MazeStructrure
         public IRelationType RelationType { get; set; }
 
         public bool CanMove => RelationType.CanMove;
+
+        public bool Visible { get; set; }
     }    
 }

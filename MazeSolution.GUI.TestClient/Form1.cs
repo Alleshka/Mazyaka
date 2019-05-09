@@ -16,7 +16,7 @@ using MazeSolution.Core.GameObjects.LiveGameObject;
 namespace MazeSolution.GUI.TestClient
 {
     public partial class Form1 : Form
-    {
+    { 
         private IMazeGenerator _generator = new RecursiveSquareMazeGenerator();
         private Maze<SquareCell> _maze;
 
@@ -24,6 +24,7 @@ namespace MazeSolution.GUI.TestClient
 
         private int size = 10;
 
+        private bool _visible = false;
         public Form1()
         {
             InitializeComponent();
@@ -31,8 +32,17 @@ namespace MazeSolution.GUI.TestClient
 
         private void Button1_Click(object sender, EventArgs e)
         {
+            void endGameAction(dynamic gameObject)
+            {
+                this._maze.SetCellsVisible(true, null, 0);
+                this.pictureBox1.Refresh();
+                MessageBox.Show($"Победил {gameObject.ObjectID}");
+                Button1_Click(sender, e);
+            }
+
+            this._visible = false;
             size = Convert.ToInt32(this.textBox1.Text);
-            _maze = new Maze<SquareCell>(_generator.GenerateMaze(size, size));
+            _maze = new Maze<SquareCell>(_generator.GenerateMaze(size, size), endGameAction);
             human = new Human();
             _maze.AddLiveGameObject(human, 5, 5);
             this.pictureBox1.Refresh();
@@ -59,13 +69,13 @@ namespace MazeSolution.GUI.TestClient
                     {
                         var cell = _maze[line, column];
 
-                        if (!cell[Direction.Up].CanMove) e.Graphics.DrawLine(pen, column * columnSize, line * lineSize, column * columnSize + columnSize, line * lineSize);
+                        if (!cell[Direction.Up].CanMove && cell[Direction.Up].Visible) e.Graphics.DrawLine(pen, column * columnSize, line * lineSize, column * columnSize + columnSize, line * lineSize);
 
-                        if (!cell[Direction.Down].CanMove) e.Graphics.DrawLine(pen, column * columnSize, line * lineSize + lineSize, column * columnSize + columnSize, line * lineSize + lineSize);
+                        if (!cell[Direction.Down].CanMove && cell[Direction.Down].Visible) e.Graphics.DrawLine(pen, column * columnSize, line * lineSize + lineSize, column * columnSize + columnSize, line * lineSize + lineSize);
 
-                        if (!cell[Direction.Left].CanMove) e.Graphics.DrawLine(pen, column * columnSize, line * lineSize, column * columnSize, line * lineSize + lineSize);
+                        if (!cell[Direction.Left].CanMove && cell[Direction.Left].Visible) e.Graphics.DrawLine(pen, column * columnSize, line * lineSize, column * columnSize, line * lineSize + lineSize);
 
-                        if (!cell[Direction.Right].CanMove) e.Graphics.DrawLine(pen, column * columnSize + columnSize, line * lineSize, column * columnSize + columnSize, line * lineSize + lineSize);
+                        if (!cell[Direction.Right].CanMove && cell[Direction.Right].Visible) e.Graphics.DrawLine(pen, column * columnSize + columnSize, line * lineSize, column * columnSize + columnSize, line * lineSize + lineSize);
 
                         var _human = cell.GetGameObject<Human>() as Human;
                         if (_human != null) e.Graphics.DrawEllipse(pen, column * columnSize + columnSize / 10, line * lineSize + lineSize / 10, Convert.ToSingle(columnSize * 0.8), Convert.ToSingle(lineSize * 0.8));
@@ -81,26 +91,54 @@ namespace MazeSolution.GUI.TestClient
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            _maze.Move(human.ObjectID, Direction.Up);
+            _maze.MoveLiveGameObject(human.ObjectID, Direction.Up);
             this.pictureBox1.Refresh();
         }
 
         private void Button3_Click(object sender, EventArgs e)
         {
-            _maze.Move(human.ObjectID, Direction.Right);
+            _maze.MoveLiveGameObject(human.ObjectID, Direction.Right);
             this.pictureBox1.Refresh();
         }
         private void Button4_Click(object sender, EventArgs e)
         {
-            _maze.Move(human.ObjectID, Direction.Down);
+            _maze.MoveLiveGameObject(human.ObjectID, Direction.Down);
             this.pictureBox1.Refresh();
         }
 
 
         private void Button5_Click(object sender, EventArgs e)
         {
-            _maze.Move(human.ObjectID, Direction.Left);
+            _maze.MoveLiveGameObject(human.ObjectID, Direction.Left);
             this.pictureBox1.Refresh();
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch(e.KeyCode)
+            {
+                case Keys.Up:
+                    {
+                        _maze.MoveLiveGameObject(human.ObjectID, Direction.Up);
+                        this.pictureBox1.Refresh();
+                        break;
+                    }
+            }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            this.pictureBox1.Refresh();
+        }
+
+        private void Button6_Click(object sender, EventArgs e)
+        {
+            if (_maze != null)
+            {
+                this._visible = !this._visible;
+                this._maze.SetCellsVisible(this._visible, human, 2);
+                this.pictureBox1.Refresh();
+            }
         }
     }
 }

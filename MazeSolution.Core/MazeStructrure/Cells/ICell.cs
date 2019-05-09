@@ -39,6 +39,8 @@ namespace MazeSolution.Core.MazeStructrure
         BaseGameObject GetGameObject<T>();
         BaseGameObject RemoveGameObject(BaseGameObject gameObject);
         BaseGameObject RemoveGameObject(Guid objectID);
+        IEnumerable<BaseGameObject> GetGameObjects();
+        void SetRelationVisibleStatus(bool status);
     }
 
     public abstract class BaseCell : BaseMazeObject, ICell
@@ -89,6 +91,16 @@ namespace MazeSolution.Core.MazeStructrure
         public BaseGameObject GetGameObject<T>()
         {
             return _gameObjects.FirstOrDefault(x => x is T);
+        }
+
+        public IEnumerable<BaseGameObject> GetGameObjects() => _gameObjects;
+
+        public void SetRelationVisibleStatus(bool status)
+        {
+            foreach(var rel in AllRelations.Values)
+            {
+                rel.Visible = status;
+            }
         }
     }
 }
