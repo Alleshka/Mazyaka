@@ -16,11 +16,11 @@ namespace MazeSolution.Core
 
         protected Dictionary<Direction, ICell> _mapExitCell;
 
-        private Action<BaseLiveGameObject> _endGameAction;
+        private IActionStorage _actionStorage;
 
-        public Maze(IMazeStructure mazeStructrure, Action<BaseLiveGameObject> endGameAction)
+        public Maze(IMazeStructure mazeStructrure, IActionStorage actionStorage)
         {
-            _endGameAction = endGameAction;
+            _actionStorage = actionStorage;
             _mapExitCell = new Dictionary<Direction, ICell>();
             _mapGameObjects = new Dictionary<Guid, ICell>();
             _mazeStructrure = mazeStructrure;
@@ -29,7 +29,7 @@ namespace MazeSolution.Core
 
         private void SetExit(IMazeStructure structure)
         {
-            var exitObj = new ExitObject(_endGameAction);
+            var exitObj = new ExitObject(_actionStorage.EndGameAction);
 
             Random T = new Random();
             int index = T.Next(0, structure.LineCount);

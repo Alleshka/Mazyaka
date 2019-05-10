@@ -25,27 +25,41 @@ namespace MazeSolution.GUI.TestClient
         private int size = 10;
 
         private bool _visible = false;
+
+        private DefaultActionStorage _formActionStorage;
+
         public Form1()
         {
             InitializeComponent();
+            _formActionStorage = new DefaultActionStorage()
+            {
+                EndGameAction = (gameObj) =>
+                {
+                    this._maze.SetCellsVisible(true, null, 0);
+                    this.pictureBox1.Refresh();
+                    MessageBox.Show($"Победил {gameObj.ObjectID}");
+                    GenerateMaze();
+                },
+                LobbyFormed = () =>
+                {
+                    throw new NotImplementedException();
+                }
+            };
+        }
+
+        private void GenerateMaze()
+        {
+            this._visible = false;
+            size = Convert.ToInt32(this.textBox1.Text);
+            _maze = new Maze<SquareCell>(_generator.GenerateMaze(size, size), _formActionStorage);
+            human = new Human();
+            _maze.AddLiveGameObject(human, 5, 5);
+            this.pictureBox1.Refresh();
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            void endGameAction(dynamic gameObject)
-            {
-                this._maze.SetCellsVisible(true, null, 0);
-                this.pictureBox1.Refresh();
-                MessageBox.Show($"Победил {gameObject.ObjectID}");
-                Button1_Click(sender, e);
-            }
-
-            this._visible = false;
-            size = Convert.ToInt32(this.textBox1.Text);
-            _maze = new Maze<SquareCell>(_generator.GenerateMaze(size, size), endGameAction);
-            human = new Human();
-            _maze.AddLiveGameObject(human, 5, 5);
-            this.pictureBox1.Refresh();
+            GenerateMaze();
         }
 
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
