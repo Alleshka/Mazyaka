@@ -40,9 +40,9 @@ namespace MazeSolution.Core.MazeStructrure
     }
 
     /// <summary>
-    /// Ничего
+    /// Проход
     /// </summary>
-    public class None : IRelationType
+    public class Passage : IRelationType
     {
         public bool CanMove => true;
 

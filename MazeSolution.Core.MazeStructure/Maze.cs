@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MazeSolution.Core
+namespace MazeSolution.Core.MazeStructrure
 {
     public class Maze<T> : BaseMazeObject where T : ICell, new()
     {
@@ -35,7 +35,7 @@ namespace MazeSolution.Core
             int index = T.Next(0, structure.LineCount);
 
             // exitCell.AddGameObject(null); Объект выхода
-            var relation = new None();
+            var relation = new Passage();
 
             ICell exitCell;
             exitCell = new T();
@@ -64,17 +64,21 @@ namespace MazeSolution.Core
             var oldCell = _mapGameObjects[liveGameObjectID];
             var relation = oldCell.GetRelation(direction);
 
-            relation.Visible = true;
-            if (relation?.CanMove == true)
+            if (relation != null)
             {
-                var newCell = relation.GetNextCell;
-                var gameObject = oldCell.RemoveGameObject(liveGameObjectID);
-                newCell.AddGameObject(gameObject);
-                _mapGameObjects[liveGameObjectID] = newCell;
-                ActivateGameObjectsInCell(newCell, gameObject as BaseLiveGameObject);
-                return true;
+                relation.Visible = true;
+                if (relation.CanMove == true)
+                {
+                    var newCell = relation.GetNextCell;
+                    var gameObject = oldCell.RemoveGameObject(liveGameObjectID);
+                    newCell.AddGameObject(gameObject);
+                    _mapGameObjects[liveGameObjectID] = newCell;
+                    ActivateGameObjectsInCell(newCell, gameObject as BaseLiveGameObject);
+                    return true;
+                }
             }
-            else return false;
+
+            return false;
         }
 
         public void AddLiveGameObject(BaseLiveGameObject gameObject, int line, int column)

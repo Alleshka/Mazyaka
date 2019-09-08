@@ -45,6 +45,17 @@ namespace MazeSolution.GUI.TestClient
                     throw new NotImplementedException();
                 }
             };
+
+            this.textBox1.Enabled = false;
+            this.KeyPreview = true;
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Form1_PreviewKeyDown);
+
+        }
+
+        private void Form1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Down)// стрелка Вниз
+                MessageBox.Show("Ку-Ку");
         }
 
         private void GenerateMaze()
@@ -153,6 +164,11 @@ namespace MazeSolution.GUI.TestClient
                 this._maze.SetCellsVisible(this._visible, human, 2);
                 this.pictureBox1.Refresh();
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

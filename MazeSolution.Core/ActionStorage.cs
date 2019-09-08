@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MazeSolution.Core
 {
-    public interface IActionStorage
+    public interface ILobbyActionStorage
     {
         Action LobbyFormed { get; }
 
@@ -14,8 +14,16 @@ namespace MazeSolution.Core
         Action<Guid, bool> UserSetReadyStatus { get; }
 
         Action GameStart { get; }
+    }
 
+    public interface IGameActionStorage
+    {
         Action<BaseMazeObject> EndGameAction { get; }
+    }
+
+    public interface IActionStorage : ILobbyActionStorage, IGameActionStorage
+    {
+
     }
 
     public class DefaultActionStorage : IActionStorage

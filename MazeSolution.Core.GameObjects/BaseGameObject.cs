@@ -10,7 +10,7 @@ namespace MazeSolution.Core.GameObjects
     }
 
     /// <summary>
-    /// TODO: Метод EXECUTE проверяет наличие резиста у живого объека, если резиста нет - срабатывает
+    /// TODO: Метод EXECUTE проверяет наличие резиста у живого объекта, если резиста нет - срабатывает
     /// </summary>
 
     public abstract class BaseLiveGameObject : BaseGameObject

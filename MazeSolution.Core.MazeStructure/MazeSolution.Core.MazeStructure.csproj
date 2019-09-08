@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MazeSolution.Core.MazeStructure\MazeSolution.Core.MazeStructure.csproj" />
+    <ProjectReference Include="..\MazeSolution.Core.GameObjects\MazeSolution.Core.GameObjects.csproj" />
     <ProjectReference Include="..\MazeSolution.Core\MazeSolution.Core.csproj" />
   </ItemGroup>
 

@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MazeSolution.Core
+namespace MazeSolution.Core.GameService
 {
+    /// <summary>
+    /// Кординаты ячейки в лабиринте
+    /// </summary>
     public class Point
     {
         public Point()

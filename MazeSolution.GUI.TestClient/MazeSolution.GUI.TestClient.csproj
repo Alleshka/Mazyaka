@@ -80,13 +80,29 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MazeSolution.Core.GameObjects\MazeSolution.Core.GameObjects.csproj">
+      <Project>{53c5cc2e-4226-477c-a0f8-b3fd3dd84ef6}</Project>
+      <Name>MazeSolution.Core.GameObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MazeSolution.Core.GameService\MazeSolution.Core.GameService.csproj">
+      <Project>{bd293666-2c68-4670-a8a2-476655e7adea}</Project>
+      <Name>MazeSolution.Core.GameService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MazeSolution.Core.Generators\MazeSolution.Core.Generators.csproj">
       <Project>{8b4f64b1-b8ed-4312-b662-5302ed37d961}</Project>
       <Name>MazeSolution.Core.Generators</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MazeSolution.Core.MazeStructure\MazeSolution.Core.MazeStructure.csproj">
+      <Project>{45c848c8-26a2-462c-831b-8ffd3d10989d}</Project>
+      <Name>MazeSolution.Core.MazeStructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MazeSolution.Core\MazeSolution.Core.csproj">
       <Project>{726c28ae-a0d4-4405-b4e5-c1e14f6d6a00}</Project>
       <Name>MazeSolution.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MazeSolution.LoginService\MazeSolution.LoginService.csproj">
+      <Project>{7e95644f-3a23-4a3e-89be-8996e122d624}</Project>
+      <Name>MazeSolution.LoginService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

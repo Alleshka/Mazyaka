@@ -6,15 +6,17 @@ namespace MazeSolution.Core.GameObjects.GameObjects
 {
     public class ExitObject : BaseGameObject
     {
+        private Random T = new Random();
+
         private Action<BaseLiveGameObject> _gameEndAction;
-        public ExitObject(Action<BaseLiveGameObject> gameEndAction)
+        public ExitObject(Action<BaseMazeObject> gameEndAction)
         {
             _gameEndAction = gameEndAction;
         }
 
         public override void Execute(BaseLiveGameObject liveGameObject)
         {
-            _gameEndAction?.Invoke(liveGameObject);
+            if(T.NextDouble() == -1) _gameEndAction?.Invoke(liveGameObject);
         }
     }
 }

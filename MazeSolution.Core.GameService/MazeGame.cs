@@ -1,6 +1,9 @@
 ﻿using MazeSolution.Core.GameObjects;
 using MazeSolution.Core.GameObjects.LiveGameObject;
+using MazeSolution.Core.GameService;
 using MazeSolution.Core.MazeStructrure;
+using MazeSolution.Core.Models;
+using MazeSolution.LoginService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +21,6 @@ namespace MazeSolution.Core
 
     public class PlayerInfo<T> where T : ICell, new()
     {
-        public bool IsReady { get; set; }
         public Maze<T> Maze { get; set; }
         public Point StartPoint { get; set; }
         public BaseGameObject Character { get; set; }
@@ -26,13 +28,14 @@ namespace MazeSolution.Core
 
     public abstract class BaseMazeGame<T> : BaseMazeObject where T : ICell, new()
     {
-        protected int MaxPlayers { get; set; }
+        private IUserService _userService;
 
         public GameStatus Status { get; protected set; }
 
         protected readonly Dictionary<Guid, PlayerInfo<T>> _players;
 
-        private object _locker = new object();
+        private readonly object _locker = new object();
+
         protected IActionStorage _actionStorage;
 
         public BaseMazeGame(IActionStorage actionStorage)
@@ -42,62 +45,37 @@ namespace MazeSolution.Core
             _actionStorage = actionStorage;
         }
 
-        public bool JoinGame(Guid userID)
-        {
-            lock (_locker)
-            {
-                if (_players.Count < MaxPlayers)
-                {
-                    _players.Add(userID, null);
-                    _actionStorage?.UserJoined(userID);
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        public bool LeaveGame(Guid userID)
-        {
-            var result = _players.Remove(userID);
-            if (result) _actionStorage?.UserLeft(userID);
-            return result;
-        }
-
-        public void ReadyStatus(Guid userID, bool status)
-        {
-            _players[userID].IsReady = status;
-            _actionStorage?.UserSetReadyStatus(userID, status);
-        }
-
         public void LobbyFormed()
         {
-            if (_players.Values.All(x => x.IsReady))
-            {
-                Status = GameStatus.SendingMaze;
-                _actionStorage.LobbyFormed();
-            }
+            //if (_players.Values.All(x => x.IsReady))
+            //{
+            //    Status = GameStatus.SendingMaze;
+            //    _actionStorage.LobbyFormed();
+            //}
         }
 
-        public virtual bool SendMaze(Guid userID, IMazeStructure structure, Point startPoint)
+        public virtual bool SendMaze(UserServiceModel user, IMazeStructure structure, Point startPoint)
         {
             // TODO: Валидация модели
-            if (ValidateMaze(structure))
+            if (_userService.CheckUserSecurityKey(user))
             {
-                lock (_locker)
+                if (ValidateMaze(structure))
                 {
-                    var player = _players.FirstOrDefault(x => x.Value.Maze == null && x.Key != userID);
-                    if (player.Value != null) player.Value.Maze = new Maze<T>(structure, _actionStorage);
+                    lock (_locker)
+                    {
+                        var player = _players.FirstOrDefault(x => x.Value.Maze == null && x.Key != user.ObjectID);
+                        if (player.Value != null) player.Value.Maze = new Maze<T>(structure, _actionStorage);
+                    }
+
+                    _players[user.ObjectID].StartPoint = startPoint;
+
+                    if (_players.Values.All(x => x.Maze != null))
+                    {
+                        StartGame();
+                    }
+
+                    return true;
                 }
-
-                _players[userID].StartPoint = startPoint;
-
-                if (_players.Values.All(x => x.Maze != null))
-                {
-                    StartGame();
-                }
-
-                return true;
             }
 
             return false;
@@ -116,12 +94,17 @@ namespace MazeSolution.Core
             _actionStorage?.GameStart();
         }
 
-        public bool MoveUserCharacter(Guid userID, Direction direction)
+        public bool MoveUserCharacter(UserServiceModel user, Direction direction)
         {
-            var player = _players[userID];
-            var maze = player.Maze;
-            var character = player.Character;
-            return maze.MoveLiveGameObject(character.ObjectID, direction);
+            if (_userService.CheckUserSecurityKey(user))
+            {
+                var player = _players[user.ObjectID];
+                var maze = player.Maze;
+                var character = player.Character;
+                return maze.MoveLiveGameObject(character.ObjectID, direction);
+            }
+
+            return false;
         }
 
         protected bool ValidateMaze(IMazeStructure structure)

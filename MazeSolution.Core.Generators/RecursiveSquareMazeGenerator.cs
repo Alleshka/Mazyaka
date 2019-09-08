@@ -64,10 +64,10 @@ namespace MazeSolution.Core.Generators
 
                     // Убираем между ячейками стены 
                     var rel = CellSupport.GetCellsRelation(curCell, newCell);
-                    rel.RelationType = RelationManager.GetRelationType<None>();
+                    rel.RelationType = RelationManager.GetRelationType<Passage>();
 
                     rel = CellSupport.GetCellsRelation(newCell, curCell);
-                    rel.RelationType = RelationManager.GetRelationType<None>();
+                    rel.RelationType = RelationManager.GetRelationType<Passage>();
 
                     curCell = newCell;
                     curCell.Visited = true;

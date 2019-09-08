@@ -12,7 +12,7 @@ namespace MazeSolution.Core.Generators
         {
             new MazeWallRelation(),
             new WallRelation(),
-            new None(),
+            new Passage(),
             new DestroyedWall()
         };
 

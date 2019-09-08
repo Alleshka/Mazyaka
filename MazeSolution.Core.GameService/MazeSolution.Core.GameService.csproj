@@ -5,8 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MazeSolution.Core.GameObjects\MazeSolution.Core.GameObjects.csproj" />
     <ProjectReference Include="..\MazeSolution.Core.MazeStructure\MazeSolution.Core.MazeStructure.csproj" />
     <ProjectReference Include="..\MazeSolution.Core\MazeSolution.Core.csproj" />
+    <ProjectReference Include="..\MazeSolution.LobbyService\MazeSolution.LobbyService.csproj" />
+    <ProjectReference Include="..\MazeSolution.LoginService\MazeSolution.LoginService.csproj" />
   </ItemGroup>
 
 </Project>
