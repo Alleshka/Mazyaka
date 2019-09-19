@@ -14,13 +14,22 @@ namespace MazeSolution.Core.GameService
 
         }
 
+        /// <param name="line">Строка</param>
+        /// <param name="column">Столбец</param>
         public Point(int line, int column) : this()
         {
             Line = line;
             Column = column;
         }
 
+        /// <summary>
+        /// Строка
+        /// </summary>
         public int Line { get; set; }
+
+        /// <summary>
+        /// Столбец
+        /// </summary>
         public int Column { get; set; }
     }
 }

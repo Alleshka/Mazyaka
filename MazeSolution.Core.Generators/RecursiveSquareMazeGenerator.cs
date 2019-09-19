@@ -6,10 +6,19 @@ using MazeSolution.Core.MazeStructrure.Cells;
 
 namespace MazeSolution.Core.Generators
 {
+    /// <summary>
+    /// Рекурсивный генератор лабиринта
+    /// </summary>
     public class RecursiveSquareMazeGenerator : IMazeGenerator
     {
         private Random T = new Random();
 
+        /// <summary>
+        /// Сгенерировать лабиринт
+        /// </summary>
+        /// <param name="lineCount">Число строк</param>
+        /// <param name="columnCount">Число столбцов</param>
+        /// <returns></returns>
         public IMazeStructure GenerateMaze(int lineCount, int columnCount)
         {
             var result = new SquareMaze<SquareCell>(lineCount, columnCount);
@@ -23,50 +32,62 @@ namespace MazeSolution.Core.Generators
             return result;
         }
 
-        private void InitWallRelations(IMazeStructure result, int lineCount, int columnCount)
+        /// <summary>
+        /// Установить соотношения ячеек к стенам лабиринта
+        /// </summary>
+        /// <param name="structure">Структура лабиринта</param>
+        /// <param name="lineCount">Число строк</param>
+        /// <param name="columnCount">Число столбцов</param>
+        private void InitWallRelations(IMazeStructure structure, int lineCount, int columnCount)
         {
             for (int i = 0; i < lineCount; i++)
             {
                 for (int j = 0; j < columnCount; j++)
                 {
-                    var cell = result[i, j];
+                    var cell = structure[i, j];
 
                     if (i == 0) cell.AddRelation(Direction.Up, RelationManager.GetRelationType<MazeWallRelation>(), null);
-                    else cell.AddRelation(Direction.Up, RelationManager.GetRelationType<WallRelation>(), result[i - 1, j]);
+                    else cell.AddRelation(Direction.Up, RelationManager.GetRelationType<WallRelation>(), structure[i - 1, j]);
 
                     if (j == 0) cell.AddRelation(Direction.Left, RelationManager.GetRelationType<MazeWallRelation>(), null);
-                    else cell.AddRelation(Direction.Left, RelationManager.GetRelationType<WallRelation>(), result[i, j - 1]);
+                    else cell.AddRelation(Direction.Left, RelationManager.GetRelationType<WallRelation>(), structure[i, j - 1]);
 
                     if (i == lineCount - 1) cell.AddRelation(Direction.Down, RelationManager.GetRelationType<MazeWallRelation>(), null);
-                    else cell.AddRelation(Direction.Down, RelationManager.GetRelationType<WallRelation>(), result[i + 1, j]);
+                    else cell.AddRelation(Direction.Down, RelationManager.GetRelationType<WallRelation>(), structure[i + 1, j]);
 
                     if (j == columnCount - 1) cell.AddRelation(Direction.Right, RelationManager.GetRelationType<MazeWallRelation>(), null);
-                    else cell.AddRelation(Direction.Right, RelationManager.GetRelationType<WallRelation>(), result[i, j+1]);
+                    else cell.AddRelation(Direction.Right, RelationManager.GetRelationType<WallRelation>(), structure[i, j+1]);
                 }
             }
         }
 
-        private void Generate(IMazeStructure result, int lineCount, int columnCount)
+        /// <summary>
+        /// Сгенерировать структуру лабиринта
+        /// </summary>
+        /// <param name="structure">Структура лабиринта</param>
+        /// <param name="lineCount">Число строк</param>
+        /// <param name="columnCount">Число столбцов</param>
+        private void Generate(IMazeStructure structure, int lineCount, int columnCount)
         {
             int curLine = T.Next(lineCount);
             int curColumn = T.Next(columnCount);
 
             var stackCells = new Stack<ICell>();
-            var curCell = result[curLine, curColumn];
+            var curCell = structure[curLine, curColumn];
             curCell.Visited = true;
 
-            while (HasNotVisitedCells(result, lineCount, columnCount)) // Пока есть непосещённые ячейки
+            while (HasNotVisitedCells(structure, lineCount, columnCount)) // Пока есть непосещённые ячейки
             {
-                var newCell = GetNotVisitedNeighbords(curCell);
+                var newCell = GetNotVisitedNeighbors(curCell);
                 if (newCell != null) // Имеет непосещённых соседей
                 {
                     stackCells.Push(curCell);
 
                     // Убираем между ячейками стены 
-                    var rel = CellSupport.GetCellsRelation(curCell, newCell);
+                    var rel = curCell.GetCellsRelation(newCell);
                     rel.RelationType = RelationManager.GetRelationType<Passage>();
 
-                    rel = CellSupport.GetCellsRelation(newCell, curCell);
+                    rel = newCell.GetCellsRelation(curCell);
                     rel.RelationType = RelationManager.GetRelationType<Passage>();
 
                     curCell = newCell;
@@ -83,20 +104,32 @@ namespace MazeSolution.Core.Generators
         }
 
         // TODO: Сделать счётчик непосещённых
-        private bool HasNotVisitedCells(IMazeStructure result, int lineCount, int columnCount)
+        /// <summary>
+        /// Проверяет есть ли непосещенные ячейки
+        /// </summary>
+        /// <param name="structure">Структура лабиринта</param>
+        /// <param name="lineCount">Число строк</param>
+        /// <param name="columnCount">Число столбцов</param>
+        /// <returns>True если есть непосещенне ячейки, иначе false</returns>
+        private bool HasNotVisitedCells(IMazeStructure structure, int lineCount, int columnCount)
         {
             for (int i = 0; i < lineCount; i++)
             {
                 for (int j = 0; j < columnCount; j++)
                 {
-                    if (result[i, j].Visited == false) return true;
+                    if (structure[i, j].Visited == false) return true;
                 }
             }
 
             return false;
         }
 
-        private ICell GetNotVisitedNeighbords(ICell curCell)
+        /// <summary>
+        /// Получает одну случайную ячейку из непосещенных соседей
+        /// </summary>
+        /// <param name="curCell">Ячейка, соседи которой будут просмотрены</param>
+        /// <returns>Следующую непосещенную ячейку из списка соседей текущей</returns>
+        private ICell GetNotVisitedNeighbors(ICell curCell)
         {
             var neighbords = new List<ICell>();
             foreach (var relation in curCell.AllRelations)

@@ -4,6 +4,9 @@ using System.Text;
 
 namespace MazeSolution.Core.GameObjects.LiveGameObject
 {
+    /// <summary>
+    /// Объект человека в лабиринте
+    /// </summary>
     public class Human : BaseLiveGameObject
     {
         public Human()

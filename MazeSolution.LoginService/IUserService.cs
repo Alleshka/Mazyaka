@@ -11,8 +11,18 @@ namespace MazeSolution.LoginService
     /// </summary>
     public interface IUserService
     {
+        /// <summary>
+        /// Добавить пользователя
+        /// </summary>
+        /// <param name="user">Пользователь</param>
+        /// <returns>Сессию пользователя</returns>
         UserServiceModel AddUser(UserModel user);
 
+        /// <summary>
+        /// Проверка токена доступа
+        /// </summary>
+        /// <param name="user">Пользователь</param>
+        /// <returns>True если токен валидный, иначе false</returns>
         bool CheckUserSecurityKey(UserServiceModel user);
     }
 
@@ -20,6 +30,11 @@ namespace MazeSolution.LoginService
     {
         private readonly Dictionary<Guid, UserServiceModel> _users = new Dictionary<Guid, UserServiceModel>();
 
+        /// <summary>
+        /// Добавить пользователя
+        /// </summary>
+        /// <param name="user">Пользователь</param>
+        /// <returns>Сессию пользователя</returns>
         public UserServiceModel AddUser(UserModel user)
         {
             if (_users.TryGetValue(user.ObjectID, out UserServiceModel securityUser))
@@ -36,6 +51,11 @@ namespace MazeSolution.LoginService
             }
         }
 
+        /// <summary>
+        /// Проверка токена доступа
+        /// </summary>
+        /// <param name="user">Пользователь</param>
+        /// <returns>True если токен валидный, иначе false</returns>
         public bool CheckUserSecurityKey(UserServiceModel user)
         {
             if (_users.TryGetValue(user.ObjectID, out UserServiceModel secUser))

@@ -14,7 +14,14 @@ namespace MazeSolution.Core.Models
             SecurityToken = Guid.NewGuid().ToString();
         }
 
+        /// <summary>
+        /// Логин
+        /// </summary>
         public string Login { get; set; }
+
+        /// <summary>
+        /// Токен доступа
+        /// </summary>
         public string SecurityToken { get; }
     }
 }

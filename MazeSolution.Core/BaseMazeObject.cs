@@ -2,6 +2,9 @@
 
 namespace MazeSolution.Core
 {
+    /// <summary>
+    /// Интерфейс базового объекта лабиринта
+    /// </summary>
     public interface IBaseMazeObject
     {
         Guid ObjectID { get; }

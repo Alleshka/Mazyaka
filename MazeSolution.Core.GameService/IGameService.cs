@@ -5,11 +5,17 @@ using System.Text;
 
 namespace MazeSolution.Core.GameService
 {
+    /// <summary>
+    /// Интерфейс игрового сервиса
+    /// </summary>
     public interface IGameService
     {
         void StartGame(Guid lobbyID);
     }
 
+    /// <summary>
+    /// Базовая реализация игрового сервиса
+    /// </summary>
     public class SimpleGameService : IGameService
     {
         private ILobbyService _lobbyService;

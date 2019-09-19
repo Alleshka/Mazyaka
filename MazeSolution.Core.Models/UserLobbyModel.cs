@@ -9,6 +9,7 @@ namespace MazeSolution.Core.Models
     /// </summary>
     public class UserLobbyModel : BaseMazeObject
     {
+        /// <param name="serviceModel">Модель сервиса пользователей</param>
         public UserLobbyModel (UserServiceModel serviceModel)
         {
             Login = serviceModel.Login;
@@ -16,8 +17,14 @@ namespace MazeSolution.Core.Models
             IsReady = false;
         }
 
+        /// <summary>
+        /// Логин игрока
+        /// </summary>
         public string Login { get; }
 
+        /// <summary>
+        /// Готовность игрока
+        /// </summary>
         public bool IsReady { get; set; }
         // public int Level { get; }
     }

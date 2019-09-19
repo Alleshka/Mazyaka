@@ -6,6 +6,9 @@ using System.Text;
 
 namespace MazeSolution.LoginService
 {
+    /// <summary>
+    /// Сервис авторизации
+    /// </summary>
     interface ILoginService
     { 
         /// <summary>
@@ -19,7 +22,7 @@ namespace MazeSolution.LoginService
         /// </summary>
         /// <param name="login"></param>
         /// <param name="password"></param>
-        /// <returns></returns>
+        /// <returns>Сессию пользователя</returns>
         UserServiceModel SignIn(string login, string password);
     }
 }

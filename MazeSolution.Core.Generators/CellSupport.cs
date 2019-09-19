@@ -5,9 +5,18 @@ using System.Text;
 
 namespace MazeSolution.Core.Generators
 {
-    public class CellSupport
+    /// <summary>
+    /// Методы расширения для ячеек лабиринта
+    /// </summary>
+    public static class CellsHelpers
     {
-        public static IRelation GetCellsRelation(ICell startCell, ICell nextCell)
+        /// <summary>
+        /// Находит объект связи между ячейками
+        /// </summary>
+        /// <param name="startCell">Ячейка откуда проверяется связь</param>
+        /// <param name="nextCell">Ячейка куда проверяется связь</param>
+        /// <returns>Объект связи если существует</returns>
+        public static IRelation GetCellsRelation(this ICell startCell, ICell nextCell)
         {
             IRelation relation = null;
             foreach (var rel in startCell.AllRelations)
@@ -19,12 +28,7 @@ namespace MazeSolution.Core.Generators
                 }
             }
 
-            if (relation != null)
-            {
-                return relation;
-            }
-
-            else throw new Exception("Не удалось найти связь между ячейками");
+            return relation ?? throw new Exception("Не удалось найти связь между ячейками");
         }
     }
 }

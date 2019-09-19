@@ -4,8 +4,15 @@ using System.Text;
 
 namespace MazeSolution.Core.GameObjects
 {
+    /// <summary>
+    /// Базовый игровой объект
+    /// </summary>
     public abstract class BaseGameObject : BaseMazeObject
     {
+        /// <summary>
+        /// Активация объекта
+        /// </summary>
+        /// <param name="liveGameObject">Объект-активатор</param>
         public abstract void Execute(BaseLiveGameObject liveGameObject);
     }
 

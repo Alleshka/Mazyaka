@@ -4,6 +4,9 @@ using System.Text;
 
 namespace MazeSolution.Core
 {
+    /// <summary>
+    /// Интерфейс хранилища операций лобби
+    /// </summary>
     public interface ILobbyActionStorage
     {
         Action LobbyFormed { get; }
@@ -16,16 +19,25 @@ namespace MazeSolution.Core
         Action GameStart { get; }
     }
 
+    /// <summary>
+    /// Интерфейс хранилищая операций игры
+    /// </summary>
     public interface IGameActionStorage
     {
         Action<BaseMazeObject> EndGameAction { get; }
     }
 
+    /// <summary>
+    /// Интерфейс общего хранилища операций
+    /// </summary>
     public interface IActionStorage : ILobbyActionStorage, IGameActionStorage
     {
 
     }
 
+    /// <summary>
+    /// Базовая реализация хранилища операций
+    /// </summary>
     public class DefaultActionStorage : IActionStorage
     {
         public DefaultActionStorage()
