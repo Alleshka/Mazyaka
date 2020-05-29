@@ -24,15 +24,18 @@ namespace Maze.Server.UdpServer
         /// <summary>
         /// Срабатывает при получении сообщения
         /// </summary>
-        private Action<string, IPEndPoint, MazeUdpDataExchange> _onReceiveMessage;
+        private Action<IMazePackage, IPEndPoint, MazeUdpDataExchange> _onReceiveMessage;
 
         private UdpClient _client = null;
 
-        public MazeUdpDataExchange(int port, Action<string, IPEndPoint, MazeUdpDataExchange> onReceiveMessage = null)
+        private IPackageParser _packageParser;
+
+        public MazeUdpDataExchange(int port, IPackageParser packageParser, Action<IMazePackage, IPEndPoint, MazeUdpDataExchange> onReceiveMessage = null)
         {
             _localPort = port;
             _onReceiveMessage = onReceiveMessage;
             _client = new UdpClient(_localPort);
+            _packageParser = packageParser;
         }
 
         /// <summary>
@@ -57,9 +60,9 @@ namespace Maze.Server.UdpServer
         /// </summary>
         /// <param name="message">Отправляемое сообщение</param>
         /// <param name="endPoint">Адресат</param>
-        public void SendMessage(string message, IPEndPoint endPoint)
+        public void SendMessage(IMazePackage message, IPEndPoint endPoint)
         {
-            var data = Encoding.UTF8.GetBytes(message);
+            var data = _packageParser.GetBytes(message);
             _client.Send(data, data.Length, endPoint);
         }
 
@@ -69,7 +72,7 @@ namespace Maze.Server.UdpServer
         /// <param name="message">Отправляемое сообщение</param>
         /// <param name="ipAddress">ip адресата</param>
         /// <param name="port">Порт адресата</param>
-        public void SendMessage(string message, string ipAddress, int port)
+        public void SendMessage(IMazePackage message, string ipAddress, int port)
         {
             SendMessage(message, new IPEndPoint(IPAddress.Parse(ipAddress), port));
         }
@@ -85,10 +88,8 @@ namespace Maze.Server.UdpServer
                 var data = _client.Receive(ref remoteIp);
                 LogMessage(data, remoteIp);
 
-
                 /// Вызываем действия, срабатываемые при получении сообщения
-                var message = Encoding.UTF8.GetString(data);
-                _onReceiveMessage?.Invoke(message, remoteIp, this);
+                _onReceiveMessage?.Invoke(_packageParser.GetPackage(data), remoteIp, this);
             }
         }
 
