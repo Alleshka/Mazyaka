@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Maze.Common.MazaPackages;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -28,9 +29,9 @@ namespace Maze.Server.UdpServer
 
         private UdpClient _client = null;
 
-        private IPackageParser _packageParser;
+        private IMazePackageParser _packageParser;
 
-        public MazeUdpDataExchange(int port, IPackageParser packageParser, Action<IMazePackage, IPEndPoint, MazeUdpDataExchange> onReceiveMessage = null)
+        public MazeUdpDataExchange(int port, IMazePackageParser packageParser, Action<IMazePackage, IPEndPoint, MazeUdpDataExchange> onReceiveMessage = null)
         {
             _localPort = port;
             _onReceiveMessage = onReceiveMessage;

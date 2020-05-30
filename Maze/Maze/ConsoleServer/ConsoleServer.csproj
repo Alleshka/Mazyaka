@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Maze.Common.Model\Maze.Common.Model.csproj" />
-    <ProjectReference Include="..\Maze.Server.UdpServer\Maze.Server.UdpServer.csproj" />
+    <ProjectReference Include="..\Maze.Server.Core\Maze.Server.Core.csproj" />
   </ItemGroup>
 
 </Project>

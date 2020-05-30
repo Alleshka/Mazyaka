@@ -1,4 +1,7 @@
-﻿using Maze.Server.UdpServer;
+﻿using Maze.Common.MazaPackages;
+using Maze.Common.MazaPackages.Packages;
+using Maze.Common.MazaPackages.Parsers;
+using Maze.Server.UdpServer;
 using System;
 
 namespace ConsoleClient
@@ -7,27 +10,38 @@ namespace ConsoleClient
     {
         static void Main(string[] args)
         {
+            var packageFactory = new SimplePackageFactory();
             var localPort = 1444;
             var remotePort = 1433;
 
-            using (var sender = new MazeUdpDataExchange(localPort, new SimplePackageParser(), (message, remoteIp, messageSender) =>
+            using (var sender = new MazeUdpDataExchange(localPort, new SimpleMazePackageParser(), (message, remoteIp, messageSender) =>
              {
                  Console.WriteLine($"Message from server ({remoteIp.Address}:{remoteIp.Port}): {message.ToString()}");
              }))
             {
                 sender.Start();
+
                 while (true)
                 {
-                    Console.WriteLine("enter your text");
-                    var text = Console.ReadLine();
-                    if (text == "-1")
+                    Console.WriteLine("enter number");
+                    Console.WriteLine("1 - LoginCommand");
+                    Console.WriteLine("2 - HelloWorldCommand");
+
+                    if (int.TryParse(Console.ReadLine(), out int text))
                     {
-                        sender.Stop();
-                        break;
-                    }
-                    else
-                    {
-                        sender.SendMessage(new LoginMazePackage(text, text), "127.0.0.1", remotePort);
+                        switch (text)
+                        {
+                            case 1:
+                                {
+                                    sender.SendMessage(packageFactory.LoginPackage("alleshka", "123qwe"), "127.0.0.1", remotePort);
+                                    break;
+                                }
+                            case 2:
+                                {
+                                    sender.SendMessage(packageFactory.HelloWorldPackage(), "127.0.0.1", remotePort);
+                                    break;
+                                }
+                        }
                     }
                 }
             }

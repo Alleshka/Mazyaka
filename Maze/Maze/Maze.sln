@@ -7,9 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Server.UdpServer", "Ma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Common.Model", "Maze.Common.Model\Maze.Common.Model.csproj", "{32DE6323-1011-4C8C-968E-61F8AFB48126}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleServer", "ConsoleServer\ConsoleServer.csproj", "{7E975ECC-171E-455D-ABEE-DB8F935B55A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleServer", "ConsoleServer\ConsoleServer.csproj", "{7E975ECC-171E-455D-ABEE-DB8F935B55A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{08A25EFC-09CB-4EC6-8D76-51368B63CB0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{08A25EFC-09CB-4EC6-8D76-51368B63CB0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Common.MazaPackages", "Maze.Common.MazaPackages\Maze.Common.MazaPackages.csproj", "{0E67EE8E-12D5-4A9B-8E4C-D6C61B48E842}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.Core", "Maze.Server.Core\Maze.Server.Core.csproj", "{29CB1475-E48A-407D-9B2F-88368CBA528D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.Commands", "Maze.Server.Commands\Maze.Server.Commands.csproj", "{28631CCD-C7C0-43A0-BA46-F1B1AB1DEEB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,18 @@ Global
 		{08A25EFC-09CB-4EC6-8D76-51368B63CB0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08A25EFC-09CB-4EC6-8D76-51368B63CB0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08A25EFC-09CB-4EC6-8D76-51368B63CB0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E67EE8E-12D5-4A9B-8E4C-D6C61B48E842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E67EE8E-12D5-4A9B-8E4C-D6C61B48E842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E67EE8E-12D5-4A9B-8E4C-D6C61B48E842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E67EE8E-12D5-4A9B-8E4C-D6C61B48E842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29CB1475-E48A-407D-9B2F-88368CBA528D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29CB1475-E48A-407D-9B2F-88368CBA528D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29CB1475-E48A-407D-9B2F-88368CBA528D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29CB1475-E48A-407D-9B2F-88368CBA528D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28631CCD-C7C0-43A0-BA46-F1B1AB1DEEB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28631CCD-C7C0-43A0-BA46-F1B1AB1DEEB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28631CCD-C7C0-43A0-BA46-F1B1AB1DEEB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28631CCD-C7C0-43A0-BA46-F1B1AB1DEEB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

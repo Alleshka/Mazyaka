@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Maze.Common.MazaPackages\Maze.Common.MazaPackages.csproj" />
+    <ProjectReference Include="..\Maze.Common.Model\Maze.Common.Model.csproj" />
   </ItemGroup>
 
 </Project>
