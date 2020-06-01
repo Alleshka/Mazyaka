@@ -64,7 +64,7 @@ namespace Maze.Server.Core
 
         private IMazePackageParser CreateParser()
         {
-            return new SimpleMazePackageParser();
+            return new JsonCompressedMazePackageParser();
         }
 
         private IMazePackageHandler CreateChain()

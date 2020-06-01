@@ -14,7 +14,7 @@ namespace ConsoleClient
             var localPort = 1444;
             var remotePort = 1433;
 
-            using (var sender = new MazeUdpDataExchange(localPort, new SimpleMazePackageParser(), (message, remoteIp, messageSender) =>
+            using (var sender = new MazeUdpDataExchange(localPort, new JsonCompressedMazePackageParser(), (message, remoteIp, messageSender) =>
              {
                  Console.WriteLine($"Message from server ({remoteIp.Address}:{remoteIp.Port}): {message.ToString()}");
              }))
