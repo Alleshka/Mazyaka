@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B25AD9D3-5FC3-49AC-BDFF-E09DA713FD96}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>ConsoleClient</RootNamespace>
-    <AssemblyName>ConsoleClient</AssemblyName>
+    <ProjectGuid>{214EBA03-823D-4E32-A073-A9F7FAF96BC4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Maze.Common.UdpDataExchange</RootNamespace>
+    <AssemblyName>Maze.Common.UdpDataExchange</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,20 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="MazeUdpDataExchange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj">
-      <Project>{483A96EC-B937-4CA1-B214-D7509A8E6D10}</Project>
+      <Project>{483a96ec-b937-4ca1-b214-d7509a8e6d10}</Project>
       <Name>Maze.Common.MazePackages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Maze.Common.UdpDataExchange\Maze.Common.UdpDataExchange.csproj">
-      <Project>{214EBA03-823D-4E32-A073-A9F7FAF96BC4}</Project>
-      <Name>Maze.Common.UdpDataExchange</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
