@@ -23,7 +23,7 @@ namespace Maze.Server.Core.PackageHandlerChain
         /// Обработка пакета
         /// </summary>
         /// <param name="package">Обрабатываемый пакет</param>
-        public void HandlePackage(IMazePackage package);
+        void HandlePackage(IMazePackage package);
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ namespace Maze.Server.Core.PackageHandlerChain
         /// <returns></returns>
         protected virtual bool IsHandable(IMazePackage package)
         {
-            return package.TypeName == (typeof(T)).ToString().Split(".").Last();
+            return package.TypeName == (typeof(T)).ToString().Split('.').Last();
         }
     }
 }

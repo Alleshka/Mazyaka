@@ -1,8 +1,4 @@
-﻿using Maze.Common.MazaPackages;
-using Maze.Common.MazaPackages.Packages;
-using Maze.Common.MazaPackages.Parsers;
-using Maze.Server.Core;
-using Maze.Server.UdpServer;
+﻿using Maze.Server.Core;
 using System;
 
 namespace ConsoleServer
