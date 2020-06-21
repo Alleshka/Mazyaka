@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "ConsoleCli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleServer", "ConsoleServer\ConsoleServer.csproj", "{6A0D896C-D2C1-4320-8AE2-985B04530A38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService", "Maze.Server.MazeService\Maze.Server.MazeService.csproj", "{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.LoginService", "Maze.Server.MazeService.LoginService\Maze.Server.MazeService.LoginService.csproj", "{F60A2B06-90DC-45D7-8A84-AB556C0C7985}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{6A0D896C-D2C1-4320-8AE2-985B04530A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A0D896C-D2C1-4320-8AE2-985B04530A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A0D896C-D2C1-4320-8AE2-985B04530A38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

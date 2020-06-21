@@ -28,6 +28,7 @@ namespace Maze.Common.MazaPackages
         }
 
         public string TypeName => (this.GetType().ToString()).Split('.').Last();
+        public string SecurityToken { get; set; }
 
         public override string ToString() => JsonConvert.SerializeObject(this);
     }

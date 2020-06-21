@@ -58,6 +58,7 @@ namespace Maze.Server.Core
         protected void ReceiveMessage(IMazePackage package, IPEndPoint endPoint, MazeUdpDataExchange sender)
         {
             // TODO: Добавлять пакеты в коллекцию, а обрабатывать их уже по ходу
+            // TODO: 
             _chain.HandlePackage(package);
         }
 
