@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Maze.Common.MazaPackages
+namespace Maze.Common.MazePackages
 {
     /// <summary>
     /// Базовый интерфейс пакета для передачи через TCP

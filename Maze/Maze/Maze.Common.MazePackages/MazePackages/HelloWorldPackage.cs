@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Maze.Common.MazaPackages.Packages
+namespace Maze.Common.MazePackages.MazePackages
 {
     /// <summary>
     /// Просто тестовый пакет

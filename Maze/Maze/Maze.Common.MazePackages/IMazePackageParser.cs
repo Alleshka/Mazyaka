@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Maze.Common.MazaPackages
+namespace Maze.Common.MazePackages
 {
     /// <summary>
     /// Интерфейс парсера пакетов

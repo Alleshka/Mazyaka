@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Maze.Common.MazaPackages.Parsers
+namespace Maze.Common.MazePackages.Parsers
 {
     /// <summary>
     /// Базовый парсер пакетов
@@ -14,7 +14,7 @@ namespace Maze.Common.MazaPackages.Parsers
         /// <summary>
         /// Имя сборки в пакетах. Используется для восстановления типа.
         /// </summary>
-        private const string ASSEMBLY_NAME = "Maze.Common.MazaPackages.Packages";
+        private const string ASSEMBLY_NAME = "Maze.Common.MazePackages.MazePackages";
 
         /// <summary>
         /// Имя поля, в котором лежит тип

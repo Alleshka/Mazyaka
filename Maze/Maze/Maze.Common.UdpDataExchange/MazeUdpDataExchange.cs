@@ -1,4 +1,4 @@
-﻿using Maze.Common.MazaPackages;
+﻿using Maze.Common.MazePackages;
 using System;
 using System.Net;
 using System.Net.Sockets;

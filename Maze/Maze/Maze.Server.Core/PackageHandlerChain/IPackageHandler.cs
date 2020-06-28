@@ -1,5 +1,5 @@
-﻿using Maze.Common.MazaPackages;
-using Maze.Common.MazaPackages.Packages;
+﻿using Maze.Common.MazePackages;
+using Maze.Common.MazePackages.MazePackages;
 using Maze.Server.Commands;
 using System;
 using System.Collections.Generic;

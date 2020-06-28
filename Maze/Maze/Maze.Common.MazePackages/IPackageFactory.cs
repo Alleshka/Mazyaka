@@ -1,9 +1,9 @@
-﻿using Maze.Common.MazaPackages.Packages;
+﻿using Maze.Common.MazePackages.MazePackages;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Maze.Common.MazaPackages
+namespace Maze.Common.MazePackages
 {
     /// <summary>
     /// Фабрика пакетов для того, чтобы скрыть все пакеты от лишних взаимодействий

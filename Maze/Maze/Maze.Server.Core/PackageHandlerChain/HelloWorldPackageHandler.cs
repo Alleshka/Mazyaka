@@ -1,4 +1,4 @@
-﻿using Maze.Common.MazaPackages.Packages;
+﻿using Maze.Common.MazePackages.MazePackages;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -5,7 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace Maze.Common.MazaPackages.Parsers
+namespace Maze.Common.MazePackages.Parsers
 {
     public class JsonCompressedMazePackageParser : JsonMazePackageParser
     {
