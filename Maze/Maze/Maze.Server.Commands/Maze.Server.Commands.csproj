@@ -41,8 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ExceptionCommand.cs" />
+    <Compile Include="Commands\LoginCommand.cs" />
     <Compile Include="IMazeServerCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj">
+      <Project>{483A96EC-B937-4CA1-B214-D7509A8E6D10}</Project>
+      <Name>Maze.Common.MazePackages</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

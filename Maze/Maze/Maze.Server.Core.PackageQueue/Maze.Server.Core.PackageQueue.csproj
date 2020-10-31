@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FB03A589-3CD2-45A1-946E-4644A15DB8AC}</ProjectGuid>
+    <ProjectGuid>{884C4AB4-A95B-4632-90FF-0A962E7C2C41}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Maze.Common.Model</RootNamespace>
-    <AssemblyName>Maze.Common.Model</AssemblyName>
+    <RootNamespace>Maze.Server.Core.PackageQueue</RootNamespace>
+    <AssemblyName>Maze.Server.Core.PackageQueue</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,10 +41,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseMazeObject.cs" />
-    <Compile Include="MazeUser.cs" />
-    <Compile Include="MazeUserRole.cs" />
+    <Compile Include="IMazePackageQueueItem.cs" />
+    <Compile Include="IMazePackageQueue.cs" />
+    <Compile Include="IQueueHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj">
+      <Project>{483a96ec-b937-4ca1-b214-d7509a8e6d10}</Project>
+      <Name>Maze.Common.MazePackages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Maze.Common.Model\Maze.Common.Model.csproj">
+      <Project>{FB03A589-3CD2-45A1-946E-4644A15DB8AC}</Project>
+      <Name>Maze.Common.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Maze.Common\Maze.Common.csproj">
+      <Project>{d26c5bb2-e5a0-4eef-9842-0c9cc7b32381}</Project>
+      <Name>Maze.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Maze.Server.Core.Access\Maze.Server.Core.Access.csproj">
+      <Project>{5f3e93c9-a577-476c-91e2-3959a127a60f}</Project>
+      <Name>Maze.Server.Core.Access</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Maze.Server.Core.SessionStorage\Maze.Server.Core.SessionStorage.csproj">
+      <Project>{34FD6B4F-6A38-42D0-948E-4665C7214279}</Project>
+      <Name>Maze.Server.Core.SessionStorage</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

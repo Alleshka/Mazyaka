@@ -10,6 +10,5 @@ namespace Maze.Common.MazePackages.MazePackages
     internal class HelloWorldPackage : BaseMazePackage
     {
         public string Message = "HelloWorld";
-
     }
 }

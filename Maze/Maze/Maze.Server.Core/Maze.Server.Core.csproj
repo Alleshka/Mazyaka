@@ -41,13 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandFactory\SimpleCommandFactory.cs" />
+    <Compile Include="Executor\IMazePackageExecutor.cs" />
+    <Compile Include="Executor\SimpleMazePackageExecutor.cs" />
     <Compile Include="IMazeServer.cs" />
-    <Compile Include="PackageHandlerChain\HelloWorldPackageHandler.cs" />
-    <Compile Include="PackageHandlerChain\IPackageHandler.cs" />
-    <Compile Include="PackageHandlerChain\LoginPackageHandler.cs" />
-    <Compile Include="PackageHandlerChain\PackageChainHandlerBuilder.cs" />
+    <Compile Include="CommandFactory\PackageHandlerChain\HelloWorldPackageHandler.cs" />
+    <Compile Include="CommandFactory\PackageHandlerChain\IPackageHandler.cs" />
+    <Compile Include="CommandFactory\PackageHandlerChain\LoginPackageHandler.cs" />
+    <Compile Include="CommandFactory\PackageHandlerChain\PackageChainHandlerBuilder.cs" />
+    <Compile Include="PackageQueue\IMazePackageQueue.cs" />
+    <Compile Include="PackageQueue\IMazePackageQueueItem.cs" />
+    <Compile Include="PackageQueue\IQueueHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceStorage\IMazeServiceStorage.cs" />
     <Compile Include="ServiceStorage\SimpleMazeServiceStorage.cs" />
     <Compile Include="SimpleMazeServer.cs" />
   </ItemGroup>
@@ -64,9 +69,21 @@
       <Project>{214EBA03-823D-4E32-A073-A9F7FAF96BC4}</Project>
       <Name>Maze.Common.UdpDataExchange</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Maze.Common\Maze.Common.csproj">
+      <Project>{d26c5bb2-e5a0-4eef-9842-0c9cc7b32381}</Project>
+      <Name>Maze.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Maze.Server.Commands\Maze.Server.Commands.csproj">
       <Project>{CFBE6464-1711-4AC6-95B2-401F7D3510A4}</Project>
       <Name>Maze.Server.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Maze.Server.Core.Access\Maze.Server.Core.Access.csproj">
+      <Project>{5F3E93C9-A577-476C-91E2-3959A127A60F}</Project>
+      <Name>Maze.Server.Core.Access</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Maze.Server.Core.SessionStorage\Maze.Server.Core.SessionStorage.csproj">
+      <Project>{34FD6B4F-6A38-42D0-948E-4665C7214279}</Project>
+      <Name>Maze.Server.Core.SessionStorage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Maze.Server.MazeService\Maze.Server.MazeService.csproj">
       <Project>{17d5c061-9577-4f7a-866e-9b95fc5ee0e7}</Project>

@@ -14,16 +14,17 @@ namespace Maze.Common.MazePackages
     public interface IMazePackage
     {
         string TypeName { get; }
+        string SecurityToken { get; set; }
     }
-
 
     /// <summary>
     /// Базовый класс пакета
     /// </summary>
-    public abstract class BaseMazePackage : BaseMazeObject, IMazePackage
+    internal abstract class BaseMazePackage : BaseMazeObject, IMazePackage
     {
-        public BaseMazePackage()
+        protected internal BaseMazePackage()
         {
+
 
         }
 

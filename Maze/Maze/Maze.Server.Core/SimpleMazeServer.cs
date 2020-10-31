@@ -2,6 +2,7 @@
 using Maze.Common.MazePackages.Parsers;
 using Maze.Server.Commands;
 using Maze.Server.Core.PackageHandlerChain;
+using Maze.Server.Core.PackageQueue;
 using Maze.Server.UdpServer;
 using System;
 using System.Collections.Generic;
@@ -14,17 +15,13 @@ namespace Maze.Server.Core
     public class SimpleMazeServer : IMazeServer
     {
         // Очередь команд к исполнению
-        private Queue<IMazeServerCommand> _commands;
+        private IMazePackageQueueHandler _queue;
 
         private MazeUdpDataExchange _dataExchanger;
 
-        // Цепочка обязанностей
-        private IMazePackageHandler _chain;
-
         private SimpleMazeServer()
         {
-            _commands = new Queue<IMazeServerCommand>();
-            _chain = CreateChain();
+            _queue = new SimpleMazePackageQueueHandler();
         }
 
         private static SimpleMazeServer _instance;
@@ -36,11 +33,6 @@ namespace Maze.Server.Core
             }
         }
 
-        public void AddCommand(IMazeServerCommand command)
-        {
-            _commands.Enqueue(command);
-        }
-
         public void Start(int port)
         {
             if (_dataExchanger == null)
@@ -48,18 +40,18 @@ namespace Maze.Server.Core
                 _dataExchanger = new MazeUdpDataExchange(port, CreateParser(), ReceiveMessage);
             }
             _dataExchanger.Start();
+            _queue.Start();
         }
 
         public void Stop()
         {
+            _queue.Stop();
             _dataExchanger.Stop();
         }
 
         protected void ReceiveMessage(IMazePackage package, IPEndPoint endPoint, MazeUdpDataExchange sender)
         {
-            // TODO: Добавлять пакеты в коллекцию, а обрабатывать их уже по ходу
-            // TODO: 
-            _chain.HandlePackage(package);
+            _queue.AddPackage(package);
         }
 
 
@@ -68,12 +60,9 @@ namespace Maze.Server.Core
             return new JsonCompressedMazePackageParser();
         }
 
-        private IMazePackageHandler CreateChain()
+        private void ConfigureServices()
         {
-            var builder = new PackageChainHandlerBuilder();
-            builder.AddChain(new LoginPackageHandler());
-            builder.AddChain(new HelloWorldPackageHandler());
-            return builder.Head;
+
         }
     }
 }

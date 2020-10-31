@@ -10,5 +10,6 @@ namespace Maze.Common.Model
     {
         public string Login { get; set; }
         public string Password { get; set; }
+        public MazeUserRole Role { get; set; }
     }
 }

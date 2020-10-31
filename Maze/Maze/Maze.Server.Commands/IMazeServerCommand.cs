@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Maze.Common.MazePackages;
+using System;
+using System.Threading;
 
 namespace Maze.Server.Commands
 {
@@ -7,6 +9,13 @@ namespace Maze.Server.Commands
     /// </summary>
     public interface IMazeServerCommand
     {
-        void Execute();
+        IMazePackage Execute();
+    }
+
+    public abstract class BaseCommand : IMazeServerCommand
+    {
+        protected IPackageFactory PackageFactory { get => SimplePackageFactory.GetInstance(); }
+
+        public abstract IMazePackage Execute();
     }
 }

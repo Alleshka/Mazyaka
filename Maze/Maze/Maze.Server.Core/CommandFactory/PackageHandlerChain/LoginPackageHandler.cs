@@ -1,4 +1,6 @@
 ﻿using Maze.Common.MazePackages.MazePackages;
+using Maze.Server.Commands;
+using Maze.Server.Commands.Commands;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,9 +12,9 @@ namespace Maze.Server.Core.PackageHandlerChain
     /// </summary>
     internal class LoginPackageHandler : BasePackageHandler<LoginMazePackage>
     {
-        protected override void Handle(LoginMazePackage package)
+        protected override IMazeServerCommand Handle(LoginMazePackage package)
         {
-            Console.WriteLine(package.ToString());
+            return new LoginCommand(package.Login, package.Password);
         }
     }
 }

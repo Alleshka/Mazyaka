@@ -30,5 +30,10 @@ namespace Maze.Server.Core.ServiceStorage
         {
             return GetService(typeof(T));
         }
+
+        private static void AddService<T>(IMazeService service)
+        {
+            AddService(typeof(T), service);
+        }
     }
 }

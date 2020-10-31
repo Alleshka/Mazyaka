@@ -1,6 +1,8 @@
 ﻿using Maze.Common.MazePackages;
 using Maze.Common.MazePackages.MazePackages;
 using Maze.Server.Commands;
+using Maze.Server.Commands.Commands;
+using Maze.Server.Core.ServiceStorage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,7 @@ namespace Maze.Server.Core.PackageHandlerChain
         /// Обработка пакета
         /// </summary>
         /// <param name="package">Обрабатываемый пакет</param>
-        void HandlePackage(IMazePackage package);
+        IMazeServerCommand HandlePackage(IMazePackage package);
     }
 
     /// <summary>
@@ -38,17 +40,17 @@ namespace Maze.Server.Core.PackageHandlerChain
         /// Типизированная обработка пакета
         /// </summary>
         /// <param name="package">Обрабатываемый пакет</param>
-        protected abstract void Handle(T package);
+        protected abstract IMazeServerCommand Handle(T package);
 
-        public void HandlePackage(IMazePackage package)
+        public IMazeServerCommand HandlePackage(IMazePackage package)
         {
             if (IsHandable(package))
             {
-                Handle(package as T);
+                return Handle(package as T);
             }
             else
             {
-                GoNext(package);
+                return GoNext(package);
             }
         }
 
@@ -56,13 +58,13 @@ namespace Maze.Server.Core.PackageHandlerChain
         /// Переход к следующему элементу цепочки
         /// </summary>
         /// <param name="package"></param>
-        private void GoNext(IMazePackage package)
+        private IMazeServerCommand GoNext(IMazePackage package)
         {
             if (NextHandler != null)
             {
-                NextHandler.HandlePackage(package);
+                return NextHandler.HandlePackage(package);
             }
-            else throw new Exception("Неизвестный пакет");
+            else return new ExceptionCommand($"Неизвестный пакет {package.TypeName} {Environment.NewLine} {package}");
         }
 
         /// <summary>

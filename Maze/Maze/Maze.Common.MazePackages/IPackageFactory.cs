@@ -12,10 +12,19 @@ namespace Maze.Common.MazePackages
     {
         IMazePackage LoginPackage(string login, string password);
         IMazePackage HelloWorldPackage();
+        IMazePackage HasNotAccessPackage();
+        IMazePackage ExceptionPackage(string message);
     }
 
     public class SimplePackageFactory : IPackageFactory
     {
+        private static SimplePackageFactory _simplePackageFactory = null;
+        public static IPackageFactory GetInstance()
+        {
+            if (_simplePackageFactory == null) _simplePackageFactory = new SimplePackageFactory();
+            return _simplePackageFactory;
+        }
+
         public IMazePackage LoginPackage(string login, string password)
         {
             return new LoginMazePackage()
@@ -28,6 +37,16 @@ namespace Maze.Common.MazePackages
         public IMazePackage HelloWorldPackage()
         {
             return new HelloWorldPackage();
+        }
+
+        public IMazePackage HasNotAccessPackage()
+        {
+            return new HasNotAccessPackage();
+        }
+
+        public IMazePackage ExceptionPackage(string message)
+        {
+            return new ExceptionPackage(message);
         }
     }
 

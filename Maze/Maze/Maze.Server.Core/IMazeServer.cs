@@ -20,11 +20,5 @@ namespace Maze.Server.Core
         /// Остановка сервера
         /// </summary>
         void Stop();
-
-        /// <summary>
-        /// Добавить команду в очередь
-        /// </summary>
-        /// <param name="command"></param>
-        void AddCommand(IMazeServerCommand command);
     }
 }

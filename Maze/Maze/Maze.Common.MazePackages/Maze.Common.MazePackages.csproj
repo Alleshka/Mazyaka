@@ -47,6 +47,8 @@
     <Compile Include="IMazePackage.cs" />
     <Compile Include="IMazePackageParser.cs" />
     <Compile Include="IPackageFactory.cs" />
+    <Compile Include="MazePackages\ExceptionPackage.cs" />
+    <Compile Include="MazePackages\HasNotAccessPackage.cs" />
     <Compile Include="MazePackages\HelloWorldPackage.cs" />
     <Compile Include="MazePackages\LoginMazePackage.cs" />
     <Compile Include="Parsers\JsonCompressedMazePackageParser.cs" />
