@@ -13,6 +13,8 @@ namespace ConsoleClient
             var localPort = 1444;
             var remotePort = 1433;
 
+            string ip = "127.0.0.1";
+
             using (var sender = new MazeUdpDataExchange(localPort, new JsonCompressedMazePackageParser(), (message, remoteIp, messageSender) =>
              {
                  Console.WriteLine($"Message from server ({remoteIp.Address}:{remoteIp.Port}): {message.ToString()}");
@@ -22,25 +24,43 @@ namespace ConsoleClient
 
                 while (true)
                 {
-                    Console.WriteLine("enter number");
-                    Console.WriteLine("1 - LoginCommand");
-                    Console.WriteLine("2 - HelloWorldCommand");
+
+                    Console.WriteLine("1 - CreateUser");
+                    Console.WriteLine("2 - Login");
+                    Console.WriteLine("3 - Logout");
 
                     if (int.TryParse(Console.ReadLine(), out int text))
                     {
+                        IMazePackage package = null;
                         switch (text)
                         {
                             case 1:
                                 {
-                                    sender.SendMessage(packageFactory.LoginPackage("alleshka", "123qwe"), "127.0.0.1", remotePort);
+                                    Console.WriteLine("Login");
+                                    var login = Console.ReadLine();
+                                    package = packageFactory.CreateUser(login);
                                     break;
                                 }
                             case 2:
                                 {
-                                    sender.SendMessage(packageFactory.HelloWorldPackage(), "127.0.0.1", remotePort);
+                                    Console.WriteLine("Login");
+                                    var login = Console.ReadLine();
+                                    package = packageFactory.LoginPackage(login, string.Empty);
+                                    break;
+                                }
+                            case 3:
+                                {
+                                    Console.WriteLine("Token");
+                                    var token = Console.ReadLine();
+                                    package = packageFactory.LogoutPackage(token);
+                                    package.SecurityToken = token;
                                     break;
                                 }
                         }
+
+                        Console.WriteLine("Отправляемый пакет: " + package.ToString());
+                        sender.SendMessage(package, ip, remotePort);
+
                     }
                 }
             }

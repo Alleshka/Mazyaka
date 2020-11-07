@@ -31,4 +31,9 @@ namespace Maze.Common.MazePackages.MazePackages
             this.Password = password;
         }
     }
+
+    internal class LoginAnswerMazePackage : BaseMazePackage
+    {
+        public String UserToken { get; set; }
+    }
 }

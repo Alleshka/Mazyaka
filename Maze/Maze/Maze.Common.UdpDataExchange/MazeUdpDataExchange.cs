@@ -87,7 +87,7 @@ namespace Maze.Server.UdpServer
             {
                 IPEndPoint remoteIp = null;
                 var data = _client.Receive(ref remoteIp);
-                // LogMessage(data, remoteIp);
+                LogMessage(data, remoteIp);
 
                 /// Вызываем действия, срабатываемые при получении сообщения
                 _onReceiveMessage?.Invoke(_packageParser.GetPackage(data), remoteIp, this);
@@ -96,7 +96,7 @@ namespace Maze.Server.UdpServer
 
         protected virtual void LogMessage(byte[] data, IPEndPoint endPoint)
         {
-            Console.WriteLine($"{DateTime.Now.ToShortTimeString()}: Received Message ({data.Length} bytes)");
+            // Console.WriteLine($"{DateTime.Now.ToShortTimeString()}: Received Message ({data.Length} bytes)");
         }
 
         public void Dispose()

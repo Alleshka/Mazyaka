@@ -2,7 +2,9 @@
 using Maze.Server.Core.Access;
 using Maze.Server.Core.Executor;
 using Maze.Server.Core.SessionStorage;
+using Maze.Server.Core.Validation;
 using System;
+using System.Net;
 using System.Threading;
 
 namespace Maze.Server.Core.PackageQueue
@@ -12,29 +14,30 @@ namespace Maze.Server.Core.PackageQueue
         void Start();
         void Stop();
 
-        void AddPackage(IMazePackage mazePackage);
+        void AddPackage(IMazePackage mazePackage, IPEndPoint endPoint);
     }
 
     public class SimpleMazePackageQueueHandler : IMazePackageQueueHandler
     {
         private IMazePackageQueue _mazePackageQueue;
-        private IAccessList _accessList;
-        private ISessionStorage _sessionStorage;
+
         private IMazePackageExecutor _mazePackageExecutor;
+        private IAccessValidator _accessValidator;
 
         private bool _isStopped;
 
         public SimpleMazePackageQueueHandler()
         {
             _mazePackageQueue = new SimpleMazePackageQueue();
-            _accessList = new SimpleAccessList();
-            _sessionStorage = new DumpSessionStorage();
+
             _mazePackageExecutor = new SimpleMazePackageExecutor();
+
+            _accessValidator = new MazePackageValidator();
         }
 
-        public void AddPackage(IMazePackage mazePackage)
+        public void AddPackage(IMazePackage mazePackage, IPEndPoint endPoint)
         {
-            _mazePackageQueue.Add(mazePackage);
+            _mazePackageQueue.Add(mazePackage, endPoint);
         }
 
         public void Start()
@@ -53,20 +56,14 @@ namespace Maze.Server.Core.PackageQueue
         {
             while (!_isStopped)
             {
-                var package = _mazePackageQueue.GetPackage();
-                if (package != null)
+                var item = _mazePackageQueue.GetItem();
+                if (item != null)
                 {
-                    var role = _sessionStorage.GetUserRoleOrNull(package.SecurityToken);
+                    var package = item.MazePackage;
+                    Console.WriteLine("Received message" + package);
 
-                    // TODO: Передача валидатору
-                    var hasAccess = _accessList.HasAccess(package, role);
-
-                    if (!hasAccess)
-                    {
-                        package = SimplePackageFactory.GetInstance().HasNotAccessPackage();
-                    }
-
-                    _mazePackageExecutor.Execute(package);
+                    package = _accessValidator.Validate(package, DumpSessionStorage.Instance.GetUserRoleOrNull(package.SecurityToken));
+                    _mazePackageExecutor.Execute(package, item.EndPoint);
                 }
                 else
                 {

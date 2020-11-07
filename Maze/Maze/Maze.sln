@@ -17,15 +17,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "ConsoleCli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleServer", "ConsoleServer\ConsoleServer.csproj", "{6A0D896C-D2C1-4320-8AE2-985B04530A38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService", "Maze.Server.MazeService\Maze.Server.MazeService.csproj", "{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.LoginService", "Maze.Server.MazeService.LoginService\Maze.Server.MazeService.LoginService.csproj", "{F60A2B06-90DC-45D7-8A84-AB556C0C7985}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Common", "Maze.Common\Maze.Common.csproj", "{D26C5BB2-E5A0-4EEF-9842-0C9CC7B32381}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.Core.Access", "Maze.Server.Core.Access\Maze.Server.Core.Access.csproj", "{5F3E93C9-A577-476C-91E2-3959A127A60F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.Core.SessionStorage", "Maze.Server.Core.SessionStorage\Maze.Server.Core.SessionStorage.csproj", "{34FD6B4F-6A38-42D0-948E-4665C7214279}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.LoginService", "Maze.Server.MazeService.LoginService\Maze.Server.MazeService.LoginService.csproj", "{F60A2B06-90DC-45D7-8A84-AB556C0C7985}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService", "Maze.Server.MazeService\Maze.Server.MazeService.csproj", "{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,14 +61,6 @@ Global
 		{6A0D896C-D2C1-4320-8AE2-985B04530A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A0D896C-D2C1-4320-8AE2-985B04530A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A0D896C-D2C1-4320-8AE2-985B04530A38}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D26C5BB2-E5A0-4EEF-9842-0C9CC7B32381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D26C5BB2-E5A0-4EEF-9842-0C9CC7B32381}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D26C5BB2-E5A0-4EEF-9842-0C9CC7B32381}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +73,14 @@ Global
 		{34FD6B4F-6A38-42D0-948E-4665C7214279}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34FD6B4F-6A38-42D0-948E-4665C7214279}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34FD6B4F-6A38-42D0-948E-4665C7214279}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

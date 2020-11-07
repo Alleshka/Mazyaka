@@ -41,20 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandFactory\SimpleCommandFactory.cs" />
     <Compile Include="Executor\IMazePackageExecutor.cs" />
     <Compile Include="Executor\SimpleMazePackageExecutor.cs" />
     <Compile Include="IMazeServer.cs" />
-    <Compile Include="CommandFactory\PackageHandlerChain\HelloWorldPackageHandler.cs" />
-    <Compile Include="CommandFactory\PackageHandlerChain\IPackageHandler.cs" />
-    <Compile Include="CommandFactory\PackageHandlerChain\LoginPackageHandler.cs" />
-    <Compile Include="CommandFactory\PackageHandlerChain\PackageChainHandlerBuilder.cs" />
     <Compile Include="PackageQueue\IMazePackageQueue.cs" />
     <Compile Include="PackageQueue\IMazePackageQueueItem.cs" />
     <Compile Include="PackageQueue\IQueueHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceStorage\SimpleMazeServiceStorage.cs" />
     <Compile Include="SimpleMazeServer.cs" />
+    <Compile Include="Validation\IAccessValidator.cs" />
+    <Compile Include="Validation\MazePackageValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj">
@@ -86,7 +83,7 @@
       <Name>Maze.Server.Core.SessionStorage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Maze.Server.MazeService\Maze.Server.MazeService.csproj">
-      <Project>{17d5c061-9577-4f7a-866e-9b95fc5ee0e7}</Project>
+      <Project>{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}</Project>
       <Name>Maze.Server.MazeService</Name>
     </ProjectReference>
   </ItemGroup>

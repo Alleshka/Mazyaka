@@ -2,7 +2,8 @@
 using Maze.Common.MazePackages.MazePackages;
 using Maze.Server.Commands;
 using Maze.Server.Commands.Commands;
-using Maze.Server.Core.ServiceStorage;
+using Maze.Server.Core.Repositories;
+using Maze.Server.Core.SessionStorage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,15 @@ namespace Maze.Server.Core.PackageHandlerChain
     /// <typeparam name="T">Обрабатываемой элементом пакет</typeparam>
     internal abstract class BasePackageHandler<T> : IMazePackageHandler where T : class, IMazePackage
     {
+        protected ISessionStorage SessionStorage;
+        protected IUserRepository UserRepository;
+
+        public BasePackageHandler(ISessionStorage sessionStorage, IUserRepository userRepository)
+        {
+            SessionStorage = sessionStorage;
+            UserRepository = userRepository;
+        }
+
         public IMazePackageHandler NextHandler { get; set; }
 
         /// <summary>

@@ -18,6 +18,10 @@ namespace Maze.Server.Core
         private IMazePackageQueueHandler _queue;
 
         private MazeUdpDataExchange _dataExchanger;
+        public MazeUdpDataExchange DataExchanger
+        {
+            get => _dataExchanger;
+        }
 
         private SimpleMazeServer()
         {
@@ -51,7 +55,7 @@ namespace Maze.Server.Core
 
         protected void ReceiveMessage(IMazePackage package, IPEndPoint endPoint, MazeUdpDataExchange sender)
         {
-            _queue.AddPackage(package);
+            _queue.AddPackage(package, endPoint);
         }
 
 

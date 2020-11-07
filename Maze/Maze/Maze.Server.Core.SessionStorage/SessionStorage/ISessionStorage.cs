@@ -9,16 +9,13 @@ namespace Maze.Server.Core.SessionStorage
 {
     public interface ISessionStorage
     {
-        /// <summary>
-        /// Добавляет пользователя в сессию и возвращает его ключ
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
         string AddUserSession(MazeUser user);
 
         MazeUser GetUserByLoginOrNull(string userLogin);
         MazeUser GetUserByTokenOrNull(string userToken);
 
         MazeUserRole GetUserRoleOrNull(string userToken);
+
+        void DeleteSession(string userToken);
     }
 }

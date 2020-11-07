@@ -10,7 +10,14 @@ namespace Maze.Common.MazePackages
     /// </summary>
     public interface IPackageFactory
     {
+        IMazePackage CreateUser(string userLogin);
+        IMazePackage CreateUserAnswer(Guid userID);
+
         IMazePackage LoginPackage(string login, string password);
+        IMazePackage LoginAnswerPackage(string userToken);
+
+        IMazePackage LogoutPackage(string userToken);
+
         IMazePackage HelloWorldPackage();
         IMazePackage HasNotAccessPackage();
         IMazePackage ExceptionPackage(string message);
@@ -47,6 +54,38 @@ namespace Maze.Common.MazePackages
         public IMazePackage ExceptionPackage(string message)
         {
             return new ExceptionPackage(message);
+        }
+
+        public IMazePackage LogoutPackage(string userToken)
+        {
+            return new LogoutMazePackage()
+            {
+                UserToken = userToken
+            };
+        }
+
+        public IMazePackage CreateUser(string userLogin)
+        {
+            return new CreateUserPackage()
+            {
+                UserLogin = userLogin
+            };
+        }
+
+        public IMazePackage CreateUserAnswer(Guid userID)
+        {
+            return new CreateUserAnswerPackage()
+            {
+                UserID = userID
+            };
+        }
+
+        public IMazePackage LoginAnswerPackage(string userToken)
+        {
+            return new LoginAnswerMazePackage()
+            {
+                UserToken = userToken
+            };
         }
     }
 

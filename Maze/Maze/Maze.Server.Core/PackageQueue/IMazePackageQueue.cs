@@ -3,6 +3,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,18 +16,18 @@ namespace Maze.Server.Core.PackageQueue
         /// </summary>
         /// <param name="package"></param>
         /// <returns></returns>
-        void Add(IMazePackage package);
+        void Add(IMazePackage package, IPEndPoint endPoint);
 
         /// <summary>
         /// Получает наиболее подходящий пакет
         /// </summary>
         /// <returns></returns>
-        IMazePackage GetPackage();
+        IMazePackageQueueItem GetItem();
 
         Int32 Count { get; }
     }
 
-    internal class SimpleMazePackageQueue : IMazePackageQueue
+    public class SimpleMazePackageQueue : IMazePackageQueue
     {
         private ConcurrentQueue<IMazePackageQueueItem> _mazePackageQueueItems;
 
@@ -37,12 +38,12 @@ namespace Maze.Server.Core.PackageQueue
 
         public int Count => _mazePackageQueueItems.Count;
 
-        public void Add(IMazePackage package)
+        public void Add(IMazePackage package, IPEndPoint endPoint)
         {
-            _mazePackageQueueItems.Enqueue(new SimpleMazePackageQueueItem(package));
+            _mazePackageQueueItems.Enqueue(new SimpleMazePackageQueueItem(package, endPoint));
         }
 
-        public IMazePackage GetPackage()
+        public IMazePackageQueueItem GetItem()
         {
             if (Count > 0)
             {
@@ -51,7 +52,7 @@ namespace Maze.Server.Core.PackageQueue
                 {
                     if (Count == 0 && result == null) return null;
                 };
-                return result.MazePackage;
+                return result;
             }
             else return null;
         }
