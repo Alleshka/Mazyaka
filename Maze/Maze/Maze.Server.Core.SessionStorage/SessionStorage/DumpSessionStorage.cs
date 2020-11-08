@@ -13,16 +13,7 @@ namespace Maze.Server.Core.SessionStorage
         private IList<string> roles = Constants.Roles.ALL.ToList();
         private Dictionary<string, MazeUser> _sessions = new Dictionary<string, MazeUser>();
 
-        private static DumpSessionStorage _instance;
-        public static DumpSessionStorage Instance
-        {
-            get
-            {
-                return _instance ?? (_instance = new DumpSessionStorage());
-            }
-        }
-
-        private DumpSessionStorage()
+        public DumpSessionStorage()
         {
 
         }
@@ -42,11 +33,6 @@ namespace Maze.Server.Core.SessionStorage
         {
             _sessions.Remove(userToken);
             Console.WriteLine(this);
-        }
-
-        public MazeUser GetUserByLoginOrNull(string userLogin)
-        {
-            return _sessions.Values.FirstOrDefault(x => x.Login == userLogin);
         }
 
         public MazeUser GetUserByTokenOrNull(string userToken)

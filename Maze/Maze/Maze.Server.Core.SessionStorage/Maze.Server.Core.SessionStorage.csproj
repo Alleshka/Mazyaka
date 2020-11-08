@@ -54,6 +54,10 @@
       <Project>{D26C5BB2-E5A0-4EEF-9842-0C9CC7B32381}</Project>
       <Name>Maze.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Maze.Server.MazeService\Maze.Server.MazeService.csproj">
+      <Project>{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}</Project>
+      <Name>Maze.Server.MazeService</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

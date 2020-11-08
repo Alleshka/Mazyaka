@@ -38,21 +38,21 @@ namespace ConsoleClient
                                 {
                                     Console.WriteLine("Login");
                                     var login = Console.ReadLine();
-                                    package = packageFactory.CreateUser(login);
+                                    package = packageFactory.RegisterUserRequest(login);
                                     break;
                                 }
                             case 2:
                                 {
                                     Console.WriteLine("Login");
                                     var login = Console.ReadLine();
-                                    package = packageFactory.LoginPackage(login, string.Empty);
+                                    package = packageFactory.LoginUserRequest(login, string.Empty);
                                     break;
                                 }
                             case 3:
                                 {
                                     Console.WriteLine("Token");
                                     var token = Console.ReadLine();
-                                    package = packageFactory.LogoutPackage(token);
+                                    package = packageFactory.LogountUserRequest(token);
                                     package.SecurityToken = token;
                                     break;
                                 }

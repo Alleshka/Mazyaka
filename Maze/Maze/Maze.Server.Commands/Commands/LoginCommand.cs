@@ -14,12 +14,12 @@ namespace Maze.Server.Commands.Commands
     class LoginCommand : BaseCommand
     {
         private ISessionStorage _sessionStorage;
-        private IUserRepository _userRepository;
+        private IUserService _userRepository;
 
         private string _userLogin;
 
 
-        public LoginCommand(ISessionStorage sessionStorage, IUserRepository userRepository, string userLogin)
+        public LoginCommand(ISessionStorage sessionStorage, IUserService userRepository, string userLogin)
         {
             _sessionStorage = sessionStorage;
             _userRepository = userRepository;
@@ -29,11 +29,11 @@ namespace Maze.Server.Commands.Commands
         public override IMazePackage Execute()
         {
             var user = _userRepository.GetUserByLogin(_userLogin);
-            if (user == null) return PackageFactory.ExceptionPackage("Пользователь не найден");
+            if (user == null) return PackageFactory.ExceptionMessageResponse("Пользователь не найден");
             else
             {
                 var token = _sessionStorage.AddUserSession(user);
-                return PackageFactory.LoginAnswerPackage(token);
+                return PackageFactory.LoginUserResponse(token);
             }
         }
     }

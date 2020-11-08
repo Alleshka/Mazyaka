@@ -1,6 +1,7 @@
 ﻿using Maze.Common.MazePackages;
 using Maze.Server.Core.Access;
 using Maze.Server.Core.Executor;
+using Maze.Server.Core.ServiceStorage;
 using Maze.Server.Core.SessionStorage;
 using Maze.Server.Core.Validation;
 using System;
@@ -62,7 +63,7 @@ namespace Maze.Server.Core.PackageQueue
                     var package = item.MazePackage;
                     Console.WriteLine("Received message" + package);
 
-                    package = _accessValidator.Validate(package, DumpSessionStorage.Instance.GetUserRoleOrNull(package.SecurityToken));
+                    package = _accessValidator.Validate(package, MazeServiceStorage.Instance.GetService<ISessionStorage>().GetUserRoleOrNull(package.SecurityToken));
                     _mazePackageExecutor.Execute(package, item.EndPoint);
                 }
                 else

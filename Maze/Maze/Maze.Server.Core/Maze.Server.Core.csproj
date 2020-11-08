@@ -48,7 +48,6 @@
     <Compile Include="PackageQueue\IMazePackageQueueItem.cs" />
     <Compile Include="PackageQueue\IQueueHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceStorage\SimpleMazeServiceStorage.cs" />
     <Compile Include="SimpleMazeServer.cs" />
     <Compile Include="Validation\IAccessValidator.cs" />
     <Compile Include="Validation\MazePackageValidator.cs" />
@@ -77,6 +76,10 @@
     <ProjectReference Include="..\Maze.Server.Core.Access\Maze.Server.Core.Access.csproj">
       <Project>{5F3E93C9-A577-476C-91E2-3959A127A60F}</Project>
       <Name>Maze.Server.Core.Access</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Maze.Server.Core.ServiceStorage\Maze.Server.Core.ServiceStorage.csproj">
+      <Project>{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}</Project>
+      <Name>Maze.Server.Core.ServiceStorage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Maze.Server.Core.SessionStorage\Maze.Server.Core.SessionStorage.csproj">
       <Project>{34FD6B4F-6A38-42D0-948E-4665C7214279}</Project>

@@ -3,6 +3,7 @@ using Maze.Server.Commands;
 using Maze.Server.Commands.CommandFactory.PackageHandlerChain;
 using Maze.Server.Core.PackageHandlerChain;
 using Maze.Server.Core.Repositories;
+using Maze.Server.Core.ServiceStorage;
 using Maze.Server.Core.SessionStorage;
 
 namespace Maze.Server.Core.CommandFactory
@@ -11,10 +12,6 @@ namespace Maze.Server.Core.CommandFactory
     {
         // Цепочка обязанностей
         private IMazePackageHandler _chain;
-
-        protected ISessionStorage SessionStorage = DumpSessionStorage.Instance;
-        protected IUserRepository UserRepository = new SimpleUserRepository();
-
 
         public SimpleCommandFactory()
         {
@@ -30,10 +27,10 @@ namespace Maze.Server.Core.CommandFactory
         {
             var builder = new PackageChainHandlerBuilder();
 
-            builder.AddChain(new LoginPackageHandler(SessionStorage, UserRepository));
-            builder.AddChain(new CreateUserPachageHandler(SessionStorage, UserRepository));
-            builder.AddChain(new LogoutPackageHandler(SessionStorage, UserRepository));
-            builder.AddChain(new AccessDeniedPackageHandler(SessionStorage, UserRepository));
+            builder.AddChain(new LoginPackageHandler());
+            builder.AddChain(new CreateUserPachageHandler());
+            builder.AddChain(new LogoutPackageHandler());
+            builder.AddChain(new AccessDeniedPackageHandler());
 
             return builder.Head;
         }

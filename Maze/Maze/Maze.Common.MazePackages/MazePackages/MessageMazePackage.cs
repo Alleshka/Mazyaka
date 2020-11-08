@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Maze.Common.MazePackages.MazePackages
 {
-    internal class HasNotAccessPackage : BaseMazePackage
+    /// <summary>
+    /// Пакет с сообщением
+    /// </summary>
+    internal class MessageMazePackage : BaseMazePackage
     {
-
+        public String Message { get; set; }
     }
 }

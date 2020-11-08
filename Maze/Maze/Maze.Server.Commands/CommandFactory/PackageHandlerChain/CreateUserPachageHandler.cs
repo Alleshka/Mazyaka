@@ -11,13 +11,9 @@ using System.Threading.Tasks;
 
 namespace Maze.Server.Commands.CommandFactory.PackageHandlerChain
 {
-    class CreateUserPachageHandler : BasePackageHandler<CreateUserPackage>
+    class CreateUserPachageHandler : BasePackageHandlerWithUsersService<RegisterUserPackage>
     {
-        public CreateUserPachageHandler(ISessionStorage sessionStorage, IUserRepository userRepository) : base(sessionStorage, userRepository)
-        {
-        }
-
-        protected override IMazeServerCommand Handle(CreateUserPackage package)
+        protected override IMazeServerCommand Handle(RegisterUserPackage package)
         {
             return new CreateUserCommand(SessionStorage, UserRepository, package.UserLogin);
         }

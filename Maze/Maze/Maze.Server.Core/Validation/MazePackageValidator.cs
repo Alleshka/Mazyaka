@@ -25,7 +25,7 @@ namespace Maze.Server.Core.Validation
 
             if (!hasAccess)
             {
-                package = SimplePackageFactory.GetInstance().HasNotAccessPackage();
+                package = SimplePackageFactory.GetInstance().AccessDeniedResponse();
             }
 
             return package;

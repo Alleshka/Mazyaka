@@ -22,7 +22,7 @@ namespace Maze.Server.Commands.Commands
         public override IMazePackage Execute()
         {
             _sessionStorage.DeleteSession(_userToken);
-            return PackageFactory.HelloWorldPackage();
+            return PackageFactory.MessageCommon("bue");
         }
     }
 }

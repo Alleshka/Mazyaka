@@ -3,6 +3,8 @@ using Maze.Common.MazePackages.Parsers;
 using Maze.Server.Commands;
 using Maze.Server.Core.PackageHandlerChain;
 using Maze.Server.Core.PackageQueue;
+using Maze.Server.Core.ServiceStorage;
+using Maze.Server.Core.SessionStorage;
 using Maze.Server.UdpServer;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,7 @@ namespace Maze.Server.Core
 
     public class SimpleMazeServer : IMazeServer
     {
+
         // Очередь команд к исполнению
         private IMazePackageQueueHandler _queue;
 
@@ -66,7 +69,9 @@ namespace Maze.Server.Core
 
         private void ConfigureServices()
         {
+            var serviceStorage = MazeServiceStorage.Instance;
 
+            serviceStorage.AddService<ISessionStorage>(new DumpSessionStorage());
         }
     }
 }

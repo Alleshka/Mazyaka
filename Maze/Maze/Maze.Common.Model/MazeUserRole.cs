@@ -10,6 +10,11 @@ namespace Maze.Common.Model
     {
         public string RoleName { get; }
 
+        public  MazeUserRole()
+        {
+
+        }
+
         public MazeUserRole(string roleName)
         {
             RoleName = roleName;

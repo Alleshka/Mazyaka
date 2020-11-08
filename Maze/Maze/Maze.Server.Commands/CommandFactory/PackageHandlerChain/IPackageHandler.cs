@@ -3,6 +3,7 @@ using Maze.Common.MazePackages.MazePackages;
 using Maze.Server.Commands;
 using Maze.Server.Commands.Commands;
 using Maze.Server.Core.Repositories;
+using Maze.Server.Core.ServiceStorage;
 using Maze.Server.Core.SessionStorage;
 using System;
 using System.Collections.Generic;
@@ -35,15 +36,6 @@ namespace Maze.Server.Core.PackageHandlerChain
     /// <typeparam name="T">Обрабатываемой элементом пакет</typeparam>
     internal abstract class BasePackageHandler<T> : IMazePackageHandler where T : class, IMazePackage
     {
-        protected ISessionStorage SessionStorage;
-        protected IUserRepository UserRepository;
-
-        public BasePackageHandler(ISessionStorage sessionStorage, IUserRepository userRepository)
-        {
-            SessionStorage = sessionStorage;
-            UserRepository = userRepository;
-        }
-
         public IMazePackageHandler NextHandler { get; set; }
 
         /// <summary>
@@ -85,6 +77,18 @@ namespace Maze.Server.Core.PackageHandlerChain
         protected virtual bool IsHandable(IMazePackage package)
         {
             return package.TypeName == (typeof(T)).ToString().Split('.').Last();
+        }
+    }
+
+    internal abstract class BasePackageHandlerWithUsersService<T> : BasePackageHandler<T> where T : class, IMazePackage
+    {
+        protected ISessionStorage SessionStorage;
+        protected IUserService UserRepository;
+
+        public BasePackageHandlerWithUsersService()
+        {
+            SessionStorage = MazeServiceStorage.Instance.GetService<ISessionStorage>();
+            UserRepository = MazeServiceStorage.Instance.GetService<IUserService>();
         }
     }
 }

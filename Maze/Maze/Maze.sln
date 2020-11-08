@@ -27,6 +27,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.Log
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService", "Maze.Server.MazeService\Maze.Server.MazeService.csproj", "{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevTools", "DevTools", "{DAFEC358-C163-4932-A9F7-043EDD1F8964}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.DevTools.CommandGenerator", "Maze.DevTools.CommandGenerator\Maze.DevTools.CommandGenerator.csproj", "{200E097F-073B-4187-8008-69A980AC7C5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.Core.ServiceStorage", "Maze.Server.Core.ServiceStorage\Maze.Server.Core.ServiceStorage.csproj", "{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,9 +87,20 @@ Global
 		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{200E097F-073B-4187-8008-69A980AC7C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{200E097F-073B-4187-8008-69A980AC7C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{200E097F-073B-4187-8008-69A980AC7C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{200E097F-073B-4187-8008-69A980AC7C5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{200E097F-073B-4187-8008-69A980AC7C5B} = {DAFEC358-C163-4932-A9F7-043EDD1F8964}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E59DE149-6897-4474-B468-4A1B16062C84}

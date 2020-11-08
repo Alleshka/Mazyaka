@@ -13,11 +13,11 @@ namespace Maze.Server.Commands.Commands
 {
     class CreateUserCommand : BaseCommand
     {
-        private IUserRepository _userRepository;
+        private IUserService _userRepository;
         private ISessionStorage _sessionStorage;
         private string _userLogin;
 
-        public CreateUserCommand(ISessionStorage sessionStorage, IUserRepository userRepository, string userLogin)
+        public CreateUserCommand(ISessionStorage sessionStorage, IUserService userRepository, string userLogin)
         {
             _userRepository = userRepository;
             _sessionStorage = sessionStorage;
@@ -35,7 +35,7 @@ namespace Maze.Server.Commands.Commands
             _userRepository.CreateUser(user);
             var token = _sessionStorage.AddUserSession(user);
 
-            return PackageFactory.LoginAnswerPackage(token);
+            return PackageFactory.LoginUserResponse(token);
         }
     }
 }

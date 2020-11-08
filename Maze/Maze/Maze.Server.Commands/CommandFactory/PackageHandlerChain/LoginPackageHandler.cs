@@ -12,12 +12,8 @@ namespace Maze.Server.Core.PackageHandlerChain
     /// <summary>
     /// Обработка пакета с данными для входа
     /// </summary>
-    internal class LoginPackageHandler : BasePackageHandler<LoginMazePackage>
+    internal class LoginPackageHandler : BasePackageHandlerWithUsersService<LoginMazePackage>
     {
-        public LoginPackageHandler(ISessionStorage sessionStorage, IUserRepository userRepository) : base(sessionStorage, userRepository)
-        {
-        }
-
         protected override IMazeServerCommand Handle(LoginMazePackage package)
         {
             return new LoginCommand(SessionStorage, UserRepository, package.Login);

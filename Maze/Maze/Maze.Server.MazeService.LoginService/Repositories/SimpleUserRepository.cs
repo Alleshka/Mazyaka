@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Maze.Server.Core.Repositories
 {
-    public class SimpleUserRepository : IUserRepository
+    public class SimpleUserRepository : IUserService
     {
         private Dictionary<Guid, MazeUser> _users = new Dictionary<Guid, MazeUser>();
 

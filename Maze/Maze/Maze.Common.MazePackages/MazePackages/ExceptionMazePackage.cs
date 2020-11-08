@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 
 namespace Maze.Common.MazePackages.MazePackages
 {
-    internal class ExceptionPackage : BaseMazePackage
+    /// <summary>
+    /// Пакет с сообщением об исключении
+    /// </summary>
+    internal class ExceptionMazePackage : BaseMazePackage
     {
-
         public String Message { get; set; }
 
-        public ExceptionPackage(string message)
+        public ExceptionMazePackage()
+        {
+
+        }
+
+        public ExceptionMazePackage(string message)
         {
             Message = message;
         }

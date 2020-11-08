@@ -1,4 +1,5 @@
 ﻿using Maze.Common.Model;
+using Maze.Server.MazeService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Maze.Server.Core.Repositories
 {
-    public interface IUserRepository
+    public interface IUserService : IMazeService
     {
         MazeUser GetUserByID(Guid id);
         MazeUser GetUserByLogin(string userLogin);

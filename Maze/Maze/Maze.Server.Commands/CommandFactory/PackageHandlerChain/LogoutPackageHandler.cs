@@ -11,12 +11,8 @@ using System.Threading.Tasks;
 
 namespace Maze.Server.Commands.CommandFactory.PackageHandlerChain
 {
-    class LogoutPackageHandler : BasePackageHandler<LogoutMazePackage>
+    class LogoutPackageHandler : BasePackageHandlerWithUsersService<LogoutMazePackage>
     {
-        public LogoutPackageHandler(ISessionStorage sessionStorage, IUserRepository userRepository) : base(sessionStorage, userRepository)
-        {
-        }
-
         protected override IMazeServerCommand Handle(LogoutMazePackage package)
         {
             return new LogoutCommand(SessionStorage, package.SecurityToken);
