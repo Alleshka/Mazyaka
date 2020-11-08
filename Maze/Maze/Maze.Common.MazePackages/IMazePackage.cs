@@ -20,11 +20,9 @@ namespace Maze.Common.MazePackages
     {
         protected internal BaseMazePackage()
         {
-
-
         }
 
-        public string TypeName => (this.GetType().ToString()).Split('.').Last();
+        public string TypeName => this.GetType().Name;
         public string SecurityToken { get; set; }
 
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
