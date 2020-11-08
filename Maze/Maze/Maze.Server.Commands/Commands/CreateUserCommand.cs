@@ -16,7 +16,7 @@ namespace Maze.Server.Commands.Commands
             _userLogin = userLogin;
         }
 
-        public override IMazePackage Execute()
+        protected override IMazePackage ExecuteCommand()
         {
             var user = new MazeUser()
             {

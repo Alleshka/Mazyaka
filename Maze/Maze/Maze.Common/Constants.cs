@@ -20,5 +20,10 @@ namespace Maze.Common
             public static readonly IEnumerable<String> ALL = new string[] { Roles.ADMIN, Roles.PLAYER, Roles.GUEST };
             public static readonly IEnumerable<String> NOT_GUEST = new string[] { Roles.ADMIN, Roles.PLAYER };
         }
+
+        public static class Loggers
+        {
+            public static readonly String CommonLogger = "CommonLogger";
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Maze.Common.MazePackages;
+﻿using Maze.Common;
+using Maze.Common.Logging;
+using Maze.Common.MazePackages;
 using Maze.Server.Core.CommandFactory;
 using Maze.Server.Core.ServiceStorage;
 using Maze.Server.MazeService.MessageSender;
@@ -17,9 +19,12 @@ namespace Maze.Server.Core.Executor
 
         public void Execute(IMazePackage package, IPEndPoint endPoint)
         {
-            var cmd = _commandFactory.CreateCommand(package);
-            var result = cmd.Execute();
-            MazeServiceStorage.Instance.GetService<IMessageSenderService>().SendMessage(result, endPoint);
+            MazeLogManager.Instance.Write($"Обработка пакета {package.TypeName}", () =>
+            {
+                var cmd = _commandFactory.CreateCommand(package);
+                var result = cmd.Execute();
+                MazeServiceStorage.Instance.GetService<IMessageSenderService>().SendMessage(result, endPoint);
+            }, Constants.Loggers.CommonLogger);
         }
     }
 }

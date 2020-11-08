@@ -1,4 +1,5 @@
 ﻿using Maze.Common;
+using Maze.Common.Logging;
 using Maze.Common.Model;
 using System;
 using System.Collections.Generic;
@@ -17,18 +18,22 @@ namespace Maze.Server.Core.SessionService
 
         public string AddUserSession(MazeUser user)
         {
-            var token = Guid.NewGuid().ToString();
-            _sessions.Add(token, user);
-
-            Console.WriteLine(this);
-
-            return token;
+            return MazeLogManager.Instance.Write($"Добавление пользователя {user.Login} в активные сессии", () =>
+            {
+                var token = Guid.NewGuid().ToString();
+                _sessions.Add(token, user);
+                MazeLogManager.Instance.Write($"Текущие сессии: {this}", Constants.Loggers.CommonLogger);
+                return token;
+            }, Constants.Loggers.CommonLogger);
         }
 
         public void DeleteSession(string userToken)
         {
-            _sessions.Remove(userToken);
-            Console.WriteLine(this);
+            MazeLogManager.Instance.Write($"Удаление пользователя с токеном {userToken} из активных сессий", () =>
+            {
+                _sessions.Remove(userToken);
+                Console.WriteLine(this);
+            });
         }
 
         public MazeUser GetUserByTokenOrNull(string userToken)
@@ -52,7 +57,7 @@ namespace Maze.Server.Core.SessionService
             var builder = new StringBuilder();
 
             builder.AppendLine($"Активных пользователей: {_sessions.Count}");
-            foreach(var user in _sessions)
+            foreach (var user in _sessions)
             {
                 builder.AppendLine($"{user.Key} - {user.Value.Login}");
             }

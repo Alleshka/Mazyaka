@@ -14,7 +14,7 @@ namespace Maze.Server.Commands.Commands
             _userLogin = userLogin;
         }
 
-        public override IMazePackage Execute()
+        protected override IMazePackage ExecuteCommand()
         {
             var user = MazeServiceStorage.Instance.GetService<IUserService>().GetUserByLogin(_userLogin);
             if (user == null) return PackageFactory.ExceptionMessageResponse("Пользователь не найден");

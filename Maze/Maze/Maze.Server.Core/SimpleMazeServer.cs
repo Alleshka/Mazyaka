@@ -1,4 +1,6 @@
-﻿using Maze.Common.MazePackages;
+﻿using Maze.Common;
+using Maze.Common.Logging;
+using Maze.Common.MazePackages;
 using Maze.Common.MazePackages.Parsers;
 using Maze.Server.Core.PackageQueue;
 using Maze.Server.Core.Repositories;
@@ -28,6 +30,8 @@ namespace Maze.Server.Core
         private SimpleMazeServer()
         {
             ConfigureServices();
+            ConfigureLogs();
+
             _queue = new SimpleMazePackageQueueHandler();
         }
 
@@ -69,6 +73,12 @@ namespace Maze.Server.Core
             serviceStorage.AddService<ISessionService>(new DumpSessionService());
             serviceStorage.AddService<IUserService>(new SimpleUserService());
             serviceStorage.AddService<IMessageSenderService>(new UdpDataExchangeMessageSender(DataExchanger));
+        }
+
+        private void ConfigureLogs()
+        {
+            var logManager = MazeLogManager.Instance;
+            logManager.AddLogger(Constants.Loggers.CommonLogger);
         }
     }
 }

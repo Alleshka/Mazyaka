@@ -32,7 +32,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +58,10 @@
     <Compile Include="Validation\MazePackageValidator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Maze.Common.Logging\Maze.Common.Logging.csproj">
+      <Project>{1866B301-30B1-46CA-BBBF-60F6C3F373A5}</Project>
+      <Name>Maze.Common.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj">
       <Project>{483A96EC-B937-4CA1-B214-D7509A8E6D10}</Project>
       <Name>Maze.Common.MazePackages</Name>
@@ -98,6 +107,5 @@
       <Name>Maze.Server.MazeService</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

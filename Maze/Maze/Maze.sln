@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.Mes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.SessionService", "Maze.Server.MazeService.SessionService\Maze.Server.MazeService.SessionService.csproj", "{DF334A41-D186-4C97-A536-B1455980A6F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Common.Logging", "Maze.Common.Logging\Maze.Common.Logging.csproj", "{1866B301-30B1-46CA-BBBF-60F6C3F373A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{DF334A41-D186-4C97-A536-B1455980A6F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF334A41-D186-4C97-A536-B1455980A6F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF334A41-D186-4C97-A536-B1455980A6F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1866B301-30B1-46CA-BBBF-60F6C3F373A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1866B301-30B1-46CA-BBBF-60F6C3F373A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1866B301-30B1-46CA-BBBF-60F6C3F373A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1866B301-30B1-46CA-BBBF-60F6C3F373A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

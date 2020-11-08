@@ -57,6 +57,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Maze.Common.Logging\Maze.Common.Logging.csproj">
+      <Project>{1866B301-30B1-46CA-BBBF-60F6C3F373A5}</Project>
+      <Name>Maze.Common.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj">
       <Project>{483A96EC-B937-4CA1-B214-D7509A8E6D10}</Project>
       <Name>Maze.Common.MazePackages</Name>

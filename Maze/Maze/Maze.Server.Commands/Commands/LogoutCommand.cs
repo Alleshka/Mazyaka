@@ -14,7 +14,7 @@ namespace Maze.Server.Commands.Commands
             _userToken = userToken;
         }
 
-        public override IMazePackage Execute()
+        protected override IMazePackage ExecuteCommand()
         {
             MazeServiceStorage.Instance.GetService<ISessionService>().DeleteSession(_userToken);
             return PackageFactory.MessageCommon("bue");

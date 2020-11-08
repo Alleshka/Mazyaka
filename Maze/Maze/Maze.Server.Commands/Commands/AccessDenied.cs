@@ -9,7 +9,7 @@ namespace Maze.Server.Commands.Commands
 {
     class AccessDenied : BaseCommand
     {
-        public override IMazePackage Execute()
+        protected override IMazePackage ExecuteCommand()
         {
             return PackageFactory.AccessDeniedResponse();
         }
