@@ -3,7 +3,7 @@ using Maze.Common.MazePackages;
 using Maze.Common.Model;
 using Maze.Server.Core.Repositories;
 using Maze.Server.Core.ServiceStorage;
-using Maze.Server.Core.SessionStorage;
+using Maze.Server.Core.SessionService;
 
 namespace Maze.Server.Commands.Commands
 {
@@ -25,7 +25,7 @@ namespace Maze.Server.Commands.Commands
             };
 
             MazeServiceStorage.Instance.GetService<IUserService>().CreateUser(user);
-            var token = MazeServiceStorage.Instance.GetService<ISessionStorage>().AddUserSession(user);
+            var token = MazeServiceStorage.Instance.GetService<ISessionService>().AddUserSession(user);
 
             return PackageFactory.LoginUserResponse(token);
         }

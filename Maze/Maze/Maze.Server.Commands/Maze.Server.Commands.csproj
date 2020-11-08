@@ -77,9 +77,9 @@
       <Project>{F60A2B06-90DC-45D7-8A84-AB556C0C7985}</Project>
       <Name>Maze.Server.MazeService.LoginService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Maze.Server.MazeService.SessionStorage\Maze.Server.MazeService.SessionStorage.csproj">
-      <Project>{9F6DBD06-7DE8-49BD-9902-094D6E1A103B}</Project>
-      <Name>Maze.Server.MazeService.SessionStorage</Name>
+    <ProjectReference Include="..\Maze.Server.MazeService.SessionService\Maze.Server.MazeService.SessionService.csproj">
+      <Project>{DF334A41-D186-4C97-A536-B1455980A6F6}</Project>
+      <Name>Maze.Server.MazeService.SessionService</Name>
     </ProjectReference>
     <ProjectReference Include="..\Maze.Server.MazeService\Maze.Server.MazeService.csproj">
       <Project>{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}</Project>

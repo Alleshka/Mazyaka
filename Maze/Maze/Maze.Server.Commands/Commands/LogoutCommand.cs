@@ -1,6 +1,6 @@
 ﻿using Maze.Common.MazePackages;
 using Maze.Server.Core.ServiceStorage;
-using Maze.Server.Core.SessionStorage;
+using Maze.Server.Core.SessionService;
 using System;
 
 namespace Maze.Server.Commands.Commands
@@ -16,7 +16,7 @@ namespace Maze.Server.Commands.Commands
 
         public override IMazePackage Execute()
         {
-            MazeServiceStorage.Instance.GetService<ISessionStorage>().DeleteSession(_userToken);
+            MazeServiceStorage.Instance.GetService<ISessionService>().DeleteSession(_userToken);
             return PackageFactory.MessageCommon("bue");
         }
     }

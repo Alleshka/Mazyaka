@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.Core.ServiceSto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.MessageSender", "Maze.Server.MazeService.MessageSender\Maze.Server.MazeService.MessageSender.csproj", "{23CE6605-2BAB-4A31-8890-A6A9F1B4BF76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.SessionStorage", "Maze.Server.MazeService.SessionStorage\Maze.Server.MazeService.SessionStorage.csproj", "{9F6DBD06-7DE8-49BD-9902-094D6E1A103B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.SessionService", "Maze.Server.MazeService.SessionService\Maze.Server.MazeService.SessionService.csproj", "{DF334A41-D186-4C97-A536-B1455980A6F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,10 +89,10 @@ Global
 		{23CE6605-2BAB-4A31-8890-A6A9F1B4BF76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23CE6605-2BAB-4A31-8890-A6A9F1B4BF76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23CE6605-2BAB-4A31-8890-A6A9F1B4BF76}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F6DBD06-7DE8-49BD-9902-094D6E1A103B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F6DBD06-7DE8-49BD-9902-094D6E1A103B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F6DBD06-7DE8-49BD-9902-094D6E1A103B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F6DBD06-7DE8-49BD-9902-094D6E1A103B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF334A41-D186-4C97-A536-B1455980A6F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF334A41-D186-4C97-A536-B1455980A6F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF334A41-D186-4C97-A536-B1455980A6F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF334A41-D186-4C97-A536-B1455980A6F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

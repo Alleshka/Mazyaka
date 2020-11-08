@@ -1,14 +1,7 @@
 ﻿using Maze.Common.MazePackages;
-using Maze.Common.Model;
 using Maze.Server.Core.Repositories;
 using Maze.Server.Core.ServiceStorage;
-using Maze.Server.Core.SessionStorage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Maze.Server.Core.SessionService;
 
 namespace Maze.Server.Commands.Commands
 {
@@ -27,7 +20,7 @@ namespace Maze.Server.Commands.Commands
             if (user == null) return PackageFactory.ExceptionMessageResponse("Пользователь не найден");
             else
             {
-                var token = MazeServiceStorage.Instance.GetService<ISessionStorage>().AddUserSession(user);
+                var token = MazeServiceStorage.Instance.GetService<ISessionService>().AddUserSession(user);
                 return PackageFactory.LoginUserResponse(token);
             }
         }

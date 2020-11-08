@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Maze.Server.Core.SessionStorage
+namespace Maze.Server.Core.SessionService
 {
-    public class DumpSessionStorage : ISessionStorage
+    public class DumpSessionService : ISessionService
     {
         private Dictionary<string, MazeUser> _sessions = new Dictionary<string, MazeUser>();
 
-        public DumpSessionStorage()
+        public DumpSessionService()
         {
 
         }

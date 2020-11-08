@@ -3,7 +3,7 @@ using Maze.Common.MazePackages.Parsers;
 using Maze.Server.Core.PackageQueue;
 using Maze.Server.Core.Repositories;
 using Maze.Server.Core.ServiceStorage;
-using Maze.Server.Core.SessionStorage;
+using Maze.Server.Core.SessionService;
 using Maze.Server.MazeService.MessageSender;
 using Maze.Server.UdpServer;
 using System.Net;
@@ -66,7 +66,7 @@ namespace Maze.Server.Core
         {
             var serviceStorage = MazeServiceStorage.Instance;
 
-            serviceStorage.AddService<ISessionStorage>(new DumpSessionStorage());
+            serviceStorage.AddService<ISessionService>(new DumpSessionService());
             serviceStorage.AddService<IUserService>(new SimpleUserService());
             serviceStorage.AddService<IMessageSenderService>(new UdpDataExchangeMessageSender(DataExchanger));
         }

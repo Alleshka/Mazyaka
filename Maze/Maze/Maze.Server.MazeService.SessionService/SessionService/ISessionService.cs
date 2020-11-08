@@ -1,9 +1,9 @@
 ﻿using Maze.Common.Model;
 using Maze.Server.MazeService;
 
-namespace Maze.Server.Core.SessionStorage
+namespace Maze.Server.Core.SessionService
 {
-    public interface ISessionStorage : IMazeService
+    public interface ISessionService : IMazeService
     {
         string AddUserSession(MazeUser user);
 

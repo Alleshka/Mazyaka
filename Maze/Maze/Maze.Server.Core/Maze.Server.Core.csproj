@@ -89,9 +89,9 @@
       <Project>{23CE6605-2BAB-4A31-8890-A6A9F1B4BF76}</Project>
       <Name>Maze.Server.MazeService.MessageSender</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Maze.Server.MazeService.SessionStorage\Maze.Server.MazeService.SessionStorage.csproj">
-      <Project>{9F6DBD06-7DE8-49BD-9902-094D6E1A103B}</Project>
-      <Name>Maze.Server.MazeService.SessionStorage</Name>
+    <ProjectReference Include="..\Maze.Server.MazeService.SessionService\Maze.Server.MazeService.SessionService.csproj">
+      <Project>{DF334A41-D186-4C97-A536-B1455980A6F6}</Project>
+      <Name>Maze.Server.MazeService.SessionService</Name>
     </ProjectReference>
     <ProjectReference Include="..\Maze.Server.MazeService\Maze.Server.MazeService.csproj">
       <Project>{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}</Project>
