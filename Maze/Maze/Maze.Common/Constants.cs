@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Maze.Common
 {
@@ -23,6 +20,5 @@ namespace Maze.Common
             public static readonly IEnumerable<String> ALL = new string[] { Roles.ADMIN, Roles.PLAYER, Roles.GUEST };
             public static readonly IEnumerable<String> NOT_GUEST = new string[] { Roles.ADMIN, Roles.PLAYER };
         }
-
     }
 }

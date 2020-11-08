@@ -11,7 +11,7 @@ namespace Maze.Server.Commands.Commands
     {
         public override IMazePackage Execute()
         {
-            return PackageFactory.HelloWorldPackage();
+            return PackageFactory.AccessDeniedResponse();
         }
     }
 }

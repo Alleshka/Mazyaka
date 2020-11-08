@@ -1,30 +1,33 @@
 ﻿using Maze.Common.MazePackages;
 using Maze.Common.MazePackages.Parsers;
-using Maze.Server.Commands;
-using Maze.Server.Core.PackageHandlerChain;
 using Maze.Server.Core.PackageQueue;
+using Maze.Server.Core.Repositories;
+using Maze.Server.Core.ServiceStorage;
+using Maze.Server.Core.SessionService;
+using Maze.Server.MazeService.MessageSender;
 using Maze.Server.UdpServer;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace Maze.Server.Core
 {
-
     public class SimpleMazeServer : IMazeServer
     {
+
         // Очередь команд к исполнению
         private IMazePackageQueueHandler _queue;
 
         private MazeUdpDataExchange _dataExchanger;
-        public MazeUdpDataExchange DataExchanger
+        protected MazeUdpDataExchange DataExchanger
         {
-            get => _dataExchanger;
+            get
+            {
+                return _dataExchanger ?? (_dataExchanger = new MazeUdpDataExchange(CreateParser(), ReceiveMessage));
+            }
         }
 
         private SimpleMazeServer()
         {
+            ConfigureServices();
             _queue = new SimpleMazePackageQueueHandler();
         }
 
@@ -39,11 +42,7 @@ namespace Maze.Server.Core
 
         public void Start(int port)
         {
-            if (_dataExchanger == null)
-            {
-                _dataExchanger = new MazeUdpDataExchange(port, CreateParser(), ReceiveMessage);
-            }
-            _dataExchanger.Start();
+            DataExchanger.Start(port);
             _queue.Start();
         }
 
@@ -58,7 +57,6 @@ namespace Maze.Server.Core
             _queue.AddPackage(package, endPoint);
         }
 
-
         private IMazePackageParser CreateParser()
         {
             return new JsonCompressedMazePackageParser();
@@ -66,7 +64,11 @@ namespace Maze.Server.Core
 
         private void ConfigureServices()
         {
+            var serviceStorage = MazeServiceStorage.Instance;
 
+            serviceStorage.AddService<ISessionService>(new DumpSessionService());
+            serviceStorage.AddService<IUserService>(new SimpleUserService());
+            serviceStorage.AddService<IMessageSenderService>(new UdpDataExchangeMessageSender(DataExchanger));
         }
     }
 }

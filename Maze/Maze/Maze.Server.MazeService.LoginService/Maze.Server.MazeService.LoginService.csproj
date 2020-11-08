@@ -42,13 +42,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\IUserRepository.cs" />
-    <Compile Include="Repositories\SimpleUserRepository.cs" />
+    <Compile Include="Repositories\IUserService.cs" />
+    <Compile Include="Repositories\SimpleUserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Maze.Common.Model\Maze.Common.Model.csproj">
       <Project>{fb03a589-3cd2-45a1-946e-4644a15db8ac}</Project>
       <Name>Maze.Common.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Maze.Server.MazeService\Maze.Server.MazeService.csproj">
+      <Project>{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}</Project>
+      <Name>Maze.Server.MazeService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

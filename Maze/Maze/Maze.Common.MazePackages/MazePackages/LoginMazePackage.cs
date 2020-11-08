@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Maze.Common.MazePackages.MazePackages
 {
@@ -32,8 +29,9 @@ namespace Maze.Common.MazePackages.MazePackages
         }
     }
 
-    internal class LoginAnswerMazePackage : BaseMazePackage
+    internal class LoginResponceMazePackage : BaseMazePackage
     {
         public String UserToken { get; set; }
+        public Guid UserID { get; set; }
     }
 }

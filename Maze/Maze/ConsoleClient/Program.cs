@@ -15,16 +15,15 @@ namespace ConsoleClient
 
             string ip = "127.0.0.1";
 
-            using (var sender = new MazeUdpDataExchange(localPort, new JsonCompressedMazePackageParser(), (message, remoteIp, messageSender) =>
+            using (var sender = new MazeUdpDataExchange(new JsonCompressedMazePackageParser(), (message, remoteIp, messageSender) =>
              {
-                 Console.WriteLine($"Message from server ({remoteIp.Address}:{remoteIp.Port}): {message.ToString()}");
+                 Console.WriteLine($"Message from server ({remoteIp.Address}:{remoteIp.Port}): {message}");
              }))
             {
-                sender.Start();
+                sender.Start(localPort);
 
                 while (true)
                 {
-
                     Console.WriteLine("1 - CreateUser");
                     Console.WriteLine("2 - Login");
                     Console.WriteLine("3 - Logout");
@@ -38,21 +37,21 @@ namespace ConsoleClient
                                 {
                                     Console.WriteLine("Login");
                                     var login = Console.ReadLine();
-                                    package = packageFactory.CreateUser(login);
+                                    package = packageFactory.RegisterUserRequest(login);
                                     break;
                                 }
                             case 2:
                                 {
                                     Console.WriteLine("Login");
                                     var login = Console.ReadLine();
-                                    package = packageFactory.LoginPackage(login, string.Empty);
+                                    package = packageFactory.LoginUserRequest(login, string.Empty);
                                     break;
                                 }
                             case 3:
                                 {
                                     Console.WriteLine("Token");
                                     var token = Console.ReadLine();
-                                    package = packageFactory.LogoutPackage(token);
+                                    package = packageFactory.LogountUserRequest(token);
                                     package.SecurityToken = token;
                                     break;
                                 }

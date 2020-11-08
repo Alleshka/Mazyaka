@@ -1,11 +1,8 @@
 ﻿using Maze.Common.MazePackages;
 using Maze.Server.Core.CommandFactory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Maze.Server.Core.ServiceStorage;
+using Maze.Server.MazeService.MessageSender;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Maze.Server.Core.Executor
 {
@@ -22,12 +19,7 @@ namespace Maze.Server.Core.Executor
         {
             var cmd = _commandFactory.CreateCommand(package);
             var result = cmd.Execute();
-
-            var server = SimpleMazeServer.Instance;
-
-
-            server.DataExchanger.SendMessage(result, endPoint);
-            // TODO: Отправка ответа обратно
+            MazeServiceStorage.Instance.GetService<IMessageSenderService>().SendMessage(result, endPoint);
         }
     }
 }

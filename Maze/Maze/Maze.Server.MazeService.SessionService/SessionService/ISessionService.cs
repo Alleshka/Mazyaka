@@ -1,17 +1,12 @@
 ﻿using Maze.Common.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Maze.Server.MazeService;
 
-namespace Maze.Server.Core.SessionStorage
+namespace Maze.Server.Core.SessionService
 {
-    public interface ISessionStorage
+    public interface ISessionService : IMazeService
     {
         string AddUserSession(MazeUser user);
 
-        MazeUser GetUserByLoginOrNull(string userLogin);
         MazeUser GetUserByTokenOrNull(string userToken);
 
         MazeUserRole GetUserRoleOrNull(string userToken);

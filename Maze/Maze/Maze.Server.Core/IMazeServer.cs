@@ -1,9 +1,4 @@
-﻿using Maze.Server.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Maze.Server.Core
+﻿namespace Maze.Server.Core
 {
     /// <summary>
     /// Интерфейс сервера

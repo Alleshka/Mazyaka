@@ -2,25 +2,17 @@
 using Maze.Common.MazePackages;
 using Maze.Common.Model;
 using Maze.Server.Core.Repositories;
-using Maze.Server.Core.SessionStorage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Maze.Server.Core.ServiceStorage;
+using Maze.Server.Core.SessionService;
 
 namespace Maze.Server.Commands.Commands
 {
     class CreateUserCommand : BaseCommand
     {
-        private IUserRepository _userRepository;
-        private ISessionStorage _sessionStorage;
         private string _userLogin;
 
-        public CreateUserCommand(ISessionStorage sessionStorage, IUserRepository userRepository, string userLogin)
+        public CreateUserCommand(string userLogin)
         {
-            _userRepository = userRepository;
-            _sessionStorage = sessionStorage;
             _userLogin = userLogin;
         }
 
@@ -32,10 +24,10 @@ namespace Maze.Server.Commands.Commands
                 Role = new MazeUserRole(Constants.Roles.PLAYER)
             };
 
-            _userRepository.CreateUser(user);
-            var token = _sessionStorage.AddUserSession(user);
+            MazeServiceStorage.Instance.GetService<IUserService>().CreateUser(user);
+            var token = MazeServiceStorage.Instance.GetService<ISessionService>().AddUserSession(user);
 
-            return PackageFactory.LoginAnswerPackage(token);
+            return PackageFactory.LoginUserResponse(token);
         }
     }
 }

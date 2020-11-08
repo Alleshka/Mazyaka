@@ -2,7 +2,6 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 
 namespace Maze.Server.UdpServer
@@ -15,7 +14,7 @@ namespace Maze.Server.UdpServer
         /// <summary>
         /// Локальный порт, который будет слушать текущий объект
         /// </summary>
-        private readonly int _localPort;
+        private int _localPort;
 
         /// <summary>
         /// Признак остановки сервера
@@ -27,23 +26,30 @@ namespace Maze.Server.UdpServer
         /// </summary>
         private Action<IMazePackage, IPEndPoint, MazeUdpDataExchange> _onReceiveMessage;
 
-        private UdpClient _client = null;
-
         private IMazePackageParser _packageParser;
 
-        public MazeUdpDataExchange(int port, IMazePackageParser packageParser, Action<IMazePackage, IPEndPoint, MazeUdpDataExchange> onReceiveMessage = null)
+        private UdpClient _udpClient;
+        protected UdpClient UdpClient
         {
-            _localPort = port;
+            get
+            {
+                return (_udpClient ?? (_udpClient = new UdpClient(_localPort)));
+            }
+        }
+
+        public MazeUdpDataExchange(IMazePackageParser packageParser, Action<IMazePackage, IPEndPoint, MazeUdpDataExchange> onReceiveMessage = null)
+        {
             _onReceiveMessage = onReceiveMessage;
-            _client = new UdpClient(_localPort);
             _packageParser = packageParser;
         }
 
         /// <summary>
         /// Запустить отдельный поток для прослушивания входящих сообщений
         /// </summary>
-        public void Start()
+        public void Start(int port)
         {
+            _localPort = port;
+
             Thread receiveThread = new Thread(new ThreadStart(ReceiveMessage));
             receiveThread.Start();
         }
@@ -54,6 +60,9 @@ namespace Maze.Server.UdpServer
         public void Stop()
         {
             _isServerStopped = true;
+
+            _udpClient.Dispose();
+            _udpClient = null;
         }
 
         /// <summary>
@@ -64,7 +73,7 @@ namespace Maze.Server.UdpServer
         public void SendMessage(IMazePackage message, IPEndPoint endPoint)
         {
             var data = _packageParser.GetBytes(message);
-            _client.Send(data, data.Length, endPoint);
+            UdpClient.Send(data, data.Length, endPoint);
         }
 
         /// <summary>
@@ -86,7 +95,7 @@ namespace Maze.Server.UdpServer
             while (!_isServerStopped)
             {
                 IPEndPoint remoteIp = null;
-                var data = _client.Receive(ref remoteIp);
+                var data = UdpClient.Receive(ref remoteIp);
                 LogMessage(data, remoteIp);
 
                 /// Вызываем действия, срабатываемые при получении сообщения
@@ -102,7 +111,7 @@ namespace Maze.Server.UdpServer
         public void Dispose()
         {
             _isServerStopped = true;
-            _client.Dispose();
+            UdpClient.Dispose();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Maze.Server.Commands.Commands
         public override IMazePackage Execute()
         {
             Console.WriteLine(_message);
-            return PackageFactory.ExceptionPackage(_message);
+            return PackageFactory.ExceptionMessageResponse(_message);
         }
     }
 }

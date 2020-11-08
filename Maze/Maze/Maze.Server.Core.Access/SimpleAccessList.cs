@@ -13,7 +13,7 @@ namespace Maze.Server.Core.Access
         private static readonly Dictionary<Type, IEnumerable<string>> _acceses = new Dictionary<Type, IEnumerable<string>>()
         {
             { typeof(LoginMazePackage), Constants.Roles.ALL },
-            { typeof(CreateUserPackage), Constants.Roles.ALL },
+            { typeof(RegisterUserPackage), Constants.Roles.ALL },
             { typeof(LogoutMazePackage), Constants.Roles.NOT_GUEST },
         };
 

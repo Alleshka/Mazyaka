@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SessionStorage")]
+[assembly: AssemblyTitle("Maze.Server.MazeService.MessageSender")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SessionStorage")]
+[assembly: AssemblyProduct("Maze.Server.MazeService.MessageSender")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("69e0b4be-cab8-4c4b-a4d9-51baa950a50c")]
+[assembly: Guid("23ce6605-2bab-4a31-8890-a6a9f1b4bf76")]
 
 // Version information for an assembly consists of the following four values:
 //

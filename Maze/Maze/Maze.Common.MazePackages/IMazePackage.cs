@@ -1,10 +1,6 @@
 ﻿using Maze.Common.Model;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Maze.Common.MazePackages
 {
@@ -31,6 +27,6 @@ namespace Maze.Common.MazePackages
         public string TypeName => (this.GetType().ToString()).Split('.').Last();
         public string SecurityToken { get; set; }
 
-        public override string ToString() => JsonConvert.SerializeObject(this);
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
     }
 }

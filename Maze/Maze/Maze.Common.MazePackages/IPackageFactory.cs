@@ -1,7 +1,6 @@
 ﻿using Maze.Common.MazePackages.MazePackages;
+using Maze.Common.Model;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Maze.Common.MazePackages
 {
@@ -10,17 +9,18 @@ namespace Maze.Common.MazePackages
     /// </summary>
     public interface IPackageFactory
     {
-        IMazePackage CreateUser(string userLogin);
-        IMazePackage CreateUserAnswer(Guid userID);
+        IMazePackage RegisterUserRequest(string userLogin);
+        IMazePackage RegisterUserResponse(MazeUser mazeUser);
 
-        IMazePackage LoginPackage(string login, string password);
-        IMazePackage LoginAnswerPackage(string userToken);
+        IMazePackage LoginUserRequest(string login, string password);
+        IMazePackage LoginUserResponse(string userToken);
 
-        IMazePackage LogoutPackage(string userToken);
+        IMazePackage LogountUserRequest(string userToken);
 
-        IMazePackage HelloWorldPackage();
-        IMazePackage HasNotAccessPackage();
-        IMazePackage ExceptionPackage(string message);
+        IMazePackage AccessDeniedResponse();
+        IMazePackage ExceptionMessageResponse(string message);
+
+        IMazePackage MessageCommon(string message);
     }
 
     public class SimplePackageFactory : IPackageFactory
@@ -32,7 +32,7 @@ namespace Maze.Common.MazePackages
             return _simplePackageFactory;
         }
 
-        public IMazePackage LoginPackage(string login, string password)
+        public IMazePackage LoginUserRequest(string login, string password)
         {
             return new LoginMazePackage()
             {
@@ -41,52 +41,51 @@ namespace Maze.Common.MazePackages
             };
         }
 
-        public IMazePackage HelloWorldPackage()
+        public IMazePackage AccessDeniedResponse()
         {
-            return new HelloWorldPackage();
+            return new AccessDeniedMazePackage();
         }
 
-        public IMazePackage HasNotAccessPackage()
+        public IMazePackage ExceptionMessageResponse(string message)
         {
-            return new HasNotAccessPackage();
+            return new ExceptionMazePackage(message);
         }
 
-        public IMazePackage ExceptionPackage(string message)
+        public IMazePackage LogountUserRequest(string userToken)
         {
-            return new ExceptionPackage(message);
+            return new LogoutMazePackage(userToken);
         }
 
-        public IMazePackage LogoutPackage(string userToken)
+        public IMazePackage RegisterUserRequest(string userLogin)
         {
-            return new LogoutMazePackage()
-            {
-                UserToken = userToken
-            };
-        }
-
-        public IMazePackage CreateUser(string userLogin)
-        {
-            return new CreateUserPackage()
+            return new RegisterUserPackage()
             {
                 UserLogin = userLogin
             };
         }
 
-        public IMazePackage CreateUserAnswer(Guid userID)
+        public IMazePackage RegisterUserResponse(MazeUser mazeUser)
         {
-            return new CreateUserAnswerPackage()
+            return new RegisterUserResponePackage()
             {
-                UserID = userID
+                MazeUser = mazeUser
             };
         }
 
-        public IMazePackage LoginAnswerPackage(string userToken)
+        public IMazePackage LoginUserResponse(string userToken)
         {
-            return new LoginAnswerMazePackage()
+            return new LoginResponceMazePackage()
             {
                 UserToken = userToken
             };
         }
-    }
 
+        public IMazePackage MessageCommon(string message)
+        {
+            return new MessageMazePackage()
+            {
+                Message = message
+            };
+        }
+    }
 }

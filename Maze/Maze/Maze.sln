@@ -21,11 +21,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Common", "Maze.Common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.Core.Access", "Maze.Server.Core.Access\Maze.Server.Core.Access.csproj", "{5F3E93C9-A577-476C-91E2-3959A127A60F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.Core.SessionStorage", "Maze.Server.Core.SessionStorage\Maze.Server.Core.SessionStorage.csproj", "{34FD6B4F-6A38-42D0-948E-4665C7214279}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.LoginService", "Maze.Server.MazeService.LoginService\Maze.Server.MazeService.LoginService.csproj", "{F60A2B06-90DC-45D7-8A84-AB556C0C7985}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService", "Maze.Server.MazeService\Maze.Server.MazeService.csproj", "{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.Core.ServiceStorage", "Maze.Server.Core.ServiceStorage\Maze.Server.Core.ServiceStorage.csproj", "{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.MessageSender", "Maze.Server.MazeService.MessageSender\Maze.Server.MazeService.MessageSender.csproj", "{23CE6605-2BAB-4A31-8890-A6A9F1B4BF76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Server.MazeService.SessionService", "Maze.Server.MazeService.SessionService\Maze.Server.MazeService.SessionService.csproj", "{DF334A41-D186-4C97-A536-B1455980A6F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,10 +73,6 @@ Global
 		{5F3E93C9-A577-476C-91E2-3959A127A60F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F3E93C9-A577-476C-91E2-3959A127A60F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F3E93C9-A577-476C-91E2-3959A127A60F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34FD6B4F-6A38-42D0-948E-4665C7214279}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34FD6B4F-6A38-42D0-948E-4665C7214279}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34FD6B4F-6A38-42D0-948E-4665C7214279}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34FD6B4F-6A38-42D0-948E-4665C7214279}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F60A2B06-90DC-45D7-8A84-AB556C0C7985}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +81,18 @@ Global
 		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23CE6605-2BAB-4A31-8890-A6A9F1B4BF76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23CE6605-2BAB-4A31-8890-A6A9F1B4BF76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23CE6605-2BAB-4A31-8890-A6A9F1B4BF76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23CE6605-2BAB-4A31-8890-A6A9F1B4BF76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF334A41-D186-4C97-A536-B1455980A6F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF334A41-D186-4C97-A536-B1455980A6F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF334A41-D186-4C97-A536-B1455980A6F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF334A41-D186-4C97-A536-B1455980A6F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

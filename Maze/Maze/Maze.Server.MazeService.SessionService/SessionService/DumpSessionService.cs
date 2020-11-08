@@ -2,31 +2,18 @@
 using Maze.Common.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Maze.Server.Core.SessionStorage
+namespace Maze.Server.Core.SessionService
 {
-    public class DumpSessionStorage : ISessionStorage
+    public class DumpSessionService : ISessionService
     {
-        private IList<string> roles = Constants.Roles.ALL.ToList();
         private Dictionary<string, MazeUser> _sessions = new Dictionary<string, MazeUser>();
 
-        private static DumpSessionStorage _instance;
-        public static DumpSessionStorage Instance
-        {
-            get
-            {
-                return _instance ?? (_instance = new DumpSessionStorage());
-            }
-        }
-
-        private DumpSessionStorage()
+        public DumpSessionService()
         {
 
         }
-
 
         public string AddUserSession(MazeUser user)
         {
@@ -42,11 +29,6 @@ namespace Maze.Server.Core.SessionStorage
         {
             _sessions.Remove(userToken);
             Console.WriteLine(this);
-        }
-
-        public MazeUser GetUserByLoginOrNull(string userLogin)
-        {
-            return _sessions.Values.FirstOrDefault(x => x.Login == userLogin);
         }
 
         public MazeUser GetUserByTokenOrNull(string userToken)
