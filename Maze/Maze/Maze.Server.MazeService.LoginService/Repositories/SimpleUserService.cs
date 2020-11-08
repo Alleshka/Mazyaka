@@ -3,11 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Maze.Server.Core.Repositories
 {
-    public class SimpleUserRepository : IUserService
+    public class SimpleUserService : IUserService
     {
         private Dictionary<Guid, MazeUser> _users = new Dictionary<Guid, MazeUser>();
 

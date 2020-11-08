@@ -1,13 +1,12 @@
 ﻿using Maze.Common.MazePackages;
 using Maze.Common.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Maze.Server.Core.Access
 {
+    /// <summary>
+    /// Интерфейс листа с доступом к выполнению пакета
+    /// Проверяет по пакету и роли права на выполнение операции
+    /// </summary>
     public interface IAccessList
     {
         bool HasAccess(IMazePackage package, MazeUserRole role);

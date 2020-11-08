@@ -2,32 +2,33 @@
 using Maze.Common.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Maze.Server.Core.SessionStorage
 {
     public class DumpSessionStorage : ISessionStorage
     {
-        private IList<string> roles = Constants.Roles.ALL.ToList();
         private Dictionary<string, MazeUser> _sessions = new Dictionary<string, MazeUser>();
+
+        public DumpSessionStorage()
+        {
+
+        }
 
         public string AddUserSession(MazeUser user)
         {
             var token = Guid.NewGuid().ToString();
             _sessions.Add(token, user);
+
+            Console.WriteLine(this);
+
             return token;
         }
 
         public void DeleteSession(string userToken)
         {
             _sessions.Remove(userToken);
-        }
-
-        public MazeUser GetUserByLoginOrNull(string userLogin)
-        {
-            return _sessions.FirstOrDefault(x => x.Value.Login == userLogin).Value;
+            Console.WriteLine(this);
         }
 
         public MazeUser GetUserByTokenOrNull(string userToken)
@@ -38,8 +39,25 @@ namespace Maze.Server.Core.SessionStorage
 
         public MazeUserRole GetUserRoleOrNull(string userToken)
         {
-            _sessions.TryGetValue(userToken, out var user);
-            return user?.Role;
+            if (String.IsNullOrEmpty(userToken)) return new MazeUserRole(Constants.Roles.GUEST);
+            else
+            {
+                _sessions.TryGetValue(userToken, out var user);
+                return user?.Role;
+            }
+        }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+
+            builder.AppendLine($"Активных пользователей: {_sessions.Count}");
+            foreach(var user in _sessions)
+            {
+                builder.AppendLine($"{user.Key} - {user.Value.Login}");
+            }
+
+            return builder.ToString();
         }
     }
 }

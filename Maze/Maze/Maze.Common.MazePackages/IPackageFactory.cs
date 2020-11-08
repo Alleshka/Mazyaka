@@ -1,8 +1,6 @@
 ﻿using Maze.Common.MazePackages.MazePackages;
 using Maze.Common.Model;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Maze.Common.MazePackages
 {
@@ -89,8 +87,5 @@ namespace Maze.Common.MazePackages
                 Message = message
             };
         }
-
-
     }
-
 }

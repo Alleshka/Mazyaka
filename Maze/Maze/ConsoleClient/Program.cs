@@ -15,16 +15,15 @@ namespace ConsoleClient
 
             string ip = "127.0.0.1";
 
-            using (var sender = new MazeUdpDataExchange(localPort, new JsonCompressedMazePackageParser(), (message, remoteIp, messageSender) =>
+            using (var sender = new MazeUdpDataExchange(new JsonCompressedMazePackageParser(), (message, remoteIp, messageSender) =>
              {
-                 Console.WriteLine($"Message from server ({remoteIp.Address}:{remoteIp.Port}): {message.ToString()}");
+                 Console.WriteLine($"Message from server ({remoteIp.Address}:{remoteIp.Port}): {message}");
              }))
             {
-                sender.Start();
+                sender.Start(localPort);
 
                 while (true)
                 {
-
                     Console.WriteLine("1 - CreateUser");
                     Console.WriteLine("2 - Login");
                     Console.WriteLine("3 - Logout");

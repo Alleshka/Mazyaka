@@ -1,8 +1,4 @@
-﻿using Maze.Common.Model;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System;
 
 namespace Maze.Common.MazePackages.MazePackages
 {

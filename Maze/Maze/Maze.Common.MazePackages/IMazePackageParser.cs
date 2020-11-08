@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Maze.Common.MazePackages
+﻿namespace Maze.Common.MazePackages
 {
     /// <summary>
     /// Интерфейс парсера пакетов

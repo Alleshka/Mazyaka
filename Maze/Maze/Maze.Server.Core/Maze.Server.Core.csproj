@@ -81,9 +81,17 @@
       <Project>{DFA6F035-A8EC-4CBA-8589-A39C27E54E6C}</Project>
       <Name>Maze.Server.Core.ServiceStorage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Maze.Server.Core.SessionStorage\Maze.Server.Core.SessionStorage.csproj">
-      <Project>{34FD6B4F-6A38-42D0-948E-4665C7214279}</Project>
-      <Name>Maze.Server.Core.SessionStorage</Name>
+    <ProjectReference Include="..\Maze.Server.MazeService.LoginService\Maze.Server.MazeService.LoginService.csproj">
+      <Project>{F60A2B06-90DC-45D7-8A84-AB556C0C7985}</Project>
+      <Name>Maze.Server.MazeService.LoginService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Maze.Server.MazeService.MessageSender\Maze.Server.MazeService.MessageSender.csproj">
+      <Project>{23CE6605-2BAB-4A31-8890-A6A9F1B4BF76}</Project>
+      <Name>Maze.Server.MazeService.MessageSender</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Maze.Server.MazeService.SessionStorage\Maze.Server.MazeService.SessionStorage.csproj">
+      <Project>{9F6DBD06-7DE8-49BD-9902-094D6E1A103B}</Project>
+      <Name>Maze.Server.MazeService.SessionStorage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Maze.Server.MazeService\Maze.Server.MazeService.csproj">
       <Project>{17D5C061-9577-4F7A-866E-9B95FC5EE0E7}</Project>

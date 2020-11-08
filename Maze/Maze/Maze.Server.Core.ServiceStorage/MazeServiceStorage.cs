@@ -1,14 +1,12 @@
 ﻿using Maze.Server.MazeService;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Maze.Server.Core.ServiceStorage
 {
     /// <summary>
     /// Хранилище всех сервисов, используемых в проекте
+    /// Скорее всего реализация меняться не будет
     /// </summary>
     public class MazeServiceStorage
     {
@@ -31,7 +29,6 @@ namespace Maze.Server.Core.ServiceStorage
         {
             _services[type] = service;
         }
-
         public void AddService<T>(IMazeService service)
         {
             AddService(typeof(T), service);
@@ -40,12 +37,15 @@ namespace Maze.Server.Core.ServiceStorage
         public IMazeService GetService(Type type)
         {
             _services.TryGetValue(type, out var resultService);
+            if (resultService == null)
+            {
+                throw new Exception($"Не удалось найти сервис с типом {type}");
+            }
             return resultService;
         }
-
-       public T GetService<T>()
+        public T GetService<T>()
         {
-           return (T)GetService(typeof(T));
+            return (T)GetService(typeof(T));
         }
     }
 }

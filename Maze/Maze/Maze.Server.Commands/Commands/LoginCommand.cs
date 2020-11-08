@@ -1,6 +1,7 @@
 ﻿using Maze.Common.MazePackages;
 using Maze.Common.Model;
 using Maze.Server.Core.Repositories;
+using Maze.Server.Core.ServiceStorage;
 using Maze.Server.Core.SessionStorage;
 using System;
 using System.Collections.Generic;
@@ -13,26 +14,20 @@ namespace Maze.Server.Commands.Commands
 {
     class LoginCommand : BaseCommand
     {
-        private ISessionStorage _sessionStorage;
-        private IUserService _userRepository;
-
         private string _userLogin;
 
-
-        public LoginCommand(ISessionStorage sessionStorage, IUserService userRepository, string userLogin)
+        public LoginCommand(string userLogin)
         {
-            _sessionStorage = sessionStorage;
-            _userRepository = userRepository;
             _userLogin = userLogin;
         }
 
         public override IMazePackage Execute()
         {
-            var user = _userRepository.GetUserByLogin(_userLogin);
+            var user = MazeServiceStorage.Instance.GetService<IUserService>().GetUserByLogin(_userLogin);
             if (user == null) return PackageFactory.ExceptionMessageResponse("Пользователь не найден");
             else
             {
-                var token = _sessionStorage.AddUserSession(user);
+                var token = MazeServiceStorage.Instance.GetService<ISessionStorage>().AddUserSession(user);
                 return PackageFactory.LoginUserResponse(token);
             }
         }

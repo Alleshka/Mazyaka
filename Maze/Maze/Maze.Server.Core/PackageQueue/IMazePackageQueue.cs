@@ -1,11 +1,7 @@
 ﻿using Maze.Common.MazePackages;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Maze.Server.Core.PackageQueue
 {
@@ -22,7 +18,7 @@ namespace Maze.Server.Core.PackageQueue
         /// Получает наиболее подходящий пакет
         /// </summary>
         /// <returns></returns>
-        IMazePackageQueueItem GetItem();
+        IMazePackage GetPackage(out IPEndPoint endPoint);
 
         Int32 Count { get; }
     }
@@ -43,18 +39,25 @@ namespace Maze.Server.Core.PackageQueue
             _mazePackageQueueItems.Enqueue(new SimpleMazePackageQueueItem(package, endPoint));
         }
 
-        public IMazePackageQueueItem GetItem()
+        public IMazePackage GetPackage(out IPEndPoint endPoint)
         {
+            endPoint = null;
+
             if (Count > 0)
             {
-                IMazePackageQueueItem result = null;
-                while (!_mazePackageQueueItems.TryDequeue(out result)) 
+                IMazePackageQueueItem result;
+                while (!_mazePackageQueueItems.TryDequeue(out result))
                 {
                     if (Count == 0 && result == null) return null;
                 };
-                return result;
+
+                endPoint = result.EndPoint;
+                return result.MazePackage;
             }
-            else return null;
+            else
+            {
+                return null;
+            }
         }
     }
 }
