@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Maze.Common.MazePackages.MazePackages;
+using System.IO;
 using System.IO.Compression;
 
 namespace Maze.Common.MazePackages.Parsers

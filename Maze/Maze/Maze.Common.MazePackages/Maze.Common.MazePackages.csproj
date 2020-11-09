@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMazePackage.cs" />
+    <Compile Include="MazePackages\IMazePackage.cs" />
     <Compile Include="IMazePackageParser.cs" />
     <Compile Include="IPackageFactory.cs" />
     <Compile Include="MazePackages\MessageMazePackage.cs" />

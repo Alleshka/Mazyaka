@@ -1,5 +1,6 @@
 ﻿using Maze.Common;
 using Maze.Common.MazePackages;
+using Maze.Common.MazePackages.MazePackages;
 using Maze.Common.Model;
 using Maze.Server.Core.Repositories;
 using Maze.Server.Core.ServiceStorage;

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Linq;
 
-namespace Maze.Common.MazePackages
+namespace Maze.Common.MazePackages.MazePackages
 {
     /// <summary>
     /// Базовый интерфейс пакета для передачи через TCP

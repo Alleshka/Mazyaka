@@ -1,4 +1,5 @@
 ﻿using Maze.Common.MazePackages;
+using Maze.Common.MazePackages.MazePackages;
 using System.Net;
 
 namespace Maze.Server.Core.PackageQueue

@@ -1,6 +1,7 @@
 ﻿using Maze.Common;
 using Maze.Common.Logging;
 using Maze.Common.MazePackages;
+using Maze.Common.MazePackages.MazePackages;
 using Maze.Server.Core.CommandFactory;
 using Maze.Server.Core.ServiceStorage;
 using Maze.Server.MazeService.MessageSender;
