@@ -1,21 +1,20 @@
 ﻿using Maze.Common;
 using Maze.Common.Logging;
 using Maze.Common.MazePackages;
-using Maze.Common.MazePackages.MazePackages;
-using Maze.Server.Core.CommandFactory;
-using Maze.Server.Core.ServiceStorage;
-using Maze.Server.MazeService.MessageSender;
+using Maze.Server.MazeCommands;
+using Maze.Server.MazeService.MessageSenderService;
+using Maze.Server.ServiceStorage;
 using System.Net;
 
 namespace Maze.Server.Core.Executor
 {
     internal class SimpleMazePackageExecutor : IMazePackageExecutor
     {
-        private SimpleCommandFactory _commandFactory;
+        private IMazeCommandFactory _commandFactory;
 
         public SimpleMazePackageExecutor()
         {
-            _commandFactory = new SimpleCommandFactory();
+            _commandFactory = ImplementationStorage.MazeImplementationStorage.Instance.GetImplementation<IMazeCommandFactory>();
         }
 
         public void Execute(IMazePackage package, IPEndPoint endPoint)

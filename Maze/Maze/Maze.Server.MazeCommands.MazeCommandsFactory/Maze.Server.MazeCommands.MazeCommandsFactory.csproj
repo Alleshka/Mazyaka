@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Maze.Common.MazePackages.MazePackages\Maze.Common.MazePackages.MazePackages.csproj" />
+    <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj" />
+    <ProjectReference Include="..\Maze.Server.MazeCommands.MazeCommands\Maze.Server.MazeCommands.MazeCommands.csproj" />
+    <ProjectReference Include="..\Maze.Server.MazeCommands\Maze.Server.MazeCommands.csproj" />
+  </ItemGroup>
+
+</Project>

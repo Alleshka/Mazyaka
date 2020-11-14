@@ -1,5 +1,5 @@
 ﻿using Maze.Common.MazePackages;
-using Maze.Common.MazePackages.MazePackages;
+using Maze.Common.MazePackages.MazePackageFactory;
 using Maze.Common.MazePackages.Parsers;
 using Maze.Server.UdpServer;
 using System;
@@ -17,9 +17,9 @@ namespace ConsoleClient
             string ip = "127.0.0.1";
 
             using (var sender = new MazeUdpDataExchange(new JsonCompressedMazePackageParser(), (message, remoteIp, messageSender) =>
-             {
-                 Console.WriteLine($"Message from server ({remoteIp.Address}:{remoteIp.Port}): {message}");
-             }))
+            {
+                Console.WriteLine($"Message from server ({remoteIp.Address}:{remoteIp.Port}): {message}");
+            }))
             {
                 sender.Start(localPort);
 

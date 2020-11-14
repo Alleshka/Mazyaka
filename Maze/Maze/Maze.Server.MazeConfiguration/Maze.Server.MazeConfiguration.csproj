@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Maze.Common.DataExchange\Maze.Common.DataExchange.csproj" />
+    <ProjectReference Include="..\Maze.Common.Logging\Maze.Common.Logging.csproj" />
+    <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj" />
+    <ProjectReference Include="..\Maze.Server.MazeImplementationStorage\Maze.Server.MazeImplementationStorage.csproj" />
+    <ProjectReference Include="..\Maze.Server.MazeServiceStorage\Maze.Server.MazeServiceStorage.csproj" />
+  </ItemGroup>
+
+</Project>

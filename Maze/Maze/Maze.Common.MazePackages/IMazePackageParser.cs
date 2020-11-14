@@ -1,6 +1,4 @@
-﻿using Maze.Common.MazePackages.MazePackages;
-
-namespace Maze.Common.MazePackages
+﻿namespace Maze.Common.MazePackages
 {
     /// <summary>
     /// Интерфейс парсера пакетов

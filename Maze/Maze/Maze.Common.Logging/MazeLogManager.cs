@@ -14,7 +14,7 @@ namespace Maze.Common.Logging
         {
             get
             {
-                return _instance ?? (_instance = new MazeLogManager());
+                return _instance ??= new MazeLogManager();
             }
         }
 
@@ -27,7 +27,7 @@ namespace Maze.Common.Logging
 
         public void Write(string msg, params string[] loggers)
         {
-            foreach(var logger in loggers)
+            foreach (var logger in loggers)
             {
                 if (_loggers.TryGetValue(logger, out var curLogger))
                 {
