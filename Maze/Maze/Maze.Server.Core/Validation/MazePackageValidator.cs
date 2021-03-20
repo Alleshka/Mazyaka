@@ -1,7 +1,7 @@
 ﻿using Maze.Common.MazePackages;
 using Maze.Common.Model;
+using Maze.Server.AutofacContainer;
 using Maze.Server.Core.Access;
-using Maze.Server.ImplementationStorage;
 
 namespace Maze.Server.Core.Validation
 {
@@ -11,7 +11,7 @@ namespace Maze.Server.Core.Validation
 
         public MazePackageValidator()
         {
-            _accessList = MazeImplementationStorage.Instance.GetImplementation<IAccessList>();;
+            _accessList = MazeAutofacContainer.Instance.GetImplementation<IAccessList>();;
         }
 
         public IMazePackage Validate(IMazePackage package, MazeUserRole role)
@@ -21,7 +21,7 @@ namespace Maze.Server.Core.Validation
             if (!hasAccess)
             {
                 // Если нет доступа, то заменяем пакет
-                package = MazeImplementationStorage.Instance.GetImplementation<IPackageFactory>().AccessDeniedResponse();
+                package = MazeAutofacContainer.Instance.GetImplementation<IPackageFactory>().AccessDeniedResponse();
             }
 
             return package;

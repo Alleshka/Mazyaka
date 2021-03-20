@@ -2,7 +2,7 @@
 using Maze.Common.MazePackages;
 using Maze.Common.Logging;
 using System.Runtime.CompilerServices;
-using Maze.Server.ImplementationStorage;
+using Maze.Server.AutofacContainer;
 
 [assembly: InternalsVisibleTo("Maze.Server.MazeCommands.MazeCommandsFactory")]
 namespace Maze.Server.MazeCommands.MazeCommands
@@ -10,7 +10,7 @@ namespace Maze.Server.MazeCommands.MazeCommands
     abstract class BaseCommand : IMazeServerCommand
     {
         private IPackageFactory _packageFactory;
-        protected IPackageFactory PackageFactory { get => _packageFactory ??= MazeImplementationStorage.Instance.GetImplementation<IPackageFactory>(); }
+        protected IPackageFactory PackageFactory { get => _packageFactory ??= MazeAutofacContainer.Instance.GetImplementation<IPackageFactory>(); }
 
         public IMazePackage Execute()
         {

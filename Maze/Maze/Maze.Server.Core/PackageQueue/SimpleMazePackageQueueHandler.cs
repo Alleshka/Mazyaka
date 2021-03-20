@@ -1,8 +1,8 @@
 ﻿using Maze.Common.MazePackages;
+using Maze.Server.AutofacContainer;
 using Maze.Server.Core.Executor;
 using Maze.Server.Core.Validation;
 using Maze.Server.MazeService.SessionService;
-using Maze.Server.ServiceStorage;
 using System.Net;
 using System.Threading;
 
@@ -51,7 +51,7 @@ namespace Maze.Server.Core.QueueHandler
                 var package = _mazePackageQueue.GetPackage(out var endPoint);
                 if (package != null)
                 {
-                    package = _accessValidator.Validate(package, MazeServiceStorage.Instance.GetService<ISessionService>().GetUserRoleOrNull(package.SecurityToken));
+                    package = _accessValidator.Validate(package, MazeAutofacContainer.Instance.GetService<ISessionService>().GetUserRoleOrNull(package.SecurityToken));
                     _mazePackageExecutor.Execute(package, endPoint);
                 }
                 else

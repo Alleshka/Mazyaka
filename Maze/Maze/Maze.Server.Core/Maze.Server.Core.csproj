@@ -7,15 +7,14 @@
   <ItemGroup>
     <ProjectReference Include="..\Maze.Common.DataExchange.UdpDataExchange\Maze.Common.DataExchange.UdpDataExchange.csproj" />
     <ProjectReference Include="..\Maze.Common\Maze.Common.csproj" />
+    <ProjectReference Include="..\Maze.Server.AutofacContainer\Maze.Server.AutofacContainer.csproj" />
     <ProjectReference Include="..\Maze.Server.Core.Access\Maze.Server.Core.Access.csproj" />
     <ProjectReference Include="..\Maze.Server.Core.QueueHandler\Maze.Server.Core.QueueHandler.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeCommands\Maze.Server.MazeCommands.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeConfiguration\Maze.Server.MazeConfiguration.csproj" />
-    <ProjectReference Include="..\Maze.Server.MazeImplementationStorage\Maze.Server.MazeImplementationStorage.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeService.LoginService\Maze.Server.MazeService.LoginService.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeService.MessageSenderService\Maze.Server.MazeService.MessageSenderService.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeService.SessionService\Maze.Server.MazeService.SessionService.csproj" />
-    <ProjectReference Include="..\Maze.Server.MazeServiceStorage\Maze.Server.MazeServiceStorage.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeService\Maze.Server.MazeService.csproj" />
   </ItemGroup>
 

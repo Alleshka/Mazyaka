@@ -1,9 +1,9 @@
 ﻿using Maze.Common;
 using Maze.Common.Logging;
 using Maze.Common.MazePackages;
+using Maze.Server.AutofacContainer;
 using Maze.Server.MazeCommands;
 using Maze.Server.MazeService.MessageSenderService;
-using Maze.Server.ServiceStorage;
 using System.Net;
 
 namespace Maze.Server.Core.Executor
@@ -14,7 +14,7 @@ namespace Maze.Server.Core.Executor
 
         public SimpleMazePackageExecutor()
         {
-            _commandFactory = ImplementationStorage.MazeImplementationStorage.Instance.GetImplementation<IMazeCommandFactory>();
+            _commandFactory = MazeAutofacContainer.Instance.GetImplementation<IMazeCommandFactory>();
         }
 
         public void Execute(IMazePackage package, IPEndPoint endPoint)
@@ -23,7 +23,7 @@ namespace Maze.Server.Core.Executor
             {
                 var cmd = _commandFactory.CreateCommand(package);
                 var result = cmd.Execute();
-                MazeServiceStorage.Instance.GetService<IMessageSenderService>().SendMessage(result, endPoint);
+                MazeAutofacContainer.Instance.GetService<IMessageSenderService>().SendMessage(result, endPoint);
             }, Constants.Loggers.CommonLogger);
         }
     }

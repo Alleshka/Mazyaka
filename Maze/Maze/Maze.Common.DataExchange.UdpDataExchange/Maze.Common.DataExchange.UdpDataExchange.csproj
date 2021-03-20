@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Maze.Common.DataExchange\Maze.Common.DataExchange.csproj" />
     <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj" />
+    <ProjectReference Include="..\Maze.Server.AutofacContainer\Maze.Server.AutofacContainer.csproj" />
   </ItemGroup>
 
 </Project>

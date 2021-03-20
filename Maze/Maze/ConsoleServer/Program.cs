@@ -4,17 +4,15 @@ using Maze.Common.Logging;
 using Maze.Common.MazePackages;
 using Maze.Common.MazePackages.MazePackageFactory;
 using Maze.Common.MazePackages.Parsers;
+using Maze.Server.AutofacContainer;
 using Maze.Server.Core;
 using Maze.Server.Core.Access;
-using Maze.Server.Core.QueueHandler;
-using Maze.Server.ImplementationStorage;
 using Maze.Server.MazeCommands;
 using Maze.Server.MazeCommands.MazeCommandsFactory;
 using Maze.Server.MazeConfiguration;
 using Maze.Server.MazeService.LoginService;
 using Maze.Server.MazeService.MessageSenderService;
 using Maze.Server.MazeService.SessionService;
-using Maze.Server.ServiceStorage;
 using Maze.Server.UdpServer;
 using System;
 using System.Net;
@@ -32,18 +30,18 @@ namespace ConsoleServer
 
     class ImplementationConfiguration : IImplementationConfigurator
     {
-        public void Configurate(MazeImplementationStorage item)
+        public void Configurate(MazeAutofacContainer item)
         {
-            item.Bind<IMazeCommandFactory>(new SimpleCommandFactory(), ImplementationMode.Single);
-            item.Bind<IPackageFactory>(new SimplePackageFactory(), ImplementationMode.Single);
-            item.Bind<IAccessList>(new SimpleAccessList(), ImplementationMode.Single);
-            item.Bind<IMazePackageParser>(new JsonCompressedMazePackageParser(), ImplementationMode.Single);
+            item.AddImplementation<IMazeCommandFactory>(new SimpleCommandFactory());
+            item.AddImplementation<IPackageFactory>(new SimplePackageFactory());
+            item.AddImplementation<IAccessList>(new SimpleAccessList());
+            item.AddImplementation<IMazePackageParser>(new JsonCompressedMazePackageParser());
         }
     }
 
     class ServiceConfiguration : IServiceConfigurator
     {
-        public void Configurate(MazeServiceStorage serviceStorage)
+        public void Configurate(MazeAutofacContainer serviceStorage)
         {
             serviceStorage.AddService<ISessionService>(new DumpSessionService());
             serviceStorage.AddService<ILoginService>(new SimpleUserService());

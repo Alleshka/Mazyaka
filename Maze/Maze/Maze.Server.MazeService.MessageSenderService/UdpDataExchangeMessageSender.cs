@@ -1,6 +1,6 @@
 ﻿using Maze.Common.DataExhange;
 using Maze.Common.MazePackages;
-using Maze.Server.ImplementationStorage;
+using Maze.Server.AutofacContainer;
 using System.Net;
 
 namespace Maze.Server.MazeService.MessageSenderService
@@ -9,7 +9,8 @@ namespace Maze.Server.MazeService.MessageSenderService
     {
         public void SendMessage(IMazePackage package, IPEndPoint endPoint)
         {
-            MazeImplementationStorage.Instance.GetImplementation<IDataExchanger>().SendMessage(package, endPoint);
+            var exchanger = MazeAutofacContainer.Instance.GetImplementation<IDataExchanger>();
+            exchanger.SendMessage(package, endPoint);
         }
     }
 }

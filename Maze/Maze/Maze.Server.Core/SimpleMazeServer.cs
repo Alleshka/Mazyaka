@@ -1,11 +1,11 @@
-﻿using Maze.Common;
+﻿using Autofac;
+using Maze.Common;
 using Maze.Common.DataExhange;
 using Maze.Common.Logging;
 using Maze.Common.MazePackages;
+using Maze.Server.AutofacContainer;
 using Maze.Server.Core.QueueHandler;
-using Maze.Server.ImplementationStorage;
 using Maze.Server.MazeConfiguration;
-using Maze.Server.ServiceStorage;
 using Maze.Server.UdpServer;
 using System;
 using System.Net;
@@ -37,13 +37,16 @@ namespace Maze.Server.Core
 
         public SimpleMazeServer(IImplementationConfigurator implementationConfigurator, IServiceConfigurator serviceConfigurator, ILogsConfigurator logsConfigurator, IDataExchangeConfigurator dataExchangeConfigurator)
         {
-            implementationConfigurator.Configurate(MazeImplementationStorage.Instance);
+            implementationConfigurator.Configurate(MazeAutofacContainer.Instance);
 
-            _dataExchanger = dataExchangeConfigurator.Create(MazeImplementationStorage.Instance.GetImplementation<IMazePackageParser>(), ReceiveMessage);
-            MazeImplementationStorage.Instance.Bind(_dataExchanger);
-
-            serviceConfigurator.Configurate(MazeServiceStorage.Instance);
+            serviceConfigurator.Configurate(MazeAutofacContainer.Instance);
             logsConfigurator.Configurate(MazeLogManager.Instance);
+
+            MazeAutofacContainer.Instance.AddImplementation<IDataExchanger>((c) => new MazeUdpDataExchange(c.Resolve<IMazePackageParser>(), ReceiveMessage));
+            MazeAutofacContainer.Instance.Build();
+
+            // TODO: Плохо, придумать что сделать
+            _dataExchanger = MazeAutofacContainer.Instance.GetImplementation<IDataExchanger>();
         }
 
         public void Start(int port)
