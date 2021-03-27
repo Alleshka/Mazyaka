@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Maze.Common.Model;
+using System;
 
 namespace Maze.Common.MazePackages.MazePackages
 {
     /// <summary>
     /// Пакет содержащий информацию для входа
     /// </summary>
-    internal class LoginMazePackage : BaseMazePackage
+    internal class LoginMazePackage : BaseMazePackageRequest
     {
         /// <summary>
         /// Логин пользователя
@@ -16,6 +17,8 @@ namespace Maze.Common.MazePackages.MazePackages
         /// Пароль пользователя
         /// </summary>
         public string Password { get; set; }
+
+        public override MazeUserRole Roles => MazeUserRole.All;
 
         public LoginMazePackage()
         {

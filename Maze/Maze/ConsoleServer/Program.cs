@@ -1,4 +1,5 @@
-﻿using Maze.Common;
+﻿using Autofac;
+using Maze.Common;
 using Maze.Common.DataExhange;
 using Maze.Common.Logging;
 using Maze.Common.MazePackages;
@@ -23,7 +24,7 @@ namespace ConsoleServer
     {
         static void Main(string[] args)
         {
-            var server = new SimpleMazeServer(new ImplementationConfiguration(), new ServiceConfiguration(), new LogsConfiguration(), new DataExchangeConfiguration());
+            var server = new SimpleMazeServer(new ImplementationConfiguration(), new ServiceConfiguration(), new LogsConfiguration());
             server.Start(1433);
         }
     }
@@ -36,6 +37,7 @@ namespace ConsoleServer
             item.AddImplementation<IPackageFactory>(new SimplePackageFactory());
             item.AddImplementation<IAccessList>(new SimpleAccessList());
             item.AddImplementation<IMazePackageParser>(new JsonCompressedMazePackageParser());
+            item.AddImplementation<IDataExchanger>((c) => new MazeUdpDataExchange(c.Resolve<IMazePackageParser>()));
         }
     }
 
@@ -54,14 +56,6 @@ namespace ConsoleServer
         public void Configurate(MazeLogManager logManager)
         {
             logManager.AddLogger(Constants.Loggers.CommonLogger);
-        }
-    }
-
-    class DataExchangeConfiguration : IDataExchangeConfigurator
-    {
-        public IDataExchanger Create(IMazePackageParser packageParser, Action<IMazePackage, IPEndPoint, IDataExchanger> onReceiveMessage)
-        {
-            return new MazeUdpDataExchange(packageParser, onReceiveMessage);
         }
     }
 }

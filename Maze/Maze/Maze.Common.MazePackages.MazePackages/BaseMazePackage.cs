@@ -23,4 +23,16 @@ namespace Maze.Common.MazePackages.MazePackages
 
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
     }
+
+
+    internal abstract class BaseMazePackageRequest : BaseMazePackage, IMazePackageRequest
+    {
+        [JsonIgnore]
+        public abstract MazeUserRole Roles { get; }
+    }
+
+    internal abstract class BaseMazePackageResponce : BaseMazePackage, IMazePackageResponce
+    {
+
+    }
 }

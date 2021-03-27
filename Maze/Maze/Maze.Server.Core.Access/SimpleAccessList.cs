@@ -10,16 +10,9 @@ namespace Maze.Server.Core.Access
 {
     public class SimpleAccessList : IAccessList
     {
-        private static readonly Dictionary<Type, IEnumerable<string>> _acceses = new Dictionary<Type, IEnumerable<string>>()
+        public bool HasAccess(IMazePackageRequest package, MazeUserRole role)
         {
-            { typeof(LoginMazePackage), Constants.Roles.ALL },
-            { typeof(RegisterUserPackage), Constants.Roles.ALL },
-            { typeof(LogoutMazePackage), Constants.Roles.NOT_GUEST },
-        };
-
-        public bool HasAccess(IMazePackage package, MazeUserRole role)
-        {
-            return _acceses.TryGetValue(package.GetType(), out var roles) && roles.Any(x => x == role?.RoleName);
+            return package.Roles.HasFlag(role);
         }
     }
 }

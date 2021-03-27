@@ -5,7 +5,7 @@ namespace Maze.Common.MazePackages.MazePackages
     /// <summary>
     /// Пакет с сообщением об исключении
     /// </summary>
-    internal class ExceptionMazePackage : BaseMazePackage
+    internal class ExceptionMazePackage : BaseMazePackageResponce
     {
         public String Message { get; set; }
 

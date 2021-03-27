@@ -22,7 +22,7 @@ namespace Maze.Server.MazeCommands.MazeCommands
             var user = new MazeUser()
             {
                 Login = _userLogin,
-                Role = new MazeUserRole(Constants.Roles.PLAYER)
+                Role = MazeUserRole.Player
             };
 
             MazeAutofacContainer.Instance.GetService<ILoginService>().CreateUser(user);

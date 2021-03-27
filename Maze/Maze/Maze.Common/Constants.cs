@@ -13,12 +13,9 @@ namespace Maze.Common
         // TODO: https://mazeproject.atlassian.net/browse/MAZE-17
         public static class Roles
         {
-            public static readonly String ADMIN = "Admin";
-            public static readonly String PLAYER = "Player";
-            public static readonly String GUEST = "Guest";
-
-            public static readonly IEnumerable<String> ALL = new string[] { Roles.ADMIN, Roles.PLAYER, Roles.GUEST };
-            public static readonly IEnumerable<String> NOT_GUEST = new string[] { Roles.ADMIN, Roles.PLAYER };
+            public const String ADMIN = "Admin";
+            public const String PLAYER = "Player";
+            public const String GUEST = "Guest";
         }
 
         public static class Loggers

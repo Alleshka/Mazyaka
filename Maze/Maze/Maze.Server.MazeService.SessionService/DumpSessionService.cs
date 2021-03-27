@@ -42,13 +42,13 @@ namespace Maze.Server.MazeService.SessionService
             return user;
         }
 
-        public MazeUserRole GetUserRoleOrNull(string userToken)
+        public MazeUserRole GetUserRoleOrDefault(string userToken)
         {
-            if (String.IsNullOrEmpty(userToken)) return new MazeUserRole(Constants.Roles.GUEST);
+            if (String.IsNullOrEmpty(userToken)) return MazeUserRole.Guest;
             else
             {
-                _sessions.TryGetValue(userToken, out var user);
-                return user?.Role;
+                _sessions.TryGetValue(userToken, out var user);          
+                return user?.Role ?? MazeUserRole.Guest;
             }
         }
 

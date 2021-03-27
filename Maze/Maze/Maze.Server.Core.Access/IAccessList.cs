@@ -9,6 +9,6 @@ namespace Maze.Server.Core.Access
     /// </summary>
     public interface IAccessList
     {
-        bool HasAccess(IMazePackage package, MazeUserRole role);
+        bool HasAccess(IMazePackageRequest package, MazeUserRole role);
     }
 }

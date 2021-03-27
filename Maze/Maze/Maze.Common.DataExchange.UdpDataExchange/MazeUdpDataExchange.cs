@@ -22,14 +22,12 @@ namespace Maze.Server.UdpServer
         /// </summary>
         private bool _isServerStopped;
 
-        /// <summary>
-        /// Срабатывает при получении сообщения
-        /// </summary>
-        private Action<IMazePackage, IPEndPoint, MazeUdpDataExchange> _onReceiveMessage;
-
         private IMazePackageParser _packageParser;
 
         private UdpClient _udpClient;
+
+        public event DataExchangerHandler OnRecieveMessage;
+
         protected UdpClient UdpClient
         {
             get
@@ -38,9 +36,8 @@ namespace Maze.Server.UdpServer
             }
         }
 
-        public MazeUdpDataExchange(IMazePackageParser packageParser, Action<IMazePackage, IPEndPoint, MazeUdpDataExchange> onReceiveMessage = null)
+        public MazeUdpDataExchange(IMazePackageParser packageParser)
         {
-            _onReceiveMessage = onReceiveMessage;
             _packageParser = packageParser;
         }
 
@@ -100,7 +97,7 @@ namespace Maze.Server.UdpServer
                 LogMessage(data, remoteIp);
 
                 /// Вызываем действия, срабатываемые при получении сообщения
-                _onReceiveMessage?.Invoke(_packageParser.GetPackage(data), remoteIp, this);
+                OnRecieveMessage?.Invoke(this, new DataExchengerEventArgs(_packageParser.GetPackage(data), remoteIp));
             }
         }
 

@@ -16,7 +16,11 @@ namespace Maze.Server.Core.Validation
 
         public IMazePackage Validate(IMazePackage package, MazeUserRole role)
         {
-            var hasAccess = _accessList.HasAccess(package, role);
+            var hasAccess = false;
+            if (package is IMazePackageRequest request)
+            {
+                hasAccess = _accessList.HasAccess(request, role);
+            }
 
             if (!hasAccess)
             {

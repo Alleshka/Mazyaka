@@ -51,7 +51,7 @@ namespace Maze.Server.Core.QueueHandler
                 var package = _mazePackageQueue.GetPackage(out var endPoint);
                 if (package != null)
                 {
-                    package = _accessValidator.Validate(package, MazeAutofacContainer.Instance.GetService<ISessionService>().GetUserRoleOrNull(package.SecurityToken));
+                    package = _accessValidator.Validate(package, MazeAutofacContainer.Instance.GetService<ISessionService>().GetUserRoleOrDefault(package.SecurityToken));
                     _mazePackageExecutor.Execute(package, endPoint);
                 }
                 else

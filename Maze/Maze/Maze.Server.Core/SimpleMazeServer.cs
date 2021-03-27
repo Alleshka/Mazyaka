@@ -35,18 +35,16 @@ namespace Maze.Server.Core
             }
         }
 
-        public SimpleMazeServer(IImplementationConfigurator implementationConfigurator, IServiceConfigurator serviceConfigurator, ILogsConfigurator logsConfigurator, IDataExchangeConfigurator dataExchangeConfigurator)
+        public SimpleMazeServer(IImplementationConfigurator implementationConfigurator, IServiceConfigurator serviceConfigurator, ILogsConfigurator logsConfigurator)
         {
+            // TODO: Вынести в обёртку, которая всё сделала
             implementationConfigurator.Configurate(MazeAutofacContainer.Instance);
-
             serviceConfigurator.Configurate(MazeAutofacContainer.Instance);
             logsConfigurator.Configurate(MazeLogManager.Instance);
-
-            MazeAutofacContainer.Instance.AddImplementation<IDataExchanger>((c) => new MazeUdpDataExchange(c.Resolve<IMazePackageParser>(), ReceiveMessage));
             MazeAutofacContainer.Instance.Build();
 
-            // TODO: Плохо, придумать что сделать
             _dataExchanger = MazeAutofacContainer.Instance.GetImplementation<IDataExchanger>();
+            _dataExchanger.OnRecieveMessage += ReceiveMessage;
         }
 
         public void Start(int port)
@@ -61,9 +59,9 @@ namespace Maze.Server.Core
             DataExchanger.Stop();
         }
 
-        protected void ReceiveMessage(IMazePackage package, IPEndPoint endPoint, IDataExchanger sender)
+        protected void ReceiveMessage(IDataExchanger sender, DataExchengerEventArgs args)
         {
-            Queue.AddPackage(package, endPoint);
+            Queue.AddPackage(args.Package, args.IPEndPoint);
         }
     }
 }

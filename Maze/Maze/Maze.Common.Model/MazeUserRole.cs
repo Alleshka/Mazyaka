@@ -1,17 +1,21 @@
-﻿namespace Maze.Common.Model
+﻿using System;
+using System.ComponentModel;
+
+namespace Maze.Common.Model
 {
-    public class MazeUserRole : BaseMazeObject
+    [Flags]
+    public enum MazeUserRole
     {
-        public string RoleName { get; }
+        [Description(Constants.Roles.ADMIN)]
+        Admin = 1 << 0,
 
-        public  MazeUserRole()
-        {
+        [Description(Constants.Roles.PLAYER)]
+        Player = 1 << 1,
 
-        }
+        [Description(Constants.Roles.GUEST)]
+        Guest = 1 << 2,
 
-        public MazeUserRole(string roleName)
-        {
-            RoleName = roleName;
-        }
+        All = Admin | Player | Guest,
+        NotGuest = Admin | Player
     }
 }

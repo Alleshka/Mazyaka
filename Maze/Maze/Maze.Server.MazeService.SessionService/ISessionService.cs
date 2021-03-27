@@ -8,7 +8,7 @@ namespace Maze.Server.MazeService.SessionService
 
         MazeUser GetUserByTokenOrNull(string userToken);
 
-        MazeUserRole GetUserRoleOrNull(string userToken);
+        MazeUserRole GetUserRoleOrDefault(string userToken);
 
         void DeleteSession(string userToken);
     }

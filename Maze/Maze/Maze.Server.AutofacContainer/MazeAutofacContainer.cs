@@ -6,7 +6,6 @@ namespace Maze.Server.AutofacContainer
 {
     public class MazeAutofacContainer
     {
-
         private static MazeAutofacContainer _instance;
         public static MazeAutofacContainer Instance
         {
