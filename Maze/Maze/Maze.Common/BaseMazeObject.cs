@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Maze.Common.Model
+namespace Maze.Common
 {
     /// <summary>
     /// Базовый класс для всех объектов проекта

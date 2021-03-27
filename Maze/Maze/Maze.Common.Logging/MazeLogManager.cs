@@ -82,5 +82,11 @@ namespace Maze.Common.Logging
             var logger = LogManager.GetLogger(loggerName);
             _loggers[loggerName] = logger;
         }
+
+
+        public static void Debug(string msg, params string[] loggers)
+        {
+            Instance.Write(msg, loggers);
+        }
     }
 }

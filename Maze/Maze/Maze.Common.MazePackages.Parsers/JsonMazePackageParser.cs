@@ -37,7 +37,6 @@ namespace Maze.Common.MazePackages.Parsers
         {
             var str = Encoding.UTF8.GetString(bytes);
             var obj = JObject.Parse(str);
-            // TODO: Очень надеюсь, что сборку решим не менять
             var type = Assembly.Load(ASSEMBLY_NAME).GetType($"{ASSEMBLY_NAME}.{(string)obj.SelectToken(TYPE_PROP_NAME)}");
             var result = ParsePackage(str, type);
             return result;

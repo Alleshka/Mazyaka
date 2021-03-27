@@ -10,7 +10,6 @@ namespace Maze.Common
             public static readonly Int32 PACKAGE_QUEUE_HANDLER_SLEEP = 20;
         }
 
-        // TODO: https://mazeproject.atlassian.net/browse/MAZE-17
         public static class Roles
         {
             public const String ADMIN = "Admin";

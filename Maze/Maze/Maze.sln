@@ -49,6 +49,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleServer", "ConsoleSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Server.AutofacContainer", "Maze.Server.AutofacContainer\Maze.Server.AutofacContainer.csproj", "{11E62A6E-B3E2-4E9E-928A-C7D1A5D34057}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Common.MazeStructure", "Maze.Common.MazeStructure\Maze.Common.MazeStructure.csproj", "{87F6926B-72BC-49FD-B6E3-7723A7025605}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{11E62A6E-B3E2-4E9E-928A-C7D1A5D34057}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11E62A6E-B3E2-4E9E-928A-C7D1A5D34057}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11E62A6E-B3E2-4E9E-928A-C7D1A5D34057}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87F6926B-72BC-49FD-B6E3-7723A7025605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87F6926B-72BC-49FD-B6E3-7723A7025605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87F6926B-72BC-49FD-B6E3-7723A7025605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87F6926B-72BC-49FD-B6E3-7723A7025605}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
