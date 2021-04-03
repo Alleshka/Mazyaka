@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Maze.Common.MazeStructure.Directions;
+using Maze.Common.MazeStructure.GameObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,15 +13,20 @@ namespace Maze.Common.MazeStructure
         private ICell _source;
         private ICell _destination;
 
-        public override bool CanMove => true;
-
-        public override void MoveAction()
+        public BaseTransition(ICell startcell, ICell nextCell)
         {
-            base.MoveAction();
+            _source = startcell;
+            _destination = nextCell;
+        }
 
-            // TODO: _source.RemoveObject
+        public override void MoveObject(ILiveGameObject gameObject, IMazeDirection direction)
+        {
+            base.MoveObject(gameObject, direction);
+
             Logging.MazeLogManager.Debug("Переход между ячейками");
-            // TODO: _destination.AddObject
+            _source.RemoveObject(gameObject);
+            _destination.Execute(gameObject);
+            _destination.AddObject(gameObject);
         }
     }
 }

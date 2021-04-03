@@ -8,6 +8,5 @@ namespace Maze.Common.MazeStructure.Implementatioms
 {
     public class BaseWall : BaseBlock, IWall
     {
-        public override bool CanDestroy => true;
     }
 }

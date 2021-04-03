@@ -5,7 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Maze.Common.Logging\Maze.Common.Logging.csproj" />
     <ProjectReference Include="..\Maze.Common\Maze.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GameObjects\LiveGameObjets\" />
+    <Folder Include="GameObjects\GameObjects\" />
   </ItemGroup>
 
 </Project>

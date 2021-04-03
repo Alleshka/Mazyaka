@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Maze.Common.MazeStructure.Directions;
+using Maze.Common.MazeStructure.GameObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +10,10 @@ namespace Maze.Common.MazeStructure.Implementatioms
 {
     public class BaseMazeExit : BaseBlock, IMazeExit
     {
-        public override bool CanMove => true;
-
-        public override void MoveAction()
+        public override void MoveObject(ILiveGameObject gameObject, IMazeDirection direction)
         {
-            Logging.MazeLogManager.Instance.Write("Нашёл стену Pog", Constants.Loggers.CommonLogger);
+            base.MoveObject(gameObject, direction);
+            Logging.MazeLogManager.Instance.Write("Нашёл выход Pog", Constants.Loggers.CommonLogger);
         }
     }
 }

@@ -2,10 +2,15 @@
 
 namespace Maze.Common
 {
+    public interface IBaseMazeObject
+    {
+        Guid ObjectID { get; }
+    }
+
     /// <summary>
     /// Базовый класс для всех объектов проекта
     /// </summary>
-    public abstract class BaseMazeObject
+    public abstract class BaseMazeObject : IBaseMazeObject
     {
         /// <summary>
         /// ID объекта

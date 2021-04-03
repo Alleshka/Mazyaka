@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Maze.Common.MazeStructure.Directions;
+using Maze.Common.MazeStructure.GameObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +10,7 @@ namespace Maze.Common.MazeStructure
 {
     public abstract class BaseBlock : IMazeBlock
     {
-        public virtual bool CanMove => false;
-
-        public virtual bool CanDestroy => false;
-
-        public virtual void MoveAction()
+        public virtual void MoveObject(ILiveGameObject gameObject, IMazeDirection direction)
         {
 
         }
