@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Maze.Common.MazeStructure
 {
-    public abstract class BaseBlock : IMazeBlock
+    public abstract class BaseBlock : BaseMazeObject, IMazeBlock
     {
         public virtual void MoveObject(ILiveGameObject gameObject, IMazeDirection direction)
         {
