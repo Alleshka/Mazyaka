@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Maze.Common.MazePackages.MazePackages\Maze.Common.MazePackages.MazePackages.csproj" />
     <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeCommands.MazeCommands\Maze.Server.MazeCommands.MazeCommands.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeCommands\Maze.Server.MazeCommands.csproj" />

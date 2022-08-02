@@ -9,15 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Common.Logging", "Maze
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Common.MazePackages", "Maze.Common.MazePackages\Maze.Common.MazePackages.csproj", "{D051A141-47ED-446C-B34F-76B183B0088C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Common.MazePackages.MazePackages", "Maze.Common.MazePackages.MazePackages\Maze.Common.MazePackages.MazePackages.csproj", "{7DA14497-40E6-42D5-9967-FC574CA99B3F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Common.MazePackages.Parsers", "Maze.Common.MazePackages.Parsers\Maze.Common.MazePackages.Parsers.csproj", "{51468082-D80F-4135-A392-E01492246311}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Common.MazePackages.MazePackageFactory", "Maze.Common.MazePackages.MazePackageFactory\Maze.Common.MazePackages.MazePackageFactory.csproj", "{3D9A3CAD-705B-45A9-A0F7-3CE9E5A9E600}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Common.DataExchange", "Maze.Common.DataExchange\Maze.Common.DataExchange.csproj", "{818F8E99-0DF2-44D0-A83C-37987BBF6823}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Common.DataExchange.UdpDataExchange", "Maze.Common.DataExchange.UdpDataExchange\Maze.Common.DataExchange.UdpDataExchange.csproj", "{A54CFEA2-389A-43A1-BC89-5EDBB49F9EA8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Server.MazeService", "Maze.Server.MazeService\Maze.Server.MazeService.csproj", "{3E8AFBAE-6E40-4645-AD53-5E9FA30AC840}"
 EndProject
@@ -49,7 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleServer", "ConsoleSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Server.AutofacContainer", "Maze.Server.AutofacContainer\Maze.Server.AutofacContainer.csproj", "{11E62A6E-B3E2-4E9E-928A-C7D1A5D34057}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Common.MazeStructure", "Maze.Common.MazeStructure\Maze.Common.MazeStructure.csproj", "{87F6926B-72BC-49FD-B6E3-7723A7025605}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Common.MazeStructure", "Maze.Common.MazeStructure\Maze.Common.MazeStructure.csproj", "{87F6926B-72BC-49FD-B6E3-7723A7025605}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,26 +61,10 @@ Global
 		{D051A141-47ED-446C-B34F-76B183B0088C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D051A141-47ED-446C-B34F-76B183B0088C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D051A141-47ED-446C-B34F-76B183B0088C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DA14497-40E6-42D5-9967-FC574CA99B3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DA14497-40E6-42D5-9967-FC574CA99B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DA14497-40E6-42D5-9967-FC574CA99B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DA14497-40E6-42D5-9967-FC574CA99B3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{51468082-D80F-4135-A392-E01492246311}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{51468082-D80F-4135-A392-E01492246311}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{51468082-D80F-4135-A392-E01492246311}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{51468082-D80F-4135-A392-E01492246311}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D9A3CAD-705B-45A9-A0F7-3CE9E5A9E600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D9A3CAD-705B-45A9-A0F7-3CE9E5A9E600}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D9A3CAD-705B-45A9-A0F7-3CE9E5A9E600}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D9A3CAD-705B-45A9-A0F7-3CE9E5A9E600}.Release|Any CPU.Build.0 = Release|Any CPU
 		{818F8E99-0DF2-44D0-A83C-37987BBF6823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{818F8E99-0DF2-44D0-A83C-37987BBF6823}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{818F8E99-0DF2-44D0-A83C-37987BBF6823}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{818F8E99-0DF2-44D0-A83C-37987BBF6823}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A54CFEA2-389A-43A1-BC89-5EDBB49F9EA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A54CFEA2-389A-43A1-BC89-5EDBB49F9EA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A54CFEA2-389A-43A1-BC89-5EDBB49F9EA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A54CFEA2-389A-43A1-BC89-5EDBB49F9EA8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3E8AFBAE-6E40-4645-AD53-5E9FA30AC840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3E8AFBAE-6E40-4645-AD53-5E9FA30AC840}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E8AFBAE-6E40-4645-AD53-5E9FA30AC840}.Release|Any CPU.ActiveCfg = Release|Any CPU

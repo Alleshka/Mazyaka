@@ -70,7 +70,7 @@ namespace Maze.Server.MazeCommands.MazeCommandsFactory.PackageHandlerChain
         /// <returns></returns>
         protected virtual bool IsHandable(IMazePackage package)
         {
-            return package.TypeName == (typeof(T)).ToString().Split('.').Last();
+            return package.TypeName == (typeof(T)).ToString();
         }
     }
 }

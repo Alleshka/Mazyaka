@@ -14,7 +14,6 @@ using Maze.Server.MazeConfiguration;
 using Maze.Server.MazeService.LoginService;
 using Maze.Server.MazeService.MessageSenderService;
 using Maze.Server.MazeService.SessionService;
-using Maze.Server.UdpServer;
 using System;
 using System.Net;
 
@@ -36,8 +35,8 @@ namespace ConsoleServer
             item.AddImplementation<IMazeCommandFactory>(new SimpleCommandFactory());
             item.AddImplementation<IPackageFactory>(new SimplePackageFactory());
             item.AddImplementation<IAccessList>(new SimpleAccessList());
-            item.AddImplementation<IMazePackageParser>(new JsonCompressedMazePackageParser());
-            item.AddImplementation<IDataExchanger>((c) => new MazeUdpDataExchange(c.Resolve<IMazePackageParser>()));
+            item.AddImplementation<IMazePackageParser>(new CompressDecorator(new JsonMazePackageParser()));
+            item.AddImplementation<IDataExchanger>((c) => new UdpDataExchanger(c.Resolve<IMazePackageParser>()));
         }
     }
 

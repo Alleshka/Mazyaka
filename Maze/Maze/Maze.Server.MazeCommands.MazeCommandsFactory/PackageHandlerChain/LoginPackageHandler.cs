@@ -1,4 +1,4 @@
-﻿using Maze.Common.MazePackages.MazePackages;
+﻿using Maze.Common.MazePackages.Packages;
 using Maze.Server.MazeCommands.MazeCommands;
 
 namespace Maze.Server.MazeCommands.MazeCommandsFactory.PackageHandlerChain

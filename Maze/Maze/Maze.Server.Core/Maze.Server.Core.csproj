@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Maze.Common.DataExchange.UdpDataExchange\Maze.Common.DataExchange.UdpDataExchange.csproj" />
     <ProjectReference Include="..\Maze.Common\Maze.Common.csproj" />
     <ProjectReference Include="..\Maze.Server.AutofacContainer\Maze.Server.AutofacContainer.csproj" />
     <ProjectReference Include="..\Maze.Server.Core.Access\Maze.Server.Core.Access.csproj" />

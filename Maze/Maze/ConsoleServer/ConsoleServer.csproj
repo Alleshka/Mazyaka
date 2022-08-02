@@ -15,10 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Maze.Common.DataExchange.UdpDataExchange\Maze.Common.DataExchange.UdpDataExchange.csproj" />
     <ProjectReference Include="..\Maze.Common.Logging\Maze.Common.Logging.csproj" />
-    <ProjectReference Include="..\Maze.Common.MazePackages.MazePackageFactory\Maze.Common.MazePackages.MazePackageFactory.csproj" />
-    <ProjectReference Include="..\Maze.Common.MazePackages.Parsers\Maze.Common.MazePackages.Parsers.csproj" />
     <ProjectReference Include="..\Maze.Common\Maze.Common.csproj" />
     <ProjectReference Include="..\Maze.Server.Core.Access\Maze.Server.Core.Access.csproj" />
     <ProjectReference Include="..\Maze.Server.Core\Maze.Server.Core.csproj" />

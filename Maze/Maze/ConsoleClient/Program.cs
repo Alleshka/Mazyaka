@@ -1,8 +1,8 @@
-﻿using Maze.Common.DataExhange;
+﻿
+using Maze.Common.DataExhange;
 using Maze.Common.MazePackages;
 using Maze.Common.MazePackages.MazePackageFactory;
 using Maze.Common.MazePackages.Parsers;
-using Maze.Server.UdpServer;
 using System;
 
 namespace ConsoleClient
@@ -17,7 +17,7 @@ namespace ConsoleClient
 
             string ip = "127.0.0.1";
 
-            using (var sender = new MazeUdpDataExchange(new JsonCompressedMazePackageParser()))
+            using (var sender = new UdpDataExchanger(new CompressDecorator(new JsonMazePackageParser())))
             {
                 sender.OnRecieveMessage += (IDataExchanger sender, DataExchengerEventArgs args) =>
                 {

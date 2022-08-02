@@ -1,6 +1,7 @@
 ﻿using Maze.Common.MazePackages;
 using System;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Maze.Common.DataExhange
 {
@@ -18,7 +19,6 @@ namespace Maze.Common.DataExhange
             _iPEndPoint = iPEndPoint;
         }
     }
-
 
     public delegate void DataExchangerHandler(IDataExchanger sender, DataExchengerEventArgs args);
 
@@ -41,6 +41,7 @@ namespace Maze.Common.DataExhange
         /// <param name="message"></param>
         /// <param name="endPoint"></param>
         void SendMessage(IMazePackage message, IPEndPoint endPoint);
+        Task SendMessageAsync(IMazePackage message, IPEndPoint endPoint);
 
         /// <summary>
         /// Отправляет указанный пакет на указанный ip и порт
@@ -49,6 +50,7 @@ namespace Maze.Common.DataExhange
         /// <param name="ipAddress"></param>
         /// <param name="port"></param>
         void SendMessage(IMazePackage message, string ipAddress, int port);
+        Task SendMessageAsync(IMazePackage message, string ipAddress, int port);
 
         /// <summary>
         /// Событие, срабатывающее при получении сообщения

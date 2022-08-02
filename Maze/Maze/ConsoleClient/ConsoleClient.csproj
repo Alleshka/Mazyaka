@@ -6,10 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Maze.Common.DataExchange.UdpDataExchange\Maze.Common.DataExchange.UdpDataExchange.csproj" />
-    <ProjectReference Include="..\Maze.Common.MazePackages.MazePackageFactory\Maze.Common.MazePackages.MazePackageFactory.csproj" />
-    <ProjectReference Include="..\Maze.Common.MazePackages.MazePackages\Maze.Common.MazePackages.MazePackages.csproj" />
-    <ProjectReference Include="..\Maze.Common.MazePackages.Parsers\Maze.Common.MazePackages.Parsers.csproj" />
+    <ProjectReference Include="..\Maze.Common.DataExchange\Maze.Common.DataExchange.csproj" />
     <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj" />
   </ItemGroup>
 

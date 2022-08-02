@@ -6,7 +6,6 @@ using Maze.Common.MazePackages;
 using Maze.Server.AutofacContainer;
 using Maze.Server.Core.QueueHandler;
 using Maze.Server.MazeConfiguration;
-using Maze.Server.UdpServer;
 using System;
 using System.Net;
 
