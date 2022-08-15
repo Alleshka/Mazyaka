@@ -1,5 +1,5 @@
 ﻿using Maze.Common.MazePackages;
-using Maze.Server.AutofacContainer;
+using Maze.Server.Common;
 using Maze.Server.MazeService.LoginService;
 using Maze.Server.MazeService.SessionService;
 
@@ -16,11 +16,11 @@ namespace Maze.Server.MazeCommands.MazeCommands
 
         protected override IMazePackage ExecuteCommand()
         {
-            var user = MazeAutofacContainer.Instance.GetService<ILoginService>().GetUserByLogin(_userLogin);
+            var user = MazeDIContaner.Get<ILoginService>().GetUserByLogin(_userLogin);
             if (user == null) return PackageFactory.ExceptionMessageResponse("Пользователь не найден");
             else
             {
-                var token = MazeAutofacContainer.Instance.GetService<ISessionService>().AddUserSession(user);
+                var token = MazeDIContaner.Get<ISessionService>().AddUserSession(user);
                 return PackageFactory.LoginUserResponse(token);
             }
         }

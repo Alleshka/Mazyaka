@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Maze.Common.Logging\Maze.Common.Logging.csproj" />
     <ProjectReference Include="..\Maze.Common\Maze.Common.csproj" />
-    <ProjectReference Include="..\Maze.Server.AutofacContainer\Maze.Server.AutofacContainer.csproj" />
+    <ProjectReference Include="..\Maze.Server.Common\Maze.Server.Common.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeCommands\Maze.Server.MazeCommands.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeService.LoginService\Maze.Server.MazeService.LoginService.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeService.MessageSenderService\Maze.Server.MazeService.MessageSenderService.csproj" />

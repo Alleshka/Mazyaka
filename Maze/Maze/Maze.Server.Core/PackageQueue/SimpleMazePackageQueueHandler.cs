@@ -1,5 +1,5 @@
 ﻿using Maze.Common.MazePackages;
-using Maze.Server.AutofacContainer;
+using Maze.Server.Common;
 using Maze.Server.Core.Executor;
 using Maze.Server.Core.Validation;
 using Maze.Server.MazeService.SessionService;
@@ -51,12 +51,12 @@ namespace Maze.Server.Core.QueueHandler
                 var package = _mazePackageQueue.GetPackage(out var endPoint);
                 if (package != null)
                 {
-                    package = _accessValidator.Validate(package, MazeAutofacContainer.Instance.GetService<ISessionService>().GetUserRoleOrDefault(package.SecurityToken));
+                    package = _accessValidator.Validate(package, MazeDIContaner.Get<ISessionService>().GetUserRoleOrDefault(package.SecurityToken));
                     _mazePackageExecutor.Execute(package, endPoint);
                 }
                 else
                 {
-                    Thread.Sleep(Common.Constants.ServerConstants.PACKAGE_QUEUE_HANDLER_SLEEP);
+                    Thread.Sleep(Maze.Common.Constants.ServerConstants.PACKAGE_QUEUE_HANDLER_SLEEP);
                 }
             }
         }

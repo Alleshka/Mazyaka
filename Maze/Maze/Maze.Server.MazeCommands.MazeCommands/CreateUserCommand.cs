@@ -1,7 +1,7 @@
 ﻿using Maze.Common;
 using Maze.Common.MazePackages;
 using Maze.Common.Model;
-using Maze.Server.AutofacContainer;
+using Maze.Server.Common;
 using Maze.Server.MazeService.LoginService;
 using Maze.Server.MazeService.SessionService;
 
@@ -25,8 +25,8 @@ namespace Maze.Server.MazeCommands.MazeCommands
                 Role = MazeUserRole.Player
             };
 
-            MazeAutofacContainer.Instance.GetService<ILoginService>().CreateUser(user);
-            var token = MazeAutofacContainer.Instance.GetService<ISessionService>().AddUserSession(user);
+            MazeDIContaner.Get<ILoginService>().CreateUser(user);
+            var token = MazeDIContaner.Get<ISessionService>().AddUserSession(user);
 
             return PackageFactory.LoginUserResponse(token);
         }

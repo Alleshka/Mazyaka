@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Maze.Common.MazePackages\Maze.Common.MazePackages.csproj" />
+    <PackageReference Include="Autofac" Version="6.4.0" />
   </ItemGroup>
 
 </Project>

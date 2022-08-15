@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Maze.Common\Maze.Common.csproj" />
-    <ProjectReference Include="..\Maze.Server.AutofacContainer\Maze.Server.AutofacContainer.csproj" />
     <ProjectReference Include="..\Maze.Server.Core.Access\Maze.Server.Core.Access.csproj" />
     <ProjectReference Include="..\Maze.Server.Core.QueueHandler\Maze.Server.Core.QueueHandler.csproj" />
     <ProjectReference Include="..\Maze.Server.MazeCommands\Maze.Server.MazeCommands.csproj" />

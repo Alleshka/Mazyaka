@@ -3,7 +3,7 @@ using Maze.Common;
 using Maze.Common.DataExhange;
 using Maze.Common.Logging;
 using Maze.Common.MazePackages;
-using Maze.Server.AutofacContainer;
+using Maze.Server.Common;
 using Maze.Server.Core.QueueHandler;
 using Maze.Server.MazeConfiguration;
 using System;
@@ -37,12 +37,11 @@ namespace Maze.Server.Core
         public SimpleMazeServer(IImplementationConfigurator implementationConfigurator, IServiceConfigurator serviceConfigurator, ILogsConfigurator logsConfigurator)
         {
             // TODO: Вынести в обёртку, которая всё сделала
-            implementationConfigurator.Configurate(MazeAutofacContainer.Instance);
-            serviceConfigurator.Configurate(MazeAutofacContainer.Instance);
+            implementationConfigurator.Configurate();
+            serviceConfigurator.Configurate();
             logsConfigurator.Configurate(MazeLogManager.Instance);
-            MazeAutofacContainer.Instance.Build();
 
-            _dataExchanger = MazeAutofacContainer.Instance.GetImplementation<IDataExchanger>();
+            _dataExchanger = MazeDIContaner.Get<IDataExchanger>();
             _dataExchanger.OnRecieveMessage += ReceiveMessage;
         }
 

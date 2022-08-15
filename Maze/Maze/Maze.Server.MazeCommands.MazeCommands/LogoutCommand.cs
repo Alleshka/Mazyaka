@@ -1,5 +1,5 @@
 ﻿using Maze.Common.MazePackages;
-using Maze.Server.AutofacContainer;
+using Maze.Server.Common;
 using Maze.Server.MazeService.SessionService;
 using System;
 
@@ -16,7 +16,7 @@ namespace Maze.Server.MazeCommands.MazeCommands
 
         protected override IMazePackage ExecuteCommand()
         {
-            MazeAutofacContainer.Instance.GetService<ISessionService>().DeleteSession(_userToken);
+            MazeDIContaner.Get<ISessionService>().DeleteSession(_userToken);
             return PackageFactory.MessageCommon("bue");
         }
     }
