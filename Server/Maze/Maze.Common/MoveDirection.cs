@@ -11,4 +11,21 @@ namespace Maze.Common
         Down = 1 << 2,
         Left = 1 << 3
     }
+
+    public enum MoveStatus
+    {
+        None = 0,
+        Success = 1,
+        Failure = 2,
+        Winner = 3,
+        Looser = 4
+    }
+
+    public class MoveResult
+    {
+        public MoveStatus Status { get; set; }
+        public int Line { get; set; }
+        public int Column { get; set; }
+        public string MazeSite { get; set; }
+    }
 }

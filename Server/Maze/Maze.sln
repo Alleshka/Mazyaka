@@ -5,9 +5,11 @@ VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Server", "Maze.Server\Maze.Server.csproj", "{F80ACB21-8AE3-4A77-8F9E-47C003CC6AC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Domain", "Maze.Domain\Maze.Domain.csproj", "{7116B8C6-7459-400E-A60A-85E6B59F16B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Common", "Maze.Common\Maze.Common.csproj", "{5BF1C523-100A-4017-A1C5-1BE7742859BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Common", "Maze.Common\Maze.Common.csproj", "{5BF1C523-100A-4017-A1C5-1BE7742859BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.MazeStructure", "Maze.MazeStructure\Maze.MazeStructure.csproj", "{25A489AB-357D-48A8-9DDA-8F1E52B0BABB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.ConsoleClient", "Maze.ConsoleClient\Maze.ConsoleClient.csproj", "{2CE2395B-C150-4F4E-974C-CC8979DE1572}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +21,18 @@ Global
 		{F80ACB21-8AE3-4A77-8F9E-47C003CC6AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F80ACB21-8AE3-4A77-8F9E-47C003CC6AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F80ACB21-8AE3-4A77-8F9E-47C003CC6AC3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7116B8C6-7459-400E-A60A-85E6B59F16B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7116B8C6-7459-400E-A60A-85E6B59F16B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7116B8C6-7459-400E-A60A-85E6B59F16B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7116B8C6-7459-400E-A60A-85E6B59F16B4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5BF1C523-100A-4017-A1C5-1BE7742859BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5BF1C523-100A-4017-A1C5-1BE7742859BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BF1C523-100A-4017-A1C5-1BE7742859BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BF1C523-100A-4017-A1C5-1BE7742859BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25A489AB-357D-48A8-9DDA-8F1E52B0BABB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25A489AB-357D-48A8-9DDA-8F1E52B0BABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25A489AB-357D-48A8-9DDA-8F1E52B0BABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25A489AB-357D-48A8-9DDA-8F1E52B0BABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CE2395B-C150-4F4E-974C-CC8979DE1572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CE2395B-C150-4F4E-974C-CC8979DE1572}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CE2395B-C150-4F4E-974C-CC8979DE1572}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CE2395B-C150-4F4E-974C-CC8979DE1572}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

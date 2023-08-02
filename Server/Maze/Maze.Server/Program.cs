@@ -15,6 +15,8 @@ namespace Maze.Server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+
+            builder.Services.AddSingleton<IGameStorage, SimpleGameStorage>();
             builder.Services.AddSignalR();
 
 
