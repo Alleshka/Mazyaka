@@ -10,6 +10,7 @@ namespace Maze.MazeStructure
         public void BuildRoom(int line, int col);
         public void BuildPassage(int line1, int col1, int line2, int col2);
         public void BuildPassage(IMazeRoom room1, IMazeRoom room2);
+        public void BuildExit(int line, int col);
 
         public IMaze GetMaze();
     }

@@ -1,18 +1,21 @@
 using Maze.Common;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
 
 public class SignalRService : MonoBehaviour
 {
-
     [SerializeField]
     public GameObject VerticalWall;
 
     [SerializeField]
     public GameObject HorizontalWall;
+
+    [SerializeField]
+    public GameObject Floor;
 
     [SerializeField]
     public GameObject person;
@@ -29,17 +32,27 @@ public class SignalRService : MonoBehaviour
 
     private HubConnection _connection;
 
-    private int _cellSize = 2;
 
     private Guid _gameId;
     private MoveDirection direction1 = MoveDirection.Up;
 
+    private Dictionary<Vector2Int, GameObject> _cells;
+
     async void Start()
     {
-        curLine = StartLine;
-        curCol = StartCol;
+        _cells = new Dictionary<Vector2Int, GameObject>();
+        for (int line = -1; line <= 10; line++)
+        {
+            for (int col = -1; col <= 10; col++)
+            {
+                var cell = Instantiate(Floor, new Vector3(col, -line, 1), Quaternion.identity);
+                var vector = new Vector2Int(line, col);
+                _cells.Add(vector, cell);
+            }
+        }
 
-        player = Instantiate(person, new Vector3(curLine * _cellSize, curCol * _cellSize, -2), Quaternion.identity);
+        curLine = UnityEngine.Random.Range(0, 10);
+        curCol = UnityEngine.Random.Range(0, 10);
 
         _connection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5035/Game")
@@ -53,6 +66,10 @@ public class SignalRService : MonoBehaviour
 
         _connection.On<bool>("SetPlayer", (t) =>
         {
+            var vector = new Vector2Int(curLine, curCol);
+            var cell = _cells[vector];
+
+            player = Instantiate(person, new Vector3(cell.transform.position.x, cell.transform.position.y, -1), Quaternion.identity);
             Debug.Log(t);
         });
 
@@ -65,6 +82,41 @@ public class SignalRService : MonoBehaviour
             if (name.Status == MoveStatus.Success)
             {
                 MovePerson(name.Line, name.Column, direction1);
+            }
+            else if (name.Status == MoveStatus.Winner)
+            {
+                int dline = 0;
+                int dCol = 0;
+
+                switch(direction1)
+                {
+                    case MoveDirection.Up:
+                        {
+                            dline -= 1;
+                            break;
+                        }
+                    case MoveDirection.Down:
+                        {
+                            dline += 1;
+                            break;
+                        }
+                    case MoveDirection.Left:
+                        {
+                            dCol -= 1;
+                            break;
+                        }
+                    case MoveDirection.Right:
+                        {
+                            dCol += 1;
+                            break;
+                        }
+                }
+
+                curLine = name.Line + dline;
+                curCol = name.Column + dCol;
+
+                MovePerson(name.Line + dline, name.Column + dCol, direction1);
+                Debug.Log("Winner");
             }
             else
             {
@@ -87,15 +139,10 @@ public class SignalRService : MonoBehaviour
         }
     }
 
-    private void SetWall (int line, int col, MoveDirection direction)
+    private void SetWall(int line, int col, MoveDirection direction)
     {
-        var builder = new StringBuilder();
-
-        builder.AppendLine($"CurLine = {line}");
-        builder.AppendLine($"CurCol = {col}");
-
-        int dLine = 0;
-        int dCol = 0;
+        float x = 0;
+        float y = 0;
 
         GameObject block = null;
 
@@ -104,70 +151,46 @@ public class SignalRService : MonoBehaviour
             case MoveDirection.Left:
                 {
                     block = VerticalWall;
-                    dLine -= 1;
+                    x = -0.5f;
                     break;
                 }
             case MoveDirection.Up:
                 {
                     block = HorizontalWall;
-                    dCol += 1;
+                    y = 0.5f;
                     break;
                 }
             case MoveDirection.Down:
                 {
                     block = HorizontalWall;
-                    dCol -= 1;
+                    y = -0.5f;
                     break;
                 }
             case MoveDirection.Right:
                 {
                     block = VerticalWall;
-                    dLine += 1;
+                    x = 0.5f;
                     break;
                 }
         }
 
-        Debug.Log(builder.ToString());
-        Instantiate(block, new Vector3((curCol * _cellSize) + (dLine * _cellSize / 2), (-curLine * _cellSize) + (dCol * _cellSize / 2), -2), Quaternion.identity);
+        var vector = new Vector2Int(line, col);
+        var cell = _cells[vector];
+
+        var obj = Instantiate(block, cell.transform);
+        obj.transform.localPosition = new Vector3(x, y, -2);
     }
 
     private void MovePerson(int line, int col, MoveDirection direction)
     {
-        Debug.Log("Move person " + direction);
+        var vector = new Vector2Int(line, col);
+        var cell = _cells[vector];
+        var pos = cell.transform.position;
 
-        int dLine = 0;
-        int dCol = 0;
+        player.transform.position = new Vector3(pos.x, pos.y, -1);
 
-        switch (direction)
-        {
-            case MoveDirection.Left:
-                {
-                    dLine -= 1;
-                    break;
-                }
-            case MoveDirection.Up:
-                {
-                    dCol += 1;
-                    break;
-                }
-            case MoveDirection.Down:
-                {
-                    dCol -= 1;
-                    break;
-                }
-            case MoveDirection.Right:
-                {
-                    dLine += 1;
-                    break;
-                }
-        }
-
-        Debug.Log(dLine + " | " + dCol);
-
-        curLine += dLine;
-        curCol += dCol;
-
-        player.transform.Translate(dLine * _cellSize, dCol * _cellSize, 0);
+        curLine = line;
+        curCol = col;
     }
 
     private MoveDirection GetDirection()

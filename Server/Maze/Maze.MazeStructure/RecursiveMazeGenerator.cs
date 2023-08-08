@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Maze.Common;
+using System;
 using System.Collections.Generic;
 
 namespace Maze.MazeStructure
@@ -47,6 +48,42 @@ namespace Maze.MazeStructure
                         curCell = stackCell.Pop();
                     }
                 }
+            }
+
+            var directions = new List<MoveDirection>(4)
+            {
+                MoveDirection.Up,
+                MoveDirection.Right,
+                MoveDirection.Down,
+                MoveDirection.Left
+            };
+
+            var exitSide = directions[Random.Next(4)];
+            var exitNum = Random.Next(10);
+
+            switch(exitSide)
+            {
+                case MoveDirection.Up:
+                    {
+                        builder.BuildExit(0, exitNum);
+                        break;
+                    }
+                    case MoveDirection.Down:
+                    {
+                        builder.BuildExit(9, exitNum);
+                        break;
+                    
+                    }
+                case MoveDirection.Left:
+                    {
+                        builder.BuildExit(exitNum, 0);
+                        break;
+                    }
+                case MoveDirection.Right:
+                    {
+                        builder.BuildExit(exitNum, 9);
+                        break;
+                    }
             }
 
             return maze;

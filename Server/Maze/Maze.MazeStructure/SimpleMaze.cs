@@ -42,6 +42,10 @@ namespace Maze.MazeStructure
 
         private Dictionary<SimpleMaze.Point, IMazeRoom> _rooms;
 
+        public int LineCount => 10;
+
+        public int ColCount => 10;
+
         public SimpleMaze()
         {
             _rooms = new Dictionary<SimpleMaze.Point, IMazeRoom>();

@@ -27,6 +27,8 @@ namespace Maze.MazeStructure
         public void SetPlayer(int line, int col)
         {
             _curRoom = _curMaze.GetRoomByCoordinates(line, col);
+            _player.Line = line;
+            _player.Col = col;
         }
 
         public MoveResult MovePlayer(MoveDirection direction)

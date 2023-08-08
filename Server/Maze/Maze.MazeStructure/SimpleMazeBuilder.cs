@@ -6,6 +6,41 @@ namespace Maze.MazeStructure.Builder
     {
         private IMaze _currentMaze;
 
+        public void BuildExit(int line, int col)
+        {
+            var room = _currentMaze.GetRoomByCoordinates(line, col);
+            var direction = MoveDirection.None;
+
+            int dLine = 0;
+            int dCol = 0;
+
+            if (line == 0)
+            {
+                direction = MoveDirection.Up;
+                dLine -= 1;
+            }
+            else if (line == _currentMaze.LineCount - 1)
+            {
+                direction = MoveDirection.Down;
+                dLine += 1;
+            }
+            else if (col == 0)
+            {
+                direction = MoveDirection.Left;
+                dCol -= 1;
+            }
+            else if (col == _currentMaze.ColCount - 1)
+            {
+                direction = MoveDirection.Right;
+                dCol += 1;
+            }
+
+            if (direction != MoveDirection.None)
+            {
+                room.SetMazeSite(direction, new SimpleExit(line + dLine, col + dCol));
+            }
+        }
+
         public virtual void BuildMaze()
         {
             _currentMaze = new SimpleMaze();
