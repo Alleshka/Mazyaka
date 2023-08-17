@@ -2,9 +2,9 @@ using Maze.Common;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class SignalRService : MonoBehaviour
 {
@@ -26,6 +26,10 @@ public class SignalRService : MonoBehaviour
     [SerializeField]
     public int StartCol = 0;
 
+    public TextMeshPro _text;
+
+    private bool _isGameEnded = false;
+
     private int curLine;
     private int curCol;
     private GameObject player;
@@ -40,6 +44,8 @@ public class SignalRService : MonoBehaviour
 
     async void Start()
     {
+        //_text.text = "Hi mark";
+
         _cells = new Dictionary<Vector2Int, GameObject>();
         for (int line = -1; line <= 10; line++)
         {
@@ -85,38 +91,11 @@ public class SignalRService : MonoBehaviour
             }
             else if (name.Status == MoveStatus.Winner)
             {
-                int dline = 0;
-                int dCol = 0;
-
-                switch(direction1)
-                {
-                    case MoveDirection.Up:
-                        {
-                            dline -= 1;
-                            break;
-                        }
-                    case MoveDirection.Down:
-                        {
-                            dline += 1;
-                            break;
-                        }
-                    case MoveDirection.Left:
-                        {
-                            dCol -= 1;
-                            break;
-                        }
-                    case MoveDirection.Right:
-                        {
-                            dCol += 1;
-                            break;
-                        }
-                }
-
-                curLine = name.Line + dline;
-                curCol = name.Column + dCol;
-
-                MovePerson(name.Line + dline, name.Column + dCol, direction1);
+                MovePerson(name.Line, name.Column, direction1);
                 Debug.Log("Winner");
+
+                _isGameEnded = true;
+                CreateWinnerCanvas();
             }
             else
             {
@@ -131,11 +110,14 @@ public class SignalRService : MonoBehaviour
 
     public async void Update()
     {
-        var direction = GetDirection();
-        if (direction != MoveDirection.None)
+        if (!_isGameEnded)
         {
-            direction1 = direction;
-            await _connection.InvokeAsync("Move", _gameId, direction);
+            var direction = GetDirection();
+            if (direction != MoveDirection.None)
+            {
+                direction1 = direction;
+                await _connection.InvokeAsync("Move", _gameId, direction);
+            }
         }
     }
 
@@ -197,23 +179,63 @@ public class SignalRService : MonoBehaviour
     {
         MoveDirection moveDirection = MoveDirection.None;
 
-        if (Input.GetKeyUp(KeyCode.UpArrow))
+        if (!_isGameEnded)
         {
-            moveDirection = MoveDirection.Up;
-        }
-        else if (Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            moveDirection = MoveDirection.Down;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftArrow))
-        {
-            moveDirection = MoveDirection.Left;
-        }
-        else if (Input.GetKeyUp(KeyCode.RightArrow))
-        {
-            moveDirection = MoveDirection.Right;
+            if (Input.GetKeyUp(KeyCode.UpArrow))
+            {
+                moveDirection = MoveDirection.Up;
+            }
+            else if (Input.GetKeyUp(KeyCode.DownArrow))
+            {
+                moveDirection = MoveDirection.Down;
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftArrow))
+            {
+                moveDirection = MoveDirection.Left;
+            }
+            else if (Input.GetKeyUp(KeyCode.RightArrow))
+            {
+                moveDirection = MoveDirection.Right;
+            }
         }
 
         return moveDirection;
+    }
+
+    private void CreateWinnerCanvas()
+    {
+        // Create a new Canvas GameObject
+        GameObject canvasGO = new GameObject("Canvas");
+        Canvas canvas = canvasGO.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+        // Add a CanvasScaler component to handle screen resolutions
+        canvasGO.AddComponent<CanvasScaler>();
+
+        // Add a GraphicRaycaster component to handle UI interactions
+        canvasGO.AddComponent<GraphicRaycaster>();
+
+        // Create a Text GameObject
+        GameObject textGO = new GameObject("WinnerText");
+        RectTransform textTransform = textGO.AddComponent<RectTransform>();
+        textTransform.SetParent(canvas.transform, false);
+
+        // Add a Text component to the Text GameObject
+        Text textComponent = textGO.AddComponent<Text>();
+        textComponent.text = "Winner";
+
+        // Set additional Text properties (font, font size, color, etc.)
+        textComponent.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        textComponent.fontSize = 24;
+        textComponent.color = Color.white;
+
+        // Set the Text's RectTransform properties
+        textTransform.anchoredPosition = Vector2.zero;
+        textTransform.sizeDelta = new Vector2(200, 50);
+
+        // Optional: Add a ContentSizeFitter component to handle text resizing
+        ContentSizeFitter sizeFitter = textGO.AddComponent<ContentSizeFitter>();
+        sizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+        sizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
     }
 }
