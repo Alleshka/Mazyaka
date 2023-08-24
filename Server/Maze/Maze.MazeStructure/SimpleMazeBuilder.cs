@@ -1,4 +1,5 @@
 ﻿using Maze.Common;
+using Maze.MazeStructure.Interfaces;
 
 namespace Maze.MazeStructure.Builder
 {
@@ -41,7 +42,7 @@ namespace Maze.MazeStructure.Builder
             }
         }
 
-        public virtual void BuildMaze()
+        public virtual void BuildEmptyMaze()
         {
             _currentMaze = new SimpleMaze();
         }
@@ -111,6 +112,24 @@ namespace Maze.MazeStructure.Builder
             }
 
             return moveDirection;
+        }
+
+        public void BuildRoom(MazePoint point)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void BuildPassage(MazePoint point1, MazePoint point2)
+        {
+            var room1 = _currentMaze.GetRoomByPoint(point1);
+            var room2 = _currentMaze.GetRoomByPoint(point2);
+
+            BuildPassage(room1, room2);
+        }
+
+        public void BuildExit(MazePoint point)
+        {
+            throw new NotImplementedException();
         }
     }
 }

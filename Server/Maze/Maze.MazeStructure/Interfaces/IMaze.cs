@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Maze.Common;
 
-namespace Maze.MazeStructure
+namespace Maze.MazeStructure.Interfaces
 {
     public interface IMaze
     {
@@ -10,6 +8,8 @@ namespace Maze.MazeStructure
         public int ColCount { get; }
 
         public void AddRoom(IMazeRoom room);
+
+        public IMazeRoom GetRoomByPoint(MazePoint point);
         public IMazeRoom GetRoomByCoordinates(int line, int col);
     }
 }

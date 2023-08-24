@@ -1,4 +1,5 @@
 ﻿using Maze.Common;
+using Maze.GameLogic;
 using Maze.MazeStructure;
 using Maze.MazeStructure.Builder;
 using Microsoft.AspNetCore.SignalR;
@@ -31,11 +32,16 @@ namespace Maze.Server.SignalR
             await Clients.All.SendAsync("SetPlayer", true);
         }
 
-        public async Task Move(Guid gameId, MoveDirection direction)
+        public async Task Move(Guid gameId, Guid userId, MoveDirection direction)
         {
             var game = _gameStorage.GetGame(gameId);
-            var result = game.MovePlayer(direction);
-            await Clients.All.SendAsync("MoveResult", result);
+            var result = game.MovePlayer(userId, direction);
+            await Clients.All.SendAsync("MoveResult", result.Value);
         }    
+
+        public async Task DestroyWall(Guid gameId, MoveDirection direction)
+        {
+
+        }
     }
 }

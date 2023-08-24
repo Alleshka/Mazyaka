@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Maze.MazeStructure
+namespace Maze.MazeStructure.Interfaces
 {
     public interface IMazeExit : IMazeSite
     {

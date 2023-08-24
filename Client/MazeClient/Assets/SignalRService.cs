@@ -79,8 +79,9 @@ public class SignalRService : MonoBehaviour
             Debug.Log(t);
         });
 
-        _connection.On<MoveResult>("MoveResult", (name) =>
+        _connection.On<MoveResult>("MoveResult", (result) =>
         {
+            var name = result;
             Debug.Log($"{name.Status}: ({name.Line}; {name.Column}) {name.MazeSite}");
             curLine = name.Line;
             curCol = name.Column;
@@ -116,7 +117,7 @@ public class SignalRService : MonoBehaviour
             if (direction != MoveDirection.None)
             {
                 direction1 = direction;
-                await _connection.InvokeAsync("Move", _gameId, direction);
+                await _connection.InvokeAsync("Move", _gameId, _gameId, direction);
             }
         }
     }
@@ -198,7 +199,6 @@ public class SignalRService : MonoBehaviour
                 moveDirection = MoveDirection.Right;
             }
         }
-
         return moveDirection;
     }
 

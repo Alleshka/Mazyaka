@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Maze.MazeStructure
+namespace Maze.MazeStructure.Interfaces
 {
     public interface IMazeWall : IMazeSite
     {
         public bool CanDestroy { get; }
         public bool IsDestroyed { get; }
-
-        public bool Destroy();
     }
 }

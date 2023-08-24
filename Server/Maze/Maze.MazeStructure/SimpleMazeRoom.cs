@@ -1,4 +1,6 @@
 ﻿using Maze.Common;
+using Maze.Core;
+using Maze.MazeStructure.Interfaces;
 using System.Collections.Generic;
 
 namespace Maze.MazeStructure

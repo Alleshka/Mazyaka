@@ -1,7 +1,6 @@
 ﻿using Maze.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Maze.Core;
+using Maze.MazeStructure.Interfaces;
 
 namespace Maze.MazeStructure
 {

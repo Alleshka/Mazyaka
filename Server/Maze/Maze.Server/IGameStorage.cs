@@ -1,4 +1,5 @@
-﻿using Maze.MazeStructure;
+﻿using Maze.GameLogic;
+using Maze.MazeStructure.Interfaces;
 
 namespace Maze.Server
 {

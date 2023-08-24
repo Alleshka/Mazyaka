@@ -1,4 +1,6 @@
 ﻿using Maze.Common;
+using Maze.Core;
+using Maze.MazeStructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,23 +9,9 @@ namespace Maze.MazeStructure
 {
     internal class SimpleMazeWall : BaseMazeSite, IMazeWall
     {
-        public bool CanDestroy => true;
-
         public bool IsDestroyed { get; protected set; } = false;
 
-        public bool Destroy()
-        {
-            if (CanDestroy)
-            {
-                // TODO: Destroy Wall
-                IsDestroyed = true;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        public bool CanDestroy => true;
 
         public override MoveResult Enter(IMazePlayer player)
         {

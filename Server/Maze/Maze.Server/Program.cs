@@ -46,6 +46,8 @@ namespace Maze.Server
             app.MapControllers();
 
             app.Run();
+
+            Console.Write("Started");
         }
     }
 }

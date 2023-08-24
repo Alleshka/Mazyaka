@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Maze.Common\Maze.Common.csproj" />
-    <ProjectReference Include="..\Maze.Core\Maze.Core.csproj" />
-  </ItemGroup>
-
 </Project>

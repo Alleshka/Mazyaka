@@ -1,45 +1,83 @@
 ﻿using Maze.Common;
-using System;
-using System.Collections.Generic;
+using Maze.MazeStructure.Interfaces;
 
 namespace Maze.MazeStructure
 {
     public class RecursiveMazeGenerator : IMazeGenerator
     {
         private Random Random = new Random();
-        private int size = 10;
 
-        public IMaze GenerateMaze(IMazeBuilder builder)
+        private class CellsVisitStatus
         {
-            builder.BuildMaze();
-            var maze = builder.GetMaze();
+            private Dictionary<MazePoint, bool> _cellsVisitStatus;
 
-            for (int i = 0; i < size; i++)
+            public CellsVisitStatus(int capacity) 
+            { 
+                _cellsVisitStatus = new Dictionary<MazePoint, bool>(capacity);
+            }
+
+            public void Add(int line, int col)
             {
-                for (int j = 0; j < size; j++)
+                Add(new MazePoint(line, col));
+            }
+
+            public void Add(MazePoint point)
+            {
+                _cellsVisitStatus.Add(point, false);
+            }
+
+            public bool IsVisited(int line, int col)
+            {
+                return IsVisited(new MazePoint(line, col));
+            }
+
+            public bool IsVisited(MazePoint point)
+            {
+                return _cellsVisitStatus[point];
+            }
+
+            public void Visit(int line, int col)
+            {
+                Visit(new MazePoint(line, col));
+            }
+
+            public void Visit(MazePoint point)
+            {
+                _cellsVisitStatus[point] = true;
+            }
+        }
+
+        public IMaze GenerateMaze(IMazeBuilder builder, int lineCount, int colCount)
+        {
+            var cellsVisitStatus = new CellsVisitStatus(lineCount * colCount);
+
+            builder.BuildEmptyMaze();
+
+            for (int i = 0; i < lineCount; i++)
+            {
+                for (int j = 0; j < colCount; j++)
                 {
                     builder.BuildRoom(i, j);
+                    cellsVisitStatus.Add(i, j);
                 }
             }
 
-            int curLine = Random.Next(size);
-            int curColumnt = Random.Next(size);
+            int curLine = Random.Next(lineCount);
+            int curColumn = Random.Next(colCount);
 
-            var stackCell = new Stack<IMazeRoom>();
-            var curCell = maze.GetRoomByCoordinates(curLine, curColumnt);
-            curCell.IsVisited = true;
+            var stackCell = new Stack<MazePoint>();
+            var curCell = new MazePoint(curLine, curColumn);
 
-
-            while (HasNotVisitedCells(maze, size, size))
+            while (HasNotVisitedCells(lineCount, colCount, cellsVisitStatus))
             {
-                var newCell = GetNotVisitedNeighbor(maze, curCell);
+                var newCell = GetNotVisitedNeighbor(curCell, lineCount, colCount, cellsVisitStatus);
                 if (newCell != null)
                 {
                     stackCell.Push(curCell);
 
                     builder.BuildPassage(curCell, newCell);
-                    curCell = newCell; ;
-                    curCell.IsVisited = true;
+                    curCell = newCell;
+                    cellsVisitStatus.Visit(curCell);
                 }
                 else
                 {
@@ -86,17 +124,17 @@ namespace Maze.MazeStructure
                     }
             }
 
-            return maze;
+            return builder.GetMaze();
         }
 
-        private bool HasNotVisitedCells(IMaze maze, int lineCount, int columnCount)
+        private bool HasNotVisitedCells(int lineCount, int columnCount, CellsVisitStatus cellsVisitStatus)
         {
             for (int i = 0; i < lineCount; i++)
             {
                 for (int j = 0; j < columnCount; j++)
                 {
-                    var cell = maze.GetRoomByCoordinates(i, j);
-                    if (cell.IsVisited == false)
+                    var cell = new MazePoint(i, j);
+                    if (!cellsVisitStatus.IsVisited(cell))
                     {
                         return true;
                     }
@@ -106,27 +144,27 @@ namespace Maze.MazeStructure
             return false;
         }
 
-        private IMazeRoom GetNotVisitedNeighbor(IMaze maze, IMazeRoom curCell)
+        private MazePoint GetNotVisitedNeighbor(MazePoint curCell, int lineCount, int colCount, CellsVisitStatus cellsVisitStatus)
         {
-            var neighbords = new List<IMazeRoom>();
+            var neighbords = new List<MazePoint>();
 
             // TODO: Fix copypaste
 
             // UP
             if (curCell.Line > 0)
             {
-                var cell = maze.GetRoomByCoordinates(curCell.Line - 1, curCell.Column);
-                if (!cell.IsVisited)
+                var cell = new MazePoint(curCell.Line - 1, curCell.Column);
+                if (!cellsVisitStatus.IsVisited(cell))
                 {
                     neighbords.Add(cell);
                 }
             }
 
             // Down
-            if (curCell.Line < size - 1)
+            if (curCell.Line < lineCount - 1)
             {
-                var cell = maze.GetRoomByCoordinates(curCell.Line + 1, curCell.Column);
-                if (!cell.IsVisited)
+                var cell = new MazePoint(curCell.Line + 1, curCell.Column);
+                if (!cellsVisitStatus.IsVisited(cell))
                 {
                     neighbords.Add(cell);
                 }
@@ -135,18 +173,18 @@ namespace Maze.MazeStructure
             // Left
             if (curCell.Column > 0)
             {
-                var cell = maze.GetRoomByCoordinates(curCell.Line, curCell.Column - 1);
-                if (!cell.IsVisited)
+                var cell = new MazePoint(curCell.Line, curCell.Column - 1);
+                if (!cellsVisitStatus.IsVisited(cell))
                 {
                     neighbords.Add(cell);
                 }
             }
 
             // Right
-            if (curCell.Column < size - 1)
+            if (curCell.Column < colCount - 1)
             {
-                var cell = maze.GetRoomByCoordinates(curCell.Line, curCell.Column + 1);
-                if (!cell.IsVisited)
+                var cell = new MazePoint(curCell.Line, curCell.Column + 1);
+                if (!cellsVisitStatus.IsVisited(cell))
                 {
                     neighbords.Add(cell);
                 }

@@ -1,6 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Maze.GameLogic;
 using Maze.MazeStructure;
 using Maze.MazeStructure.Builder;
+using Maze.MazeStructure.Interfaces;
 using System.Text;
 using static System.Console;
 

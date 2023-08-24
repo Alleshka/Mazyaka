@@ -1,9 +1,7 @@
 ﻿using Maze.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Maze.Core;
 
-namespace Maze.MazeStructure
+namespace Maze.MazeStructure.Interfaces
 {
     /// <summary>
     /// Interface for maze sites (e.g. door, wall, passage e.t.c.)
