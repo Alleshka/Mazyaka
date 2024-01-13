@@ -7,26 +7,28 @@ namespace Maze.MazeStructure
     {
         private Dictionary<MazePoint, IMazeRoom> _rooms;
 
-        public int LineCount => 10;
+        public int RowCount { get; protected set; }
 
-        public int ColCount => 10;
+        public int ColCount { get; protected set; }
 
-        public SimpleMaze()
+        public SimpleMaze(int rowCount, int colCount)
         {
             _rooms = new Dictionary<MazePoint, IMazeRoom>();
+
+            RowCount = rowCount;
+            ColCount = colCount;
         }
 
         public void AddRoom(IMazeRoom room)
         {
-            var point = new MazePoint(room.Line, room.Column);
+            var point = new MazePoint(room.Row, room.Column);
             _rooms.Add(point, room);
         }
 
         public IMazeRoom GetRoomByCoordinates(int line, int col)
         {
             var point = new MazePoint(line, col);
-            _rooms.TryGetValue(point, out var result);
-            return result;
+            return GetRoomByPoint(point);
         }
 
         public IMazeRoom GetRoomByPoint(MazePoint point)

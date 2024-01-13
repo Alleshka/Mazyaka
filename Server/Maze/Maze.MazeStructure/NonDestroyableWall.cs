@@ -4,9 +4,9 @@ using Maze.MazeStructure.Interfaces;
 
 namespace Maze.MazeStructure
 {
-    internal class SimpleMazeWall : BaseMazeSite, IMazeWall
+    internal class NonDestroyableWall : BaseMazeSite, IMazeWall
     {
-        public bool CanDestroy => true;
+        public bool CanDestroy => false;
 
         public bool IsDestroyed { get; protected set; }
 

@@ -2,12 +2,17 @@
 {
     public class MazePoint
     {
-        public int Line { get; set; }
+        public int Row { get; set; }
         public int Column { get; set; }
+
+        public MazePoint()
+        {
+
+        }
 
         public MazePoint(int line, int col)
         {
-            Line = line;
+            Row = line;
             Column = col;
         }
 
@@ -19,18 +24,18 @@
                 return false;
             }
 
-            return p.Line == Line && p.Column == Column;
+            return p.Row == Row && p.Column == Column;
         }
 
         public override string ToString()
         {
-            return $"({Line}; {Column})";
+            return $"({Row}; {Column})";
         }
 
         public override int GetHashCode()
         {
             int hash = 17;
-            hash = hash * 23 + Line.GetHashCode();
+            hash = hash * 23 + Row.GetHashCode();
             hash = hash * 23 + Column.GetHashCode();
             return hash;
         }

@@ -7,11 +7,11 @@ namespace Maze.GameLogic
     {
         public IMaze CreateMaze(IMazeGenerator generator, IMazeBuilder mazeBuilder);
 
-        public Result SetPlayer(MazePoint point);
-        public Result SetPlayer(int line, int col);
+        public void SetPlayer(MazePoint point);
+        public void SetPlayer(int line, int col);
 
-        public Result<MoveResult> MovePlayer(Guid userId, MoveDirection direction);
+        public MoveResult MovePlayer(Guid userId, MoveDirection direction);
 
-        public Result DestroyRoom(Guid userId, MoveDirection direction);
+        public void DestroyRoom(Guid userId, MoveDirection direction);
     }
 }

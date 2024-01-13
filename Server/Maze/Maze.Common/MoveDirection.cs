@@ -24,8 +24,12 @@ namespace Maze.Common
     public class MoveResult
     {
         public MoveStatus Status { get; set; }
-        public int Line { get; set; }
-        public int Column { get; set; }
+        public MazePoint Point { get; set; }
         public string MazeSite { get; set; }
+
+        public MoveResult()
+        {
+
+        }
     }
 }

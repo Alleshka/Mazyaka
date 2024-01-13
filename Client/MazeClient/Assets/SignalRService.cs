@@ -57,8 +57,8 @@ public class SignalRService : MonoBehaviour
             }
         }
 
-        curLine = UnityEngine.Random.Range(0, 10);
-        curCol = UnityEngine.Random.Range(0, 10);
+        curLine = 0; // UnityEngine.Random.Range(0, 10);
+        curCol = 0; // UnityEngine.Random.Range(0, 10);
 
         _connection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5035/Game")
@@ -82,17 +82,17 @@ public class SignalRService : MonoBehaviour
         _connection.On<MoveResult>("MoveResult", (result) =>
         {
             var name = result;
-            Debug.Log($"{name.Status}: ({name.Line}; {name.Column}) {name.MazeSite}");
-            curLine = name.Line;
-            curCol = name.Column;
+            curLine = name.Point.Row;
+            curCol = name.Point.Column;
+            Debug.Log($"{name.Status}: ({name.Point.Row}; {name.Point.Column}) {name.MazeSite}");
 
             if (name.Status == MoveStatus.Success)
             {
-                MovePerson(name.Line, name.Column, direction1);
+                MovePerson(name.Point.Row, name.Point.Column, direction1);
             }
             else if (name.Status == MoveStatus.Winner)
             {
-                MovePerson(name.Line, name.Column, direction1);
+                MovePerson(name.Point.Row, name.Point.Column, direction1);
                 Debug.Log("Winner");
 
                 _isGameEnded = true;
@@ -100,7 +100,7 @@ public class SignalRService : MonoBehaviour
             }
             else
             {
-                SetWall(name.Line, name.Column, direction1);
+                SetWall(name.Point.Row, name.Point.Column, direction1);
             }
         });
 

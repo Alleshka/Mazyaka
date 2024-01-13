@@ -1,8 +1,7 @@
 ﻿namespace Maze.Core
 {
-    public interface IMazePlayer
+    public interface IMazePlayer : IMoveable
     {
-        public int Line { get; set; }
-        public int Col { get; set; }
+
     }
 }

@@ -4,7 +4,7 @@ namespace Maze.MazeStructure.Interfaces
 {
     public interface IMaze
     {
-        public int LineCount { get; }
+        public int RowCount { get; }
         public int ColCount { get; }
 
         public void AddRoom(IMazeRoom room);

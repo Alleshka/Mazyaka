@@ -27,33 +27,42 @@ namespace Maze.GameLogic
         public IMaze GetMaze => _curMaze;
 
 
-        public Result SetPlayer(int line, int col)
+        public void SetPlayer(int line, int col)
         {
             _curRoom = _curMaze.GetRoomByCoordinates(line, col);
-            _player.Line = line;
-            _player.Col = col;
-
-            return Result.Success();
         }
 
-        public Result<MoveResult> MovePlayer(Guid userId, MoveDirection direction)
+        public MoveResult MovePlayer(Guid userId, MoveDirection direction)
         {
-            var otherCell = _curRoom.GetMazeSite(direction);
-            var result = otherCell.Enter(_player);
-            _curRoom = _curMaze.GetRoomByCoordinates(_player.Line, _player.Col);
-            return Result.Success(result);
+            var mazeSite = _curRoom.GetMazeSite(direction);
+            var result = mazeSite.Enter(_player, direction);
+
+            switch (result.Status)
+            {
+                case MoveStatus.Success:
+                    {
+                        _curRoom = _curMaze.GetRoomByPoint(result.Point);
+                        return result;
+                    }
+                case MoveStatus.Failure:
+                    {
+                        return result;
+                    }
+                default:
+                    {
+                        return result;
+                    }
+            }
         }
 
-        public Result DestroyRoom(Guid userId, MoveDirection direction)
+        public void DestroyRoom(Guid userId, MoveDirection direction)
         {
-            var userRoom = _curMaze.GetRoomByCoordinates(_player.Line, _player.Col);
 
-            throw new NotImplementedException();
         }
 
-        public Result SetPlayer(MazePoint point)
+        public void SetPlayer(MazePoint point)
         {
-            throw new NotImplementedException();
+            SetPlayer(point.Row, point.Column);
         }
     }
 }

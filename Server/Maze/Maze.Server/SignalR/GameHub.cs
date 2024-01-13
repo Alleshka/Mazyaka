@@ -29,6 +29,8 @@ namespace Maze.Server.SignalR
             var game = _gameStorage.GetGame(gameId);
             game.SetPlayer(line, col);
 
+            Console.WriteLine($"Set user to ({line}, {col})");
+
             await Clients.All.SendAsync("SetPlayer", true);
         }
 
@@ -36,8 +38,11 @@ namespace Maze.Server.SignalR
         {
             var game = _gameStorage.GetGame(gameId);
             var result = game.MovePlayer(userId, direction);
-            await Clients.All.SendAsync("MoveResult", result.Value);
-        }    
+
+            Console.WriteLine($"Try to move user {userId} to {direction}");
+            Console.WriteLine($"{result.Status}: {result.Point} - {result.MazeSite}");
+            await Clients.All.SendAsync("MoveResult", result);
+        }
 
         public async Task DestroyWall(Guid gameId, MoveDirection direction)
         {

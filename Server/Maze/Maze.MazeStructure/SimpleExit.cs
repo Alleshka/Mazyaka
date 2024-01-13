@@ -16,13 +16,14 @@ namespace Maze.MazeStructure
             Col = col;
         }
 
-        public override MoveResult Enter(IMazePlayer player)
+        public override MoveResult Enter(IMazePlayer player, MoveDirection direction)
         {
-            var result = base.Enter(player);
-            result.Status = MoveStatus.Winner;
-            result.Line = Line;
-            result.Column = Col;
-            return result;
+            return new MoveResult()
+            {
+                MazeSite = this.GetType().Name,
+                Status = MoveStatus.Winner,
+                Point = new MazePoint(Line, Col)
+            };
         }
     }
 }

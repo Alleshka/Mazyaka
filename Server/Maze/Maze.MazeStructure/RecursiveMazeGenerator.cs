@@ -11,8 +11,8 @@ namespace Maze.MazeStructure
         {
             private Dictionary<MazePoint, bool> _cellsVisitStatus;
 
-            public CellsVisitStatus(int capacity) 
-            { 
+            public CellsVisitStatus(int capacity)
+            {
                 _cellsVisitStatus = new Dictionary<MazePoint, bool>(capacity);
             }
 
@@ -47,13 +47,13 @@ namespace Maze.MazeStructure
             }
         }
 
-        public IMaze GenerateMaze(IMazeBuilder builder, int lineCount, int colCount)
+        public IMaze GenerateMaze(IMazeBuilder builder, int rowCount, int colCount)
         {
-            var cellsVisitStatus = new CellsVisitStatus(lineCount * colCount);
+            var cellsVisitStatus = new CellsVisitStatus(rowCount * colCount);
 
-            builder.BuildEmptyMaze();
+            builder.BuildEmptyMaze(rowCount, colCount);
 
-            for (int i = 0; i < lineCount; i++)
+            for (int i = 0; i < rowCount; i++)
             {
                 for (int j = 0; j < colCount; j++)
                 {
@@ -62,15 +62,58 @@ namespace Maze.MazeStructure
                 }
             }
 
-            int curLine = Random.Next(lineCount);
+            for (int i = 0; i < rowCount; i++)
+            {
+                for (int j = 0; j < rowCount; j++)
+                {
+                    if (i > 0)
+                    {
+                        builder.BuildWall(i, j, i - 1, j);
+                    }
+                    else
+                    {
+                        builder.BuildNonDestroyableWall(i, j, MoveDirection.Up);
+                    }
+
+                    if (i < rowCount - 1)
+                    {
+                        builder.BuildWall(i, j, i + 1, j);
+                    }
+                    else
+                    {
+                        builder.BuildNonDestroyableWall(i, j, MoveDirection.Down);
+                    }
+
+
+                    if (j > 0)
+                    {
+                        builder.BuildWall(i, j, i, j - 1);
+                    }
+                    else
+                    {
+                        builder.BuildNonDestroyableWall(i, j, MoveDirection.Left);
+                    }
+
+                    if (j < colCount - 1)
+                    {
+                        builder.BuildWall(i, j, i, j + 1);
+                    }
+                    else
+                    {
+                        builder.BuildNonDestroyableWall(i, j, MoveDirection.Right);
+                    }
+                }
+            }
+
+            int curLine = Random.Next(rowCount);
             int curColumn = Random.Next(colCount);
 
             var stackCell = new Stack<MazePoint>();
             var curCell = new MazePoint(curLine, curColumn);
 
-            while (HasNotVisitedCells(lineCount, colCount, cellsVisitStatus))
+            while (HasNotVisitedCells(rowCount, colCount, cellsVisitStatus))
             {
-                var newCell = GetNotVisitedNeighbor(curCell, lineCount, colCount, cellsVisitStatus);
+                var newCell = GetNotVisitedNeighbor(curCell, rowCount, colCount, cellsVisitStatus);
                 if (newCell != null)
                 {
                     stackCell.Push(curCell);
@@ -99,18 +142,18 @@ namespace Maze.MazeStructure
             var exitSide = directions[Random.Next(4)];
             var exitNum = Random.Next(10);
 
-            switch(exitSide)
+            switch (exitSide)
             {
                 case MoveDirection.Up:
                     {
                         builder.BuildExit(0, exitNum);
                         break;
                     }
-                    case MoveDirection.Down:
+                case MoveDirection.Down:
                     {
                         builder.BuildExit(9, exitNum);
                         break;
-                    
+
                     }
                 case MoveDirection.Left:
                     {
@@ -151,9 +194,9 @@ namespace Maze.MazeStructure
             // TODO: Fix copypaste
 
             // UP
-            if (curCell.Line > 0)
+            if (curCell.Row > 0)
             {
-                var cell = new MazePoint(curCell.Line - 1, curCell.Column);
+                var cell = new MazePoint(curCell.Row - 1, curCell.Column);
                 if (!cellsVisitStatus.IsVisited(cell))
                 {
                     neighbords.Add(cell);
@@ -161,9 +204,9 @@ namespace Maze.MazeStructure
             }
 
             // Down
-            if (curCell.Line < lineCount - 1)
+            if (curCell.Row < lineCount - 1)
             {
-                var cell = new MazePoint(curCell.Line + 1, curCell.Column);
+                var cell = new MazePoint(curCell.Row + 1, curCell.Column);
                 if (!cellsVisitStatus.IsVisited(cell))
                 {
                     neighbords.Add(cell);
@@ -173,7 +216,7 @@ namespace Maze.MazeStructure
             // Left
             if (curCell.Column > 0)
             {
-                var cell = new MazePoint(curCell.Line, curCell.Column - 1);
+                var cell = new MazePoint(curCell.Row, curCell.Column - 1);
                 if (!cellsVisitStatus.IsVisited(cell))
                 {
                     neighbords.Add(cell);
@@ -183,7 +226,7 @@ namespace Maze.MazeStructure
             // Right
             if (curCell.Column < colCount - 1)
             {
-                var cell = new MazePoint(curCell.Line, curCell.Column + 1);
+                var cell = new MazePoint(curCell.Row, curCell.Column + 1);
                 if (!cellsVisitStatus.IsVisited(cell))
                 {
                     neighbords.Add(cell);

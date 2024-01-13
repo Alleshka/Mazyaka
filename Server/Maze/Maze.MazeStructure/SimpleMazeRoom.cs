@@ -1,42 +1,45 @@
 ﻿using Maze.Common;
 using Maze.Core;
 using Maze.MazeStructure.Interfaces;
-using System.Collections.Generic;
 
 namespace Maze.MazeStructure
 {
     internal class SimpleMazeRoom : BaseMazeSite, IMazeRoom
     {
-        public int Line { get; protected set; }
-        public int Column { get; protected set; }
-        public bool IsVisited { get; set; } = false;
+        public MazePoint Address { get; protected set; }
+        public int Row => Address.Row;
+        public int Column => Address.Column;
 
-        private Dictionary<MoveDirection, IMazeSite> _sides;
+        protected ICollection<IMoveable> _characters;
 
-        public SimpleMazeRoom(int line, int col)
+        public SimpleMazeRoom(int row, int col) : this (new MazePoint(row, col))
         {
-            Line = line;
-            Column = col;
-
-            _sides = new Dictionary<MoveDirection, IMazeSite>();
         }
 
-        public IMazeSite GetMazeSite(MoveDirection direction)
+        public SimpleMazeRoom(MazePoint address)
         {
-            return _sides[direction];
+            Address = address;
+            _characters = new LinkedList<IMoveable>();
         }
 
-        public void SetMazeSite(MoveDirection direction, IMazeSite site)
+        public override MoveResult Enter(IMazePlayer player, MoveDirection direction)
         {
-            _sides[direction] = site;
+            return new MoveResult()
+            {
+                Point = Address,
+                Status = MoveStatus.Success,
+                MazeSite = this.GetType().Name
+            };
         }
 
-        public override MoveResult Enter(IMazePlayer player)
+        public void AddCharacter(IMoveable character)
         {
-            player.Line = this.Line;
-            player.Col = this.Column;
+            _characters.Add(character);
+        }
 
-            return base.Enter(player);
+        public void RemoveCharacter(IMoveable character)
+        {
+            _characters.Remove(character);
         }
     }
 }
