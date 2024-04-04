@@ -42,20 +42,25 @@ public class SignalRService : MonoBehaviour
 
     private Dictionary<Vector2Int, GameObject> _cells;
 
+    private IMazeRenderer _renderer;
+
     async void Start()
     {
-        //_text.text = "Hi mark";
+        _renderer = new SimpleMazeRenderer(10, 10, 1f);
+        _renderer.RenderField();
 
-        _cells = new Dictionary<Vector2Int, GameObject>();
-        for (int line = -1; line <= 10; line++)
-        {
-            for (int col = -1; col <= 10; col++)
-            {
-                var cell = Instantiate(Floor, new Vector3(col, -line, 1), Quaternion.identity);
-                var vector = new Vector2Int(line, col);
-                _cells.Add(vector, cell);
-            }
-        }
+        ////_text.text = "Hi mark";
+
+        //_cells = new Dictionary<Vector2Int, GameObject>();
+        //for (int line = -1; line <= 10; line++)
+        //{
+        //    for (int col = -1; col <= 10; col++)
+        //    {
+        //        var cell = Instantiate(Floor, new Vector3(col, -line, 1), Quaternion.identity);
+        //        var vector = new Vector2Int(line, col);
+        //        _cells.Add(vector, cell);
+        //    }
+        //}
 
         curLine = 0; // UnityEngine.Random.Range(0, 10);
         curCol = 0; // UnityEngine.Random.Range(0, 10);
@@ -72,27 +77,23 @@ public class SignalRService : MonoBehaviour
 
         _connection.On<bool>("SetPlayer", (t) =>
         {
-            var vector = new Vector2Int(curLine, curCol);
-            var cell = _cells[vector];
-
-            player = Instantiate(person, new Vector3(cell.transform.position.x, cell.transform.position.y, -1), Quaternion.identity);
-            Debug.Log(t);
+            player = _renderer.InitPlayer(person, curLine, curCol);
         });
 
         _connection.On<MoveResult>("MoveResult", (result) =>
         {
             var name = result;
-            curLine = name.Point.Row;
-            curCol = name.Point.Column;
             Debug.Log($"{name.Status}: ({name.Point.Row}; {name.Point.Column}) {name.MazeSite}");
 
             if (name.Status == MoveStatus.Success)
             {
-                MovePerson(name.Point.Row, name.Point.Column, direction1);
+                _renderer.MovePlayer(player, curLine, curCol, name.Point.Row, name.Point.Column);
+                // MovePerson(name.Point.Row, name.Point.Column, direction1);
             }
             else if (name.Status == MoveStatus.Winner)
             {
-                MovePerson(name.Point.Row, name.Point.Column, direction1);
+                _renderer.MovePlayer(player, curLine, curCol, name.Point.Row, name.Point.Column);
+                // MovePerson(name.Point.Row, name.Point.Column, direction1);
                 Debug.Log("Winner");
 
                 _isGameEnded = true;
@@ -100,8 +101,12 @@ public class SignalRService : MonoBehaviour
             }
             else
             {
-                SetWall(name.Point.Row, name.Point.Column, direction1);
+                _renderer.RenderWall(name.Point.Row, name.Point.Column, direction1, "");
+                // SetWall(name.Point.Row, name.Point.Column, direction1);
             }
+
+            curLine = name.Point.Row;
+            curCol = name.Point.Column;
         });
 
         await _connection.StartAsync();
@@ -109,71 +114,38 @@ public class SignalRService : MonoBehaviour
         await _connection.InvokeAsync("SetPlayer", _gameId, curLine, curCol);
     }
 
+    private bool shiftKeyPressed = false;
+
     public async void Update()
     {
         if (!_isGameEnded)
         {
+            // Check if the left Shift key is pressed
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                shiftKeyPressed = true;
+            }
+
+            // Check if the left Shift key is released
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                shiftKeyPressed = false;
+            }
+
             var direction = GetDirection();
             if (direction != MoveDirection.None)
             {
                 direction1 = direction;
-                await _connection.InvokeAsync("Move", _gameId, _gameId, direction);
+                if (!shiftKeyPressed)
+                {
+                    await _connection.InvokeAsync("Move", _gameId, _gameId, direction);
+                }
+                else
+                {
+                    _renderer.RemoveWall(curLine, curCol, direction);
+                }
             }
         }
-    }
-
-    private void SetWall(int line, int col, MoveDirection direction)
-    {
-        float x = 0;
-        float y = 0;
-
-        GameObject block = null;
-
-        switch (direction)
-        {
-            case MoveDirection.Left:
-                {
-                    block = VerticalWall;
-                    x = -0.5f;
-                    break;
-                }
-            case MoveDirection.Up:
-                {
-                    block = HorizontalWall;
-                    y = 0.5f;
-                    break;
-                }
-            case MoveDirection.Down:
-                {
-                    block = HorizontalWall;
-                    y = -0.5f;
-                    break;
-                }
-            case MoveDirection.Right:
-                {
-                    block = VerticalWall;
-                    x = 0.5f;
-                    break;
-                }
-        }
-
-        var vector = new Vector2Int(line, col);
-        var cell = _cells[vector];
-
-        var obj = Instantiate(block, cell.transform);
-        obj.transform.localPosition = new Vector3(x, y, -2);
-    }
-
-    private void MovePerson(int line, int col, MoveDirection direction)
-    {
-        var vector = new Vector2Int(line, col);
-        var cell = _cells[vector];
-        var pos = cell.transform.position;
-
-        player.transform.position = new Vector3(pos.x, pos.y, -1);
-
-        curLine = line;
-        curCol = col;
     }
 
     private MoveDirection GetDirection()
@@ -198,6 +170,7 @@ public class SignalRService : MonoBehaviour
             {
                 moveDirection = MoveDirection.Right;
             }
+
         }
         return moveDirection;
     }
