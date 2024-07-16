@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Maze.MazeStructure.Interfaces
+﻿namespace Maze.MazeStructure.Interfaces
 {
-    public interface IMazePassage : IMazeSite
+    public interface IMazePassage : IMazeConnection
     {
     }
 }

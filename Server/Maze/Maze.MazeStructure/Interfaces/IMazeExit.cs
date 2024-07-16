@@ -1,6 +1,6 @@
 ﻿namespace Maze.MazeStructure.Interfaces
 {
-    public interface IMazeExit : IMazeSite
+    public interface IMazeExit : IMazeConnection
     {
 
     }

@@ -12,6 +12,6 @@ namespace Maze.GameLogic
 
         public MoveResult MovePlayer(Guid userId, MoveDirection direction);
 
-        public void DestroyRoom(Guid userId, MoveDirection direction);
+        public bool DestroyRoom(Guid userId, MoveDirection direction);
     }
 }

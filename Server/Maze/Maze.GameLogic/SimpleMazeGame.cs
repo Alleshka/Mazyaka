@@ -55,9 +55,11 @@ namespace Maze.GameLogic
             }
         }
 
-        public void DestroyRoom(Guid userId, MoveDirection direction)
+        public bool DestroyRoom(Guid userId, MoveDirection direction)
         {
-
+            var mazeSite = _curRoom.GetMazeSite(direction);
+            var result = mazeSite.Destroy(direction);
+            return result;
         }
 
         public void SetPlayer(MazePoint point)

@@ -4,7 +4,7 @@ using Maze.MazeStructure.Interfaces;
 
 namespace Maze.MazeStructure
 {
-    internal class SimpleExit : BaseMazeSite, IMazeExit
+    internal class SimpleExit : BaseMazeConnection, IMazeExit
     {
         public int Line { get; }
 

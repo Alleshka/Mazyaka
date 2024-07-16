@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Maze.MazeStructure.Interfaces
+﻿namespace Maze.MazeStructure.Interfaces
 {
-    public interface IMazeWall : IMazeSite
+    public interface IMazeWall : IMazeConnection
     {
-        public bool CanDestroy { get; }
-        public bool IsDestroyed { get; }
+
     }
 }

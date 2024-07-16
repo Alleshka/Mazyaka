@@ -4,12 +4,8 @@ using Maze.MazeStructure.Interfaces;
 
 namespace Maze.MazeStructure
 {
-    internal class NonDestroyableWall : BaseMazeSite, IMazeWall
+    internal class NonDestroyableWall : BaseMazeConnection, IMazeWall
     {
-        public bool CanDestroy => false;
-
-        public bool IsDestroyed { get; protected set; }
-
         public override MoveResult Enter(IMazePlayer player, MoveDirection direction)
         {
             var prev = this[direction.Opposite()] as IMazeRoom;

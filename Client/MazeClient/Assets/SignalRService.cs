@@ -49,19 +49,6 @@ public class SignalRService : MonoBehaviour
         _renderer = new SimpleMazeRenderer(10, 10, 1f);
         _renderer.RenderField();
 
-        ////_text.text = "Hi mark";
-
-        //_cells = new Dictionary<Vector2Int, GameObject>();
-        //for (int line = -1; line <= 10; line++)
-        //{
-        //    for (int col = -1; col <= 10; col++)
-        //    {
-        //        var cell = Instantiate(Floor, new Vector3(col, -line, 1), Quaternion.identity);
-        //        var vector = new Vector2Int(line, col);
-        //        _cells.Add(vector, cell);
-        //    }
-        //}
-
         curLine = 0; // UnityEngine.Random.Range(0, 10);
         curCol = 0; // UnityEngine.Random.Range(0, 10);
 
@@ -88,12 +75,10 @@ public class SignalRService : MonoBehaviour
             if (name.Status == MoveStatus.Success)
             {
                 _renderer.MovePlayer(player, curLine, curCol, name.Point.Row, name.Point.Column);
-                // MovePerson(name.Point.Row, name.Point.Column, direction1);
             }
             else if (name.Status == MoveStatus.Winner)
             {
                 _renderer.MovePlayer(player, curLine, curCol, name.Point.Row, name.Point.Column);
-                // MovePerson(name.Point.Row, name.Point.Column, direction1);
                 Debug.Log("Winner");
 
                 _isGameEnded = true;
@@ -102,11 +87,18 @@ public class SignalRService : MonoBehaviour
             else
             {
                 _renderer.RenderWall(name.Point.Row, name.Point.Column, direction1, "");
-                // SetWall(name.Point.Row, name.Point.Column, direction1);
             }
 
             curLine = name.Point.Row;
             curCol = name.Point.Column;
+        });
+
+        _connection.On<bool>("DestroyWallResult", (result) =>
+        {
+            if (result)
+            {
+                _renderer.RemoveWall(curLine, curCol, direction1);
+            }
         });
 
         await _connection.StartAsync();
@@ -142,7 +134,7 @@ public class SignalRService : MonoBehaviour
                 }
                 else
                 {
-                    _renderer.RemoveWall(curLine, curCol, direction);
+                    await _connection.InvokeAsync("DestroyWall", _gameId, _gameId, direction);
                 }
             }
         }
@@ -195,12 +187,12 @@ public class SignalRService : MonoBehaviour
 
         // Add a Text component to the Text GameObject
         Text textComponent = textGO.AddComponent<Text>();
-        textComponent.text = "Winner";
+        textComponent.text = "Winner"; 
 
         // Set additional Text properties (font, font size, color, etc.)
         textComponent.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
         textComponent.fontSize = 24;
-        textComponent.color = Color.white;
+        textComponent.color = Color.red;
 
         // Set the Text's RectTransform properties
         textTransform.anchoredPosition = Vector2.zero;

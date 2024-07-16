@@ -12,5 +12,9 @@ namespace Maze.MazeStructure.Interfaces
 
         public void AddCharacter(IMoveable character);
         public void RemoveCharacter(IMoveable character);
+
+        public IMazeConnection this[MoveDirection direction] { get; }
+        public IMazeConnection GetMazeSite(MoveDirection direction);
+        public void SetMazeSite(MoveDirection direction, IMazeConnection site);
     }
 }

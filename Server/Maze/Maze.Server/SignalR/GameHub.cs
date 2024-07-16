@@ -44,9 +44,11 @@ namespace Maze.Server.SignalR
             await Clients.All.SendAsync("MoveResult", result);
         }
 
-        public async Task DestroyWall(Guid gameId, MoveDirection direction)
+        public async Task DestroyWall(Guid gameId, Guid userId, MoveDirection direction)
         {
-
+            var game = _gameStorage.GetGame(gameId);
+            var result = game.DestroyRoom(gameId, direction);
+            await Clients.All.SendAsync("DestroyWallResult", result);
         }
     }
 }
