@@ -1,17 +1,17 @@
-﻿using Maze.Common;
+﻿using Maze.Core.Common;
+using Maze.MazeStructure;
 using Maze.MazeStructure.Interfaces;
+using Maze.MazeStructure.MazeSites;
 
 namespace Maze.GameLogic
 {
     public interface IMazeGame
     {
-        public IMaze CreateMaze(IMazeGenerator generator, IMazeBuilder mazeBuilder);
+        void SetMaze(IMaze maze);
 
-        public void SetPlayer(MazePoint point);
-        public void SetPlayer(int line, int col);
+        IMazeRoom SetPlayer(MazePoint point);
+        IMazeRoom SetPlayer(int line, int col);
 
-        public MoveResult MovePlayer(Guid userId, MoveDirection direction);
-
-        public bool DestroyRoom(Guid userId, MoveDirection direction);
+        MoveResult MovePlayer(Guid userId, MoveDirection direction);
     }
 }

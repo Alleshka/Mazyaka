@@ -4,31 +4,29 @@
     {
         public static MoveDirection Opposite(this MoveDirection direction)
         {
-            switch (direction)
+            MoveDirection result = MoveDirection.None;
+
+            if (direction.HasFlag(MoveDirection.Left))
             {
-                case MoveDirection.None:
-                    {
-                        return MoveDirection.None;
-                    }
-                case MoveDirection.Left:
-                    {
-                        return MoveDirection.Right;
-                    }
-                case MoveDirection.Right:
-                    {
-                        return MoveDirection.Left;
-                    }
-                case MoveDirection.Up:
-                    {
-                        return MoveDirection.Down;
-                    }
-                case MoveDirection.Down:
-                    {
-                        return MoveDirection.Up;
-                    }
+                result |= MoveDirection.Right;
             }
 
-            return MoveDirection.None;
+            if (direction.HasFlag(MoveDirection.Right))
+            {
+                result |= MoveDirection.Left;
+            }
+
+            if (direction.HasFlag(MoveDirection.Up))
+            {
+                result |= MoveDirection.Down;
+            }
+
+            if (direction.HasFlag(MoveDirection.Down))
+            {
+                result |= MoveDirection.Up;
+            }
+
+            return result;
         }
     }
 }

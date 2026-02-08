@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Maze.Common
+namespace Maze.Core.Common
 {
     [Flags]
     public enum MoveDirection

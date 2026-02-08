@@ -15,16 +15,24 @@ namespace Maze.Server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
+                    builder =>
+                    {
+                        builder.AllowAnyHeader()
+                               .AllowAnyMethod()
+                               .SetIsOriginAllowed((host) => true)
+                               .AllowCredentials();
+                    }));
 
             builder.Services.AddSingleton<IGameStorage, SimpleGameStorage>();
             builder.Services.AddSignalR();
-
-
 
             var app = builder.Build();
 
             app.UseRouting();
 
+
+            app.UseCors("CorsPolicy");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<GameHub>("/game");
@@ -42,7 +50,7 @@ namespace Maze.Server
 
             app.UseAuthorization();
 
-
+            app.UseCors();
             app.MapControllers();
 
             app.Run();

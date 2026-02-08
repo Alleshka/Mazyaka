@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	
   <ItemGroup>
     <ProjectReference Include="..\Maze.Common\Maze.Common.csproj" />
-    <ProjectReference Include="..\Maze.Core\Maze.Core.csproj" />
   </ItemGroup>
 
 </Project>

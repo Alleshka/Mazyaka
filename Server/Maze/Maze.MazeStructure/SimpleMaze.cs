@@ -1,40 +1,54 @@
 ﻿using Maze.Common;
-using Maze.MazeStructure.Interfaces;
+using Maze.MazeStructure.MazeSites;
+using System;
+using System.Collections.Generic;
 
 namespace Maze.MazeStructure
 {
-    internal class SimpleMaze : IMaze
+    public class SimpleMaze : IMaze
     {
-        private Dictionary<MazePoint, IMazeRoom> _rooms;
+        private Dictionary<int, IMazeRoom> _rooms;
+        private Dictionary<(int, int), IMazeConnection> _connections;
 
-        public int RowCount { get; protected set; }
+        public IMazeRoom HeadRoom { get; private set; }
 
-        public int ColCount { get; protected set; }
-
-        public SimpleMaze(int rowCount, int colCount)
+        public SimpleMaze()
         {
-            _rooms = new Dictionary<MazePoint, IMazeRoom>();
-
-            RowCount = rowCount;
-            ColCount = colCount;
+            _rooms = new Dictionary<int, IMazeRoom>();
+            _connections = new Dictionary<(int, int), IMazeConnection>();
         }
 
         public void AddRoom(IMazeRoom room)
         {
-            var point = new MazePoint(room.Row, room.Column);
-            _rooms.Add(point, room);
+            _rooms[room.Id] = room;
+            if (HeadRoom == null)
+            {
+                HeadRoom = room;
+            }
         }
 
-        public IMazeRoom GetRoomByCoordinates(int line, int col)
+        public void AddConnection(IMazeConnection connection)
         {
-            var point = new MazePoint(line, col);
-            return GetRoomByPoint(point);
+            IMazeRoom roomA = null;
+            IMazeRoom roomB = null;
+
+            if ((connection.RoomA?.Id ?? Int32.MinValue) < (connection.RoomB?.Id ?? Int32.MinValue))
+            {
+                roomA = connection.RoomA;
+                roomB = connection.RoomB;
+            }
+            else
+            {
+                roomA = connection.RoomB;
+                roomB = connection.RoomA;
+            }
+
+            _connections[(roomA?.Id ?? Int32.MinValue, roomB?.Id ?? Int32.MinValue)] = connection;
         }
 
-        public IMazeRoom GetRoomByPoint(MazePoint point)
+        public IMazeRoom GetRoomByID(int id)
         {
-            _rooms.TryGetValue(point, out var result);
-            return result;
+            return _rooms[id];
         }
     }
 }

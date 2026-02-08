@@ -1,9 +1,9 @@
-﻿using Maze.Common;
-using Maze.Core;
+﻿using Maze.Core;
 using Maze.MazeStructure.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Maze.MazeStructure;
+using Maze.MazeStructure.Builder;
+using Maze.Core.Common;
+using Maze.MazeStructure.MazeSites;
 
 namespace Maze.GameLogic
 {
@@ -13,58 +13,68 @@ namespace Maze.GameLogic
         private IMaze _curMaze;
         private IMazePlayer _player;
 
+        private int minVisibleRow = 0;
+        private int minVisibleCol = 0;
+        private int maxVisibleRow = 0;
+        private int maxVisibleCol = 0;
+
         public SimpleMazeGame()
         {
             _player = new SimpleMazePlayer();
         }
 
-        public IMaze CreateMaze(IMazeGenerator generator, IMazeBuilder mazeBuilder)
+        public void SetMaze(IMaze maze)
         {
-            _curMaze = generator.GenerateMaze(mazeBuilder);
-            return _curMaze;
+            _curMaze = maze;
         }
 
         public IMaze GetMaze => _curMaze;
 
 
-        public void SetPlayer(int line, int col)
+        public IMazeRoom SetPlayer(int line, int col)
         {
             _curRoom = _curMaze.GetRoomByCoordinates(line, col);
+
+            minVisibleRow = maxVisibleRow = line;
+            minVisibleCol = maxVisibleCol = col;
+
+            return _curRoom;
         }
 
         public MoveResult MovePlayer(Guid userId, MoveDirection direction)
         {
-            var mazeSite = _curRoom.GetMazeSite(direction);
-            var result = mazeSite.Enter(_player, direction);
+            var mazeSite = _curRoom.GetMazeConnection(direction);
+            var result = mazeSite.TryEnter(_player, _curRoom);    
+            Console.WriteLine($"{result.IsSuccess}: {result.FailureReason} ({result.Message})");
 
-            switch (result.Status)
+            if (result.IsSuccess)
             {
-                case MoveStatus.Success:
-                    {
-                        _curRoom = _curMaze.GetRoomByPoint(result.Point);
-                        return result;
-                    }
-                case MoveStatus.Failure:
-                    {
-                        return result;
-                    }
-                default:
-                    {
-                        return result;
-                    }
-            }
-        }
+                _curRoom = result.NextRoom;
 
-        public bool DestroyRoom(Guid userId, MoveDirection direction)
-        {
-            var mazeSite = _curRoom.GetMazeSite(direction);
-            var result = mazeSite.Destroy(direction);
+                minVisibleCol = Math.Min(minVisibleCol, _curRoom.Point.Column);
+                maxVisibleCol = Math.Max(maxVisibleCol, _curRoom.Point.Column);
+
+                minVisibleRow = Math.Min(minVisibleRow, _curRoom.Point.Row);
+                maxVisibleRow = Math.Max(maxVisibleRow, _curRoom.Point.Row);
+            }
+
             return result;
         }
 
-        public void SetPlayer(MazePoint point)
+        public IMazeRoom SetPlayer(MazePoint point)
         {
-            SetPlayer(point.Row, point.Column);
+            return SetPlayer(point.Row, point.Column);
+        }
+
+        public IEnumerable<IMazeRoom> GetVisibleRooms()
+        {
+            for (int i = minVisibleRow; i <= maxVisibleRow; i++)
+            {
+                for (int j = minVisibleCol; j <= maxVisibleCol; j++)
+                {
+                    yield return _curMaze.GetRoomByCoordinates(i, j);
+                }
+            }
         }
     }
 }
