@@ -45,13 +45,15 @@ namespace Maze.GameWorld.System
                     continue;
                 }
 
+                var nextRoom = connection.GetOther(room);
+
                 if (!meta.HasTypeTag(connection, MazeStructure.Metadata.ConnectionTypeTag.Passage))
                 {
-                    world.Add(e, new MoveBlockedByWallEvent { });
+                    world.Add(e, new MoveBlockedByWallEvent(new RoomPostition(nextRoom.Id)));
                     continue;
                 }
 
-                var nextRoom = connection.GetOther(room);
+
                 position.RoomId = nextRoom.Id;
                 world.Add(e, new MoveSuccessEvent { Postition = position });
             }

@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Maze.Common;
+using Maze.ConsoleClient;
 using Maze.GameWorld;
 using Maze.MazeStructure;
 using Maze.MazeStructure.MazeGenerators;
@@ -14,24 +15,38 @@ var mazeInfo = mazeGenerator.Generate();
 var world = new GameWorld(mazeInfo);
 var player = world.CreatePlayer();
 
+var state = new MazeClientState();
+var printer = new MazePrinter();
+
+int currentId = 0;
+
+
 while (true)
 {
-    var key = Console.ReadKey();
+    printer.Print(state, currentId);
 
-    switch (key.Key)
+    var key = Console.ReadKey();
+    Console.Clear();
+
+    var direction = key.Key switch
     {
-        case ConsoleKey.W:
-            world.ExecuteMove(player, MoveDirection.Up);
-            break;
-        case ConsoleKey.A:
-            world.ExecuteMove(player, MoveDirection.Left);
-            break;
-        case ConsoleKey.S:
-            world.ExecuteMove(player, MoveDirection.Down);
-            break;
-        case ConsoleKey.D:
-            world.ExecuteMove(player, MoveDirection.Right);
-            break;
+        ConsoleKey.W => MoveDirection.Up,
+        ConsoleKey.A => MoveDirection.Left,
+        ConsoleKey.S => MoveDirection.Down,
+        ConsoleKey.D => MoveDirection.Right,
+        _ => MoveDirection.None
+    };
+
+    var result = world.ExecuteMove(player, direction);
+
+    if (result.SuccessMove)
+    {
+        state.RegisterMove(currentId, direction, result.RoomId);
+        currentId = result.RoomId;
+    }
+    else
+    {
+        state.RegisterBlocked(currentId, direction);
     }
 }
 //PrintMaze(maze);
