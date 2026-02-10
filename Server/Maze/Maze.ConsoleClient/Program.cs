@@ -12,6 +12,7 @@ Console.Clear();
 var mazeGenerator = new GridMazeGenerator(size, size);
 var mazeInfo = mazeGenerator.Generate();
 var world = new GameWorld(mazeInfo);
+var player = world.CreatePlayer();
 
 while (true)
 {
@@ -20,16 +21,16 @@ while (true)
     switch (key.Key)
     {
         case ConsoleKey.W:
-            world.Move(MoveDirection.Up);
+            world.ExecuteMove(player, MoveDirection.Up);
             break;
         case ConsoleKey.A:
-            world.Move(MoveDirection.Left);
+            world.ExecuteMove(player, MoveDirection.Left);
             break;
         case ConsoleKey.S:
-            world.Move(MoveDirection.Down);
+            world.ExecuteMove(player, MoveDirection.Down);
             break;
         case ConsoleKey.D:
-            world.Move(MoveDirection.Right);
+            world.ExecuteMove(player, MoveDirection.Right);
             break;
     }
 }

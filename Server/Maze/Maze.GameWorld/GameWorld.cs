@@ -2,6 +2,8 @@
 using Maze.GameWorld.Components;
 using Maze.GameWorld.System;
 using Maze.MazeStructure;
+using System;
+using System.Collections.Generic;
 
 namespace Maze.GameWorld
 {
@@ -10,31 +12,49 @@ namespace Maze.GameWorld
         internal IMazeInfo MazeInfo { get; }
         internal MazeState State { get; }
 
-        private readonly MovementSystem _movementSystem;
-        private readonly RoomEnterSystem _roomEnterSystem;
-        private readonly ExitEnterSystem _exitEnterSystem;
+        private readonly List<ISystem> _pipeLine;
+        private readonly ResultBuilder _builder = new ResultBuilder();
 
-        private Entity _player;
+        private Dictionary<Guid, Entity> _players = new Dictionary<Guid, Entity>();
 
         public GameWorld(IMazeInfo mazeInfo)
         {
             MazeInfo = mazeInfo;
             State = new MazeState();
 
-            _movementSystem = new MovementSystem(this);
-            _roomEnterSystem = new RoomEnterSystem();
-            _exitEnterSystem = new ExitEnterSystem();
-
-            _player = State.CreateEntity();
-            State.Add(_player, new PlayerTag());
-            State.Add(_player, new RoomPostition { RoomId = mazeInfo.MazeStructure.HeadRoom.Id });
+            _pipeLine = new List<ISystem>()
+            {
+                new MovementSystem(mazeInfo)
+            };
         }
 
-        public void Move(MoveDirection direction)
+        public Guid CreatePlayer()
         {
-            _movementSystem.TryMove(_player, direction);
-            _roomEnterSystem.Process(this.State);
-            _exitEnterSystem.Process(this.State);
+            Guid playerId = Guid.NewGuid();
+            var player = State.CreateEntity();
+            State.Add(player, new PlayerTag());
+            State.Add(player, new RoomPostition { RoomId = MazeInfo.MazeStructure.HeadRoom.Id });
+
+            _players.Add(playerId, player);
+
+            return playerId;
+        }
+
+        public ActionResult ExecuteMove(Guid playerID, MoveDirection dir)
+        {
+            var player = _players.TryGetValue(playerID, out var p) ? p : throw new Exception("Player not found");
+
+            State.Add(player, new MoveIntent { Direction = dir });
+
+            foreach (var s in _pipeLine)
+                s.Run(State);
+
+            var result = _builder.Build(State, player);
+
+            State.Remove<MoveIntent>(player);
+            State.ClearEvents();
+
+            return result;
         }
     }
 }

@@ -1,53 +1,60 @@
-﻿using Maze.Common;
-using Maze.GameWorld.Components;
-using System;
+﻿using Maze.GameWorld.Components;
+using Maze.GameWorld.Evemts;
+using Maze.MazeStructure;
 
 namespace Maze.GameWorld.System
 {
-    internal class MovementSystem
+    internal class MovementSystem : ISystem
     {
-        private readonly GameWorld _world;
+        private IMazeInfo _mazeInfo;
 
-        public MovementSystem(GameWorld world)
+        public MovementSystem(IMazeInfo mazeInfo)
         {
-            _world = world;
+            _mazeInfo = mazeInfo;
         }
 
-        public bool TryMove(Entity e, MoveDirection direction)
+        public void Run(MazeState world)
         {
-            ref var position = ref _world.State.Get<RoomPostition>(e);
-            var room = _world.MazeInfo.MazeStructure.GetRoomByID(position.RoomId);
-            var connection = room.GetConnection(direction);
 
-            if (connection == null)
+            foreach (var e in world.Query<MoveIntent>())
             {
-                return false;
+                ref var position = ref world.Get<RoomPostition>(e);
+                var intent = world.Get<MoveIntent>(e);
+
+                var room = _mazeInfo.MazeStructure.GetRoomByID(position.RoomId);
+                var connection = room.GetConnection(intent.Direction);
+
+                if (connection == null)
+                {
+                    world.Add(e, new MoveBlockedNoConntectionEvent());
+                    continue;
+                }
+
+                var meta = _mazeInfo.Metadata;
+
+
+                if (meta.HasTypeTag(connection, MazeStructure.Metadata.ConnectionTypeTag.Boundary))
+                {
+                    world.Add(e, new MoveBlockedByBoundaryEvent());
+                    continue;
+                }
+
+                if (meta.HasTypeTag(connection, MazeStructure.Metadata.ConnectionTypeTag.Exit))
+                {
+                    world.Add(e, new MoveExitEvent { });
+                    continue;
+                }
+
+                if (!meta.HasTypeTag(connection, MazeStructure.Metadata.ConnectionTypeTag.Passage))
+                {
+                    world.Add(e, new MoveBlockedByWallEvent { });
+                    continue;
+                }
+
+                var nextRoom = connection.GetOther(room);
+                position.RoomId = nextRoom.Id;
+                world.Add(e, new MoveSuccessEvent { Postition = position });
             }
-
-            var meta = _world.MazeInfo.Metadata;
-
-            if (meta.HasTypeTag(connection, MazeStructure.Metadata.ConnectionTypeTag.Boundary))
-            {
-                Console.WriteLine("Boundary in direction " + direction);
-                return false;
-            }
-
-            if (meta.HasTypeTag(connection, MazeStructure.Metadata.ConnectionTypeTag.Exit))
-            {
-                _world.State.Add(e, new EnteredExitEvent { });
-                return false;
-            }
-
-            if (!meta.HasTypeTag(connection, MazeStructure.Metadata.ConnectionTypeTag.Passage))
-            {
-                Console.WriteLine("No passage in direction " + direction);
-                return false;
-            }
-
-            var nextRoom = connection.GetOther(room);
-            position.RoomId = nextRoom.Id;
-            _world.State.Add(e, new EnteredRoomEvent { RoomId = nextRoom.Id });
-            return true;
         }
     }
 }

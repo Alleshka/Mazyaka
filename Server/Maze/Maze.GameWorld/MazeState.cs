@@ -1,34 +1,21 @@
 ﻿using Maze.GameWorld.ComponentStore;
+using Maze.GameWorld.Evemts;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Maze.GameWorld
 {
-    public class MazeState
+    internal class MazeState
     {
         private int _nextEntityId = 1;
-        private readonly Dictionary<Type, IComponentStore> _componentStores = new Dictionary<Type, IComponentStore>();
+        private readonly Dictionary<Type, object> _componentStores = new Dictionary<Type, object>();
 
-        public Entity CreateEntity()
-        {
-            return new Entity(_nextEntityId++);
-        }
+        public Entity CreateEntity() => new(_nextEntityId++);
 
-        public void Add<T>(Entity e, T component) where T : struct
-        {
-            var store = GetStore<T>();
-            store.Data[e.Id] = component;
-        }
+        public void Add<T>(Entity e, T component) where T : struct => GetStore<T>().Add(e, component);
+        public bool Has<T>(Entity e) where T : struct => GetStore<T>().Has(e);
 
-        public bool Has<T>(Entity e) where T : struct
-        {
-            var store = GetStore<T>();
-            return store.Data.ContainsKey(e.Id);
-        }
-
-        private SimpleComponentStore<T> GetStore<T>() where T : struct
+        private IComponentStore<T> GetStore<T>() where T : struct
         {
             var type = typeof(T);
 
@@ -38,54 +25,63 @@ namespace Maze.GameWorld
                 _componentStores[type] = store;
             }
 
-            return (SimpleComponentStore<T>)store;
+            return (IComponentStore<T>)store;
         }
 
-        public ref T Get<T>(Entity e) where T : struct
-        {
-            var store = GetStore<T>();
-            return ref CollectionsMarshal.GetValueRefOrNullRef(store.Data, e.Id);
-        }
+        public ref T Get<T>(Entity e) where T : struct => ref GetStore<T>().Get(e);
 
+        public void Remove<T>(Entity e) where T : struct => GetStore<T>().Remove(e);
 
-        public void Remove<T>(Entity e) where T : struct
+        public void ClearEvents()
         {
-            var store = GetStore<T>();
-            store.Data.Remove(e.Id);
+            GetStore<MoveSuccessEvent>().Clear();
+            GetStore<MoveExitEvent>().Clear();
+            GetStore<MoveBlockedNoConntectionEvent>().Clear();
+            GetStore<MoveBlockedByWallEvent>().Clear();
+            GetStore<MoveBlockedByBoundaryEvent>().Clear();
         }
 
         public IEnumerable<Entity> Query<T>() where T : struct
         {
             var store = GetStore<T>();
-            foreach (var kvp in store.Data)
+            foreach (var kvp in store.All())
             {
-                yield return new Entity(kvp.Key);
+                yield return kvp.Key;
             }
         }
 
-        public IEnumerable<Entity> Query<T1, T2>()
+        public IEnumerable<(Entity, T1, T2)> Query<T1, T2>()
             where T1 : struct
             where T2 : struct
         {
-            var a = GetStore<T1>().Data;
-            var b = GetStore<T2>().Data;
+            var p1 = GetStore<T1>();
+            var p2 = GetStore<T2>();
 
-            if (a.Count > b.Count)
+            foreach (var (e, c1) in p1.All())
             {
-                return Query(b, a);
-            }
-            else
-            {
-                return Query(a, b);
+                if (p2.Has(e))
+                {
+                    yield return (e, c1, p2.Get(e));
+                }
             }
         }
 
-        private IEnumerable<Entity> Query<T1, T2>(Dictionary<int, T1> a,
-            Dictionary<int, T2> b)
+        public IEnumerable<(Entity, T1, T2, T3)> Query<T1, T2, T3>()
+            where T1 : struct
+            where T2 : struct
+            where T3 : struct
         {
-            foreach (var id in a.Keys)
-                if (b.ContainsKey(id))
-                    yield return new Entity(id);
+            var p1 = GetStore<T1>();
+            var p2 = GetStore<T2>();
+            var p3 = GetStore<T3>();
+
+            foreach (var (e, c1) in p1.All())
+            {
+                if (p2.Has(e) && p3.Has(e))
+                {
+                    yield return (e, c1, p2.Get(e), p3.Get(e));
+                }
+            }
         }
     }
 }
