@@ -1,7 +1,6 @@
 ﻿using Maze.Common;
 using Maze.MazeStructure.MazeSites;
 using Maze.MazeStructure.Metadata;
-using System;
 
 namespace Maze.MazeStructure.MazeGenerators
 {
@@ -9,6 +8,7 @@ namespace Maze.MazeStructure.MazeGenerators
     {
         private IMaze _curMaze;
         private IMazeMetadata _mazeMetadata;
+        private int _connectionId = 0;
 
         public void BuildEmptyMaze()
         {
@@ -23,7 +23,7 @@ namespace Maze.MazeStructure.MazeGenerators
 
         public void BuildBoundary(IMazeRoom room, MoveDirection direction)
         {
-            IMazeConnection connection = new BaseMazeConnection(room, null);
+            IMazeConnection connection = new BaseMazeConnection(_connectionId++, room, null);
             room.AddConnection(direction, connection);
             _mazeMetadata.AddTypeTag(connection, ConnectionTypeTag.Boundary);
             _curMaze.AddConnection(connection);
@@ -31,7 +31,7 @@ namespace Maze.MazeStructure.MazeGenerators
 
         public void BuildPassage(IMazeRoom roomA, MoveDirection direction, IMazeRoom roomB)
         {
-            IMazeConnection connection = new BaseMazeConnection(roomA, roomB);
+            IMazeConnection connection = new BaseMazeConnection(_connectionId++, roomA, roomB);
             roomA.AddConnection(direction, connection);
             roomB.AddConnection(direction.Opposite(), connection);
             _mazeMetadata.AddTypeTag(connection, ConnectionTypeTag.Passage);
@@ -40,7 +40,7 @@ namespace Maze.MazeStructure.MazeGenerators
 
         public void BuildWall(IMazeRoom roomA, MoveDirection direction, IMazeRoom roomB)
         {
-            IMazeConnection connection = new BaseMazeConnection(roomA, roomB);
+            IMazeConnection connection = new BaseMazeConnection(_connectionId++, roomA, roomB);
             roomA.AddConnection(direction, connection);
             roomB.AddConnection(direction.Opposite(), connection);
             _curMaze.AddConnection(connection);

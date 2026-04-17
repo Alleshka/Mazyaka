@@ -2,6 +2,7 @@
 {
     public interface IMazeConnection
     {
+        public int Id { get; }
         public IMazeRoom RoomA { get; }
         public IMazeRoom RoomB { get; }
 

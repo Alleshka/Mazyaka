@@ -35,7 +35,7 @@ namespace Maze.GameWorld.System
 
                 if (meta.HasTypeTag(connection, MazeStructure.Metadata.ConnectionTypeTag.Boundary))
                 {
-                    world.Add(e, new MoveBlockedByBoundaryEvent());
+                    world.Add(e, new MoveBlockedByBoundaryEvent(connection.Id));
                     continue;
                 }
 
@@ -49,10 +49,9 @@ namespace Maze.GameWorld.System
 
                 if (!meta.HasTypeTag(connection, MazeStructure.Metadata.ConnectionTypeTag.Passage))
                 {
-                    world.Add(e, new MoveBlockedByWallEvent(new RoomPostition(nextRoom.Id)));
+                    world.Add(e, new MoveBlockedByBlockerEvent(connection.Id, connection.GetType().Name));
                     continue;
                 }
-
 
                 position.RoomId = nextRoom.Id;
                 world.Add(e, new MoveSuccessEvent { Postition = position });

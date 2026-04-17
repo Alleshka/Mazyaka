@@ -8,8 +8,11 @@ namespace Maze.MazeStructure.MazeSites
 
         public IMazeRoom RoomB { get; }
 
-        public BaseMazeConnection(IMazeRoom roomA, IMazeRoom roomB)
+        public int Id { get; }
+
+        public BaseMazeConnection(int id, IMazeRoom roomA, IMazeRoom roomB)
         {
+            Id = id;
             RoomA = roomA;
             RoomB = roomB;
         }

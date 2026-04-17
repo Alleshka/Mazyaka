@@ -30,14 +30,25 @@ namespace Maze.GameWorld
 
         public Guid CreatePlayer()
         {
+            return CreatePlayer(MazeInfo.MazeStructure.HeadRoom.Id);
+        }
+
+        public Guid CreatePlayer(int startRoomId)
+        {
             Guid playerId = Guid.NewGuid();
             var player = State.CreateEntity();
             State.Add(player, new PlayerTag());
-            State.Add(player, new RoomPostition { RoomId = MazeInfo.MazeStructure.HeadRoom.Id });
+            State.Add(player, new RoomPostition { RoomId = startRoomId });
 
             _players.Add(playerId, player);
 
             return playerId;
+        }
+
+        public int GetPlayerRoomId(Guid playerId)
+        {
+            var player = _players[playerId];
+            return State.Get<RoomPostition>(player).RoomId;
         }
 
         public ActionResult ExecuteMove(Guid playerID, MoveDirection dir)

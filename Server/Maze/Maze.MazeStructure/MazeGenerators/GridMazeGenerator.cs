@@ -160,7 +160,6 @@ namespace Maze.MazeStructure.MazeGenerators
             builder.BuildExit(rooms[exitNum, 0], MoveDirection.Left);
 
             var result = builder.Build();
-            PrintMaze(rooms, result.Metadata);
             return result;
         }
 

@@ -37,7 +37,7 @@ namespace Maze.GameWorld
             GetStore<MoveSuccessEvent>().Clear();
             GetStore<MoveExitEvent>().Clear();
             GetStore<MoveBlockedNoConntectionEvent>().Clear();
-            GetStore<MoveBlockedByWallEvent>().Clear();
+            GetStore<MoveBlockedByBlockerEvent>().Clear();
             GetStore<MoveBlockedByBoundaryEvent>().Clear();
         }
 

@@ -2,7 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
+	<Target Name="CopyToUnity" AfterTargets="Build">
+		<Copy SourceFiles="$(OutputPath)$(AssemblyName).dll"
+			  DestinationFolder="..\..\..\Client\UnityMazeClient\Assets\Plugins\" />
+	</Target>
+	
 </Project>

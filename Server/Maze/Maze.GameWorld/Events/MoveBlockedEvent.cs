@@ -3,6 +3,6 @@
 namespace Maze.GameWorld.Evemts
 {
     public struct MoveBlockedNoConntectionEvent { };
-    public record struct MoveBlockedByWallEvent(RoomPostition nextRoom);
-    public struct MoveBlockedByBoundaryEvent { };
+    public record struct MoveBlockedByBlockerEvent(int Id, string BlockerName);
+    public record struct MoveBlockedByBoundaryEvent(int Id);
 }
