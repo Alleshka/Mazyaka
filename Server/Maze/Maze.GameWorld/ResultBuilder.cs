@@ -1,6 +1,6 @@
-﻿using Maze.GameWorld.Components;
-using Maze.GameWorld.Evemts;
-using System;
+using Maze.GameWorld.Components;
+using Maze.GameWorld.Events;
+using Maze.GameWorld.Results;
 
 namespace Maze.GameWorld
 {
@@ -8,56 +8,51 @@ namespace Maze.GameWorld
     {
         public ActionResult Build(MazeState w, Entity e)
         {
-            var result = new ActionResult();
+            return new ActionResult()
+            {
+                MoveResult = BuildMoveResult(w, e),
+                DestroyResult = BuildDestroyResult(w, e)
+            };
+        }
 
+        private MoveResult? BuildMoveResult(MazeState w, Entity e)
+        {
             if (w.Has<MoveBlockedByBlockerEvent>(e))
             {
                 var blocker = w.Get<MoveBlockedByBlockerEvent>(e);
-                result.SuccessMove = false;
-                result.BlockedBy = new Blocker()
-                {
-                    Id = blocker.Id,
-                    Name = blocker.BlockerName
-                };
-
-                Console.WriteLine($"{e.Id} was blocked by {blocker.BlockerName} with id {blocker.Id}");
+                return MoveResult.Blocked(-1, new Blocker(blocker.Id, blocker.BlockerName));
             }
-
-            if (w.Has<MoveBlockedByBoundaryEvent>(e))
+            if (w.Has<MoveBlockedNoConnectionEvent>(e))
             {
-                var blocker = w.Get<MoveBlockedByBoundaryEvent>(e);
-                result.SuccessMove = false;
-                result.BlockedBy = new Blocker()
-                {
-                    Id = blocker.Id,
-                    Name = "Boundary"
-                };
-
-                Console.WriteLine($"{e.Id} was blocked by Boundary with id {blocker.Id}");
+                return MoveResult.Blocked(-1, new Blocker(-1, "No connection"));
             }
-
-            if (w.Has<MoveBlockedNoConntectionEvent>(e))
-            {
-                result.SuccessMove = false;
-                Console.WriteLine($"{e.Id} was blocked by no connection");
-            }
-            
             if (w.Has<MoveSuccessEvent>(e))
             {
-                result.SuccessMove = true;
-                var pos = w.Get<RoomPostition>(e);
-                result.RoomId = pos.RoomId;
-
-                Console.WriteLine($"{e.Id} moved to room {pos.RoomId}");
+                var pos = w.Get<RoomPosition>(e);
+                return MoveResult.Success(pos.RoomId);
             }
-
             if (w.Has<MoveExitEvent>(e))
             {
-                result.Win = true;
-                Console.WriteLine($"{e.Id} has won the game!");
+                return MoveResult.Success(-1, win: true);
+            }
+            return null;
+        }
+
+        private DestroyResult? BuildDestroyResult(MazeState w, Entity e)
+        {
+            if (w.Has<WallDestroyedEvent>(e))
+            {
+                var ev = w.Get<WallDestroyedEvent>(e);
+                return DestroyResult.SuccessResult(ev.ConnectionId);
             }
 
-            return result;
+            if (w.Has<DestroyFailedEvent>(e))
+            {
+                var ev = w.Get<DestroyFailedEvent>(e);
+                return DestroyResult.Failure(ev.Reason);
+            }
+
+            return null;
         }
     }
 }

@@ -1,7 +1,4 @@
 ﻿namespace Maze.GameWorld.Components
 {
-    public struct Grenades
-    {
-        public int Count;
-    }
+    public record struct Grenades(int Count);
 }

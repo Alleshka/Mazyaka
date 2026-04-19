@@ -1,8 +1,5 @@
-﻿using Maze.GameWorld.Components;
-
-namespace Maze.GameWorld.Evemts
+namespace Maze.GameWorld.Events
 {
-    public struct MoveBlockedNoConntectionEvent { };
+    public struct MoveBlockedNoConnectionEvent { }
     public record struct MoveBlockedByBlockerEvent(int Id, string BlockerName);
-    public record struct MoveBlockedByBoundaryEvent(int Id);
 }

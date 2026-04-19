@@ -1,5 +1,6 @@
-﻿using Maze.GameWorld.ComponentStore;
-using Maze.GameWorld.Evemts;
+using Maze.GameWorld.ComponentStore;
+using Maze.GameWorld.Components;
+using Maze.GameWorld.Events;
 using System;
 using System.Collections.Generic;
 
@@ -9,6 +10,17 @@ namespace Maze.GameWorld
     {
         private int _nextEntityId = 1;
         private readonly Dictionary<Type, object> _componentStores = new Dictionary<Type, object>();
+
+        private readonly Dictionary<int, ConnectionConditions> _connectionConditions = new Dictionary<int, ConnectionConditions>();
+
+        public void AddConnectionCondition(int connectionId, ConnectionConditions condition)
+        {
+            _connectionConditions.TryGetValue(connectionId, out var existing);
+            _connectionConditions[connectionId] = existing | condition;
+        }
+
+        public ConnectionConditions GetConnectionConditions(int connectionId)
+            => _connectionConditions.TryGetValue(connectionId, out var c) ? c : ConnectionConditions.None;
 
         public Entity CreateEntity() => new(_nextEntityId++);
 
@@ -32,13 +44,20 @@ namespace Maze.GameWorld
 
         public void Remove<T>(Entity e) where T : struct => GetStore<T>().Remove(e);
 
+        public void ClearIntents()
+        {
+            GetStore<MoveIntent>().Clear();
+            GetStore<DestroyWallIntent>().Clear();
+        }
+
         public void ClearEvents()
         {
             GetStore<MoveSuccessEvent>().Clear();
             GetStore<MoveExitEvent>().Clear();
-            GetStore<MoveBlockedNoConntectionEvent>().Clear();
+            GetStore<MoveBlockedNoConnectionEvent>().Clear();
             GetStore<MoveBlockedByBlockerEvent>().Clear();
-            GetStore<MoveBlockedByBoundaryEvent>().Clear();
+            GetStore<WallDestroyedEvent>().Clear();
+            GetStore<DestroyFailedEvent>().Clear();
         }
 
         public IEnumerable<Entity> Query<T>() where T : struct

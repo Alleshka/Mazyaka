@@ -1,4 +1,4 @@
-﻿using Maze.Common;
+using Maze.Common;
 using Maze.MazeStructure.MazeSites;
 using Maze.MazeStructure.Metadata;
 
@@ -23,9 +23,8 @@ namespace Maze.MazeStructure.MazeGenerators
 
         public void BuildBoundary(IMazeRoom room, MoveDirection direction)
         {
-            IMazeConnection connection = new BaseMazeConnection(_connectionId++, room, null);
+            IMazeConnection connection = new BaseMazeConnection(_connectionId++, room, WorldEdgeSite.Instance);
             room.AddConnection(direction, connection);
-            _mazeMetadata.AddTypeTag(connection, ConnectionTypeTag.Boundary);
             _curMaze.AddConnection(connection);
         }
 
@@ -34,7 +33,7 @@ namespace Maze.MazeStructure.MazeGenerators
             IMazeConnection connection = new BaseMazeConnection(_connectionId++, roomA, roomB);
             roomA.AddConnection(direction, connection);
             roomB.AddConnection(direction.Opposite(), connection);
-            _mazeMetadata.AddTypeTag(connection, ConnectionTypeTag.Passage);
+            _mazeMetadata.SetClass(connection, ConnectionClass.Passage);
             _curMaze.AddConnection(connection);
         }
 
@@ -43,6 +42,7 @@ namespace Maze.MazeStructure.MazeGenerators
             IMazeConnection connection = new BaseMazeConnection(_connectionId++, roomA, roomB);
             roomA.AddConnection(direction, connection);
             roomB.AddConnection(direction.Opposite(), connection);
+            _mazeMetadata.SetClass(connection, ConnectionClass.Wall);
             _curMaze.AddConnection(connection);
         }
 
@@ -50,19 +50,13 @@ namespace Maze.MazeStructure.MazeGenerators
         {
             IMazeConnection connection = room.GetConnection(direction);
             if (connection == null)
-            {
                 return;
-            }
 
-            // Can set Tags only if Boundary
-            if (!_mazeMetadata.HasTypeTag(connection, ConnectionTypeTag.Boundary))
-            {
+            // Can only set exit on a boundary connection
+            if (!(connection.RoomA is WorldEdgeSite) && !(connection.RoomB is WorldEdgeSite))
                 return;
-            }
-            ;
 
-            _mazeMetadata.AddTypeTag(connection, ConnectionTypeTag.Exit);
-            _mazeMetadata.RemoveTypeTag(connection, ConnectionTypeTag.Boundary);
+            _mazeMetadata.MarkExit(connection);
         }
 
         public IMazeInfo Build()

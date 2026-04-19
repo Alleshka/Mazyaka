@@ -1,6 +1,6 @@
 ﻿using Maze.Common;
-using Maze.MazeStructure.MazeSites;
 using Maze.MazeStructure.Metadata;
+using Maze.MazeStructure.MazeSites;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -243,43 +243,26 @@ namespace Maze.MazeStructure.MazeGenerators
 
         void PrintMaze(IMazeRoom[,] maze, IMazeMetadata metaData)
         {
+            bool IsOpen(IMazeConnection? c) =>
+                c != null && (metaData.GetClass(c) == ConnectionClass.Passage || metaData.IsExit(c));
+
             var output = new StringBuilder("+");
             for (int i = 0; i < _colCount; i++)
             {
-                var room = maze[0, i];
-                bool up = metaData.HasTypeTag(room.GetConnection(MoveDirection.Up), ConnectionTypeTag.Passage | ConnectionTypeTag.Exit);
-
-                if (!up)
-                {
-                    output.Append("---+");
-                }
-                else
-                {
-                    output.Append("    ");
-                }
+                output.Append(IsOpen(maze[0, i].GetConnection(MoveDirection.Up)) ? "    " : "---+");
             }
             output.AppendLine();
 
-
             for (int i = 0; i < _rowCount; i++)
             {
-                var top = metaData.HasTypeTag(maze[i, 0].GetConnection(MoveDirection.Left), ConnectionTypeTag.Passage | ConnectionTypeTag.Exit) ? " " : "|";
+                var top = IsOpen(maze[i, 0].GetConnection(MoveDirection.Left)) ? " " : "|";
                 var bottom = "+";
 
                 for (int j = 0; j < _colCount; j++)
                 {
                     var room = maze[i, j];
-                    string body = $"   ";
-
-                    var right = !metaData.HasTypeTag(room.GetConnection(MoveDirection.Right), ConnectionTypeTag.Passage | ConnectionTypeTag.Exit);
-                    var down = !metaData.HasTypeTag(room.GetConnection(MoveDirection.Down), ConnectionTypeTag.Passage | ConnectionTypeTag.Exit);
-
-                    var east = right ? "|" : " ";
-                    top += body + east;
-
-                    var south = down ? "---" : "   ";
-                    string corner = "+";
-                    bottom += south + corner;
+                    top += "   " + (IsOpen(room.GetConnection(MoveDirection.Right)) ? " " : "|");
+                    bottom += (IsOpen(room.GetConnection(MoveDirection.Down)) ? "   " : "---") + "+";
                 }
                 output.AppendLine(top);
                 output.AppendLine(bottom);

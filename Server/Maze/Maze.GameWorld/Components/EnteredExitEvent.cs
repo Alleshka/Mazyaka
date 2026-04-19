@@ -1,7 +1,4 @@
 ﻿namespace Maze.GameWorld.Components
 {
-    public struct EnteredExitEvent
-    {
-
-    }
+    public record struct EnteredExitEvent { }
 }

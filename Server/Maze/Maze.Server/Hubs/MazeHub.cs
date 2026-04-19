@@ -60,7 +60,7 @@ public class MazeHub : Hub
 
         var result = session.World.ExecuteMove(playerId, direction);
 
-        if (result.Win)
+        if (result.Win == true)
             return JsonSerializer.Serialize(new MoveResponse { Success = true, Win = true }, JsonOptions);
 
         if (!result.SuccessMove)

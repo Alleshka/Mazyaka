@@ -1,7 +1,4 @@
 ﻿namespace Maze.GameWorld.Components
 {
-    public struct EnteredRoomEvent
-    {
-        public int RoomId;
-    }
+    public record struct EnteredRoomEvent(int RoomId);
 }

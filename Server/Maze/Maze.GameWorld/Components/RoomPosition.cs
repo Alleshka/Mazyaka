@@ -1,4 +1,4 @@
-﻿namespace Maze.GameWorld.Components
+namespace Maze.GameWorld.Components
 {
-    public record struct RoomPostition(int RoomId);
+    public record struct RoomPosition(int RoomId);
 }

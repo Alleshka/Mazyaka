@@ -1,53 +1,36 @@
-﻿using Maze.MazeStructure.MazeSites;
-using System;
+using Maze.MazeStructure.MazeSites;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Maze.MazeStructure.Metadata
 {
     public class MazeMetadata : IMazeMetadata
     {
-        private Dictionary<IMazeConnection, ConnectionDirectionTag> _directionTags = new Dictionary<IMazeConnection, ConnectionDirectionTag>();
-        private Dictionary<IMazeConnection, ConnectionTypeTag> _typeTags = new Dictionary<IMazeConnection, ConnectionTypeTag>();
+        private readonly Dictionary<IMazeConnection, ConnectionClass> _classes = new Dictionary<IMazeConnection, ConnectionClass>();
+        private readonly HashSet<IMazeConnection> _exits = new HashSet<IMazeConnection>();
 
-        public void AddDirectionTag(IMazeConnection connection, ConnectionDirectionTag tag)
+        public void SetClass(IMazeConnection connection, ConnectionClass cls)
         {
-            throw new NotImplementedException();
+            _classes[connection] = cls;
         }
 
-        public void AddTypeTag(IMazeConnection connection, ConnectionTypeTag tag)
+        public ConnectionClass GetClass(IMazeConnection connection)
         {
-           if (_typeTags.TryGetValue(connection, out var existingTag))
-            {
-                _typeTags[connection] = existingTag | tag;
-            }
-            else
-            {
-                _typeTags[connection] = tag;
-            }
+            return _classes.TryGetValue(connection, out var cls) ? cls : ConnectionClass.Wall;
         }
 
-        public bool HasDirectionTag(IMazeConnection connection, ConnectionDirectionTag tag)
+        public void MarkExit(IMazeConnection connection)
         {
-            throw new NotImplementedException();
+            _exits.Add(connection);
         }
 
-        public bool HasTypeTag(IMazeConnection connection, ConnectionTypeTag tag)
+        public bool IsExit(IMazeConnection connection)
         {
-            return _typeTags.TryGetValue(connection, out var existingTag) && (existingTag & tag) != 0;
+            return _exits.Contains(connection);
         }
 
-        public void RemoveDirectionTag(IMazeConnection connection, ConnectionDirectionTag tag)
+        public bool IsBoundary(IMazeConnection connection)
         {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveTypeTag(IMazeConnection connection, ConnectionTypeTag tag)
-        {
-            if (_typeTags.TryGetValue(connection, out var existingTag))
-            {
-                _typeTags[connection] = existingTag & ~tag;
-            }
+            return connection.RoomA is WorldEdgeSite || connection.RoomB is WorldEdgeSite;
         }
     }
 }

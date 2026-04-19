@@ -1,12 +1,7 @@
-﻿using Maze.GameWorld.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Maze.GameWorld.Components;
 
-namespace Maze.GameWorld.Evemts
+namespace Maze.GameWorld.Events
 {
-    public record struct MoveSuccessEvent(RoomPostition Postition);
+    public record struct MoveSuccessEvent(RoomPosition Position);
     public struct MoveExitEvent { }
 }

@@ -1,5 +1,6 @@
-﻿using Maze.Common;
+using Maze.Common;
 using Maze.GameWorld.Components;
+using Maze.GameWorld.Results;
 using Maze.GameWorld.System;
 using Maze.MazeStructure;
 using System;
@@ -12,7 +13,7 @@ namespace Maze.GameWorld
         internal IMazeInfo MazeInfo { get; }
         internal MazeState State { get; }
 
-        private readonly List<ISystem> _pipeLine;
+        private readonly List<ISystem> _pipeline;
         private readonly ResultBuilder _builder = new ResultBuilder();
 
         private Dictionary<Guid, Entity> _players = new Dictionary<Guid, Entity>();
@@ -22,9 +23,10 @@ namespace Maze.GameWorld
             MazeInfo = mazeInfo;
             State = new MazeState();
 
-            _pipeLine = new List<ISystem>()
+            _pipeline = new List<ISystem>
             {
-                new MovementSystem(mazeInfo)
+                new DestroyWallSystem(mazeInfo),
+                new MovementSystem(mazeInfo),
             };
         }
 
@@ -38,7 +40,7 @@ namespace Maze.GameWorld
             Guid playerId = Guid.NewGuid();
             var player = State.CreateEntity();
             State.Add(player, new PlayerTag());
-            State.Add(player, new RoomPostition { RoomId = startRoomId });
+            State.Add(player, new RoomPosition { RoomId = startRoomId });
 
             _players.Add(playerId, player);
 
@@ -48,24 +50,43 @@ namespace Maze.GameWorld
         public int GetPlayerRoomId(Guid playerId)
         {
             var player = _players[playerId];
-            return State.Get<RoomPostition>(player).RoomId;
+            return State.Get<RoomPosition>(player).RoomId;
         }
 
-        public ActionResult ExecuteMove(Guid playerID, MoveDirection dir)
+        public MoveResult ExecuteMove(Guid playerID, MoveDirection dir)
         {
-            var player = _players.TryGetValue(playerID, out var p) ? p : throw new Exception("Player not found");
-
+            var player = GetPlayer(playerID);
             State.Add(player, new MoveIntent { Direction = dir });
+            return Execute(player).MoveResult!;
+        }
 
-            foreach (var s in _pipeLine)
-                s.Run(State);
+        public DestroyResult ExecuteDestroyWall(Guid playerID, MoveDirection dir)
+        {
+            var player = GetPlayer(playerID);
+            State.Add(player, new DestroyWallIntent { Direction = dir });
+            return Execute(player).DestroyResult!;
+        }
+        
+        private Entity GetPlayer(Guid id) =>  _players.TryGetValue(id, out var p) ? p : throw new Exception("Player not found");
 
+        private ActionResult Execute(Entity player)
+        {
+            RunPipeline();
             var result = _builder.Build(State, player);
-
-            State.Remove<MoveIntent>(player);
-            State.ClearEvents();
-
+            Clear(State);
             return result;
+        }
+
+        private void Clear(MazeState state)
+        {
+            state.ClearIntents();
+            state.ClearEvents();
+        }
+
+        private void RunPipeline()
+        {
+            foreach (var s in _pipeline)
+                s.Run(State);
         }
     }
 }
