@@ -9,12 +9,10 @@ namespace Maze.GameWorld.System
 {
     internal class MovementSystem : ISystem
     {
-        private readonly IMazeInfo _mazeInfo;
         private static readonly DefaultTraversalPolicy _defaultPolicy = new DefaultTraversalPolicy();
 
-        public MovementSystem(IMazeInfo mazeInfo)
+        public MovementSystem()
         {
-            _mazeInfo = mazeInfo;
         }
 
         public void Run(MazeState world)
@@ -24,7 +22,8 @@ namespace Maze.GameWorld.System
                 ref var position = ref world.Get<RoomPosition>(e);
                 var intent = world.Get<MoveIntent>(e);
 
-                var room = _mazeInfo.MazeStructure.GetRoomByID(position.RoomId);
+                var mazeInfo = world.Get<PlayerMaze>(e).MazeInfo;
+                var room = mazeInfo.MazeStructure.GetRoomByID(position.RoomId);
                 var connection = room.GetConnection(intent.Direction);
 
                 if (connection == null)
@@ -33,7 +32,7 @@ namespace Maze.GameWorld.System
                     continue;
                 }
 
-                var ctx = BuildContext(connection, room, world);
+                var ctx = BuildContext(mazeInfo, connection, room, world);
                 var policy = world.Has<TraversalPolicyComponent>(e)
                     ? world.Get<TraversalPolicyComponent>(e).Policy
                     : _defaultPolicy;
@@ -58,12 +57,12 @@ namespace Maze.GameWorld.System
             }
         }
 
-        private ConnectionContext BuildContext(IMazeConnection connection, IMazeRoom fromRoom, MazeState maze)
+        private ConnectionContext BuildContext(IMazeInfo mazeInfo, IMazeConnection connection, IMazeRoom fromRoom, MazeState maze)
         {
             return new ConnectionContext(
                 connection,
                 fromRoom,
-                _mazeInfo.Metadata,
+                mazeInfo.Metadata,
                 maze.GetConnectionConditions(connection.Id)
             );
         }

@@ -6,11 +6,9 @@ namespace Maze.GameWorld.System
 {
     internal class DestroyWallSystem : ISystem
     {
-        private readonly IMazeInfo _mazeInfo;
-
-        public DestroyWallSystem(IMazeInfo mazeInfo)
+        public DestroyWallSystem()
         {
-            _mazeInfo = mazeInfo;
+
         }
 
         public void Run(MazeState world)
@@ -20,7 +18,8 @@ namespace Maze.GameWorld.System
                 var position = world.Get<RoomPosition>(e);
                 var intent = world.Get<DestroyWallIntent>(e);
 
-                var room = _mazeInfo.MazeStructure.GetRoomByID(position.RoomId);
+                var mazeInfo = world.Get<PlayerMaze>(e).MazeInfo;
+                var room = mazeInfo.MazeStructure.GetRoomByID(position.RoomId);
                 var connection = room.GetConnection(intent.Direction);
 
                 if (connection == null)

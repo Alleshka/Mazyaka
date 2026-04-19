@@ -334,8 +334,8 @@ MonoBehaviour:
   hubUrl: http://localhost:50774/mazehub
   mazeRows: 10
   mazeCols: 10
-  startRow: 0
-  startCol: 0
+  startRow: 5
+  startCol: 5
   cellSize: 1
   moveSpeed: 8
 --- !u!114 &1504103454

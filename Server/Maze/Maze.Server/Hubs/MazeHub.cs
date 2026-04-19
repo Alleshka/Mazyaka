@@ -40,7 +40,7 @@ public class MazeHub : Hub
             ?? throw new HubException($"Game '{gameId}' not found.");
 
         int startRoomId = startRow * session.Cols + startCol;
-        var userId = session.World.CreatePlayer(startRoomId);
+        var userId = session.World.CreatePlayer(session.MazeInfo, startRoomId);
         var cell = startRoomId;
 
         return JsonSerializer.Serialize(new PlayerJoinResponse

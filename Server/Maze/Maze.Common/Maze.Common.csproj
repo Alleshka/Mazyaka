@@ -1,13 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Nullable>disable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
 
-	<Target Name="CopyToUnity" AfterTargets="Build">
-		<Copy SourceFiles="$(OutputPath)$(AssemblyName).dll"
-			  DestinationFolder="..\..\..\Client\UnityMazeClient\Assets\Plugins\" />
+	<Target
+		Name="CopyToUnity"
+		AfterTargets="Build"
+		Inputs="$(OutputPath)$(AssemblyName).dll"
+		Outputs="..\..\..\Client\UnityMazeClient\Assets\Plugins\$(AssemblyName).dll">
+		<Copy 
+			SourceFiles="$(OutputPath)$(AssemblyName).dll"
+			DestinationFolder="..\..\..\Client\UnityMazeClient\Assets\Plugins\" />
 	</Target>
-	
+
 </Project>

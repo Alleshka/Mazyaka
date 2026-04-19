@@ -12,7 +12,7 @@ public class GameSessionManager
     {
         var generator = new GridMazeGenerator(rows, cols);
         var mazeInfo = generator.Generate();
-        var world = new Maze.GameWorld.GameWorld(mazeInfo);
+        var world = new Maze.GameWorld.GameWorld();
 
         var session = new GameSession(world, mazeInfo, rows, cols);
         var gameId = Guid.NewGuid();

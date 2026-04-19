@@ -10,7 +10,6 @@ namespace Maze.GameWorld
 {
     public class GameWorld
     {
-        internal IMazeInfo MazeInfo { get; }
         internal MazeState State { get; }
 
         private readonly List<ISystem> _pipeline;
@@ -18,29 +17,24 @@ namespace Maze.GameWorld
 
         private Dictionary<Guid, Entity> _players = new Dictionary<Guid, Entity>();
 
-        public GameWorld(IMazeInfo mazeInfo)
+        public GameWorld()
         {
-            MazeInfo = mazeInfo;
             State = new MazeState();
 
             _pipeline = new List<ISystem>
             {
-                new DestroyWallSystem(mazeInfo),
-                new MovementSystem(mazeInfo),
+                new DestroyWallSystem(),
+                new MovementSystem(),
             };
         }
 
-        public Guid CreatePlayer()
-        {
-            return CreatePlayer(MazeInfo.MazeStructure.HeadRoom.Id);
-        }
-
-        public Guid CreatePlayer(int startRoomId)
+        public Guid CreatePlayer(IMazeInfo mazeInfo, int startRoomId)
         {
             Guid playerId = Guid.NewGuid();
             var player = State.CreateEntity();
             State.Add(player, new PlayerTag());
             State.Add(player, new RoomPosition { RoomId = startRoomId });
+            State.Add(player, new PlayerMaze(mazeInfo));
 
             _players.Add(playerId, player);
 
