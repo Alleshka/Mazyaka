@@ -240,34 +240,5 @@ namespace Maze.MazeStructure.MazeGenerators
 
             return moveDirection;
         }
-
-        void PrintMaze(IMazeRoom[,] maze, IMazeMetadata metaData)
-        {
-            bool IsOpen(IMazeConnection? c) =>
-                c != null && (metaData.GetClass(c) == ConnectionClass.Passage || metaData.IsExit(c));
-
-            var output = new StringBuilder("+");
-            for (int i = 0; i < _colCount; i++)
-            {
-                output.Append(IsOpen(maze[0, i].GetConnection(MoveDirection.Up)) ? "    " : "---+");
-            }
-            output.AppendLine();
-
-            for (int i = 0; i < _rowCount; i++)
-            {
-                var top = IsOpen(maze[i, 0].GetConnection(MoveDirection.Left)) ? " " : "|";
-                var bottom = "+";
-
-                for (int j = 0; j < _colCount; j++)
-                {
-                    var room = maze[i, j];
-                    top += "   " + (IsOpen(room.GetConnection(MoveDirection.Right)) ? " " : "|");
-                    bottom += (IsOpen(room.GetConnection(MoveDirection.Down)) ? "   " : "---") + "+";
-                }
-                output.AppendLine(top);
-                output.AppendLine(bottom);
-            }
-            Console.WriteLine(output.ToString());
-        }
     }
 }
