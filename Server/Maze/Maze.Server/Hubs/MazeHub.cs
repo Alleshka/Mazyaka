@@ -12,7 +12,8 @@ public class MazeHub : Hub
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNamingPolicy = null,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        IncludeFields = true,
     };
 
     private readonly GameSessionManager _sessions;
@@ -22,6 +23,7 @@ public class MazeHub : Hub
         _sessions = sessions;
     }
 
+    [HubMethodName(Constants.HubMethods.CreateGame)]
     public string CreateGame(int rows, int cols)
     {
         var (gameId, _) = _sessions.CreateWithId(rows, cols);
@@ -34,6 +36,7 @@ public class MazeHub : Hub
         }, JsonOptions);
     }
 
+    [HubMethodName(Constants.HubMethods.SetUser)]
     public string SetUser(Guid gameId, int startRow, int startCol)
     {
         var session = _sessions.Get(gameId)
@@ -50,6 +53,7 @@ public class MazeHub : Hub
         }, JsonOptions);
     }
 
+    [HubMethodName(Constants.HubMethods.Move)]
     public string Move(Guid gameId, string userId, MoveDirection direction)
     {
         var session = _sessions.Get(gameId)
@@ -82,5 +86,17 @@ public class MazeHub : Hub
             Success = true,
             CellId = result.RoomId // CellRevealBuilder.Build(result.RoomId, session)
         }, JsonOptions);
+    }
+
+    [HubMethodName(Constants.HubMethods.DestroyWall)]
+    public string DestroyWall(Guid gameId, string userId, MoveDirection direction)
+    {
+        var session = _sessions.Get(gameId)
+            ?? throw new HubException($"Game '{gameId}' not found.");
+        if (!Guid.TryParse(userId, out var playerId))
+            throw new HubException($"Invalid userId '{userId}'.");
+        var result = session.World.ExecuteDestroyWall(playerId, direction);
+        string json = JsonSerializer.Serialize(result, JsonOptions);
+        return json;
     }
 }

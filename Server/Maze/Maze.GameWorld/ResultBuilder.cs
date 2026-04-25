@@ -1,3 +1,4 @@
+using Maze.Common.DTO;
 using Maze.GameWorld.Components;
 using Maze.GameWorld.Events;
 using Maze.GameWorld.Results;
@@ -38,18 +39,18 @@ namespace Maze.GameWorld
             return null;
         }
 
-        private DestroyResult? BuildDestroyResult(MazeState w, Entity e)
+        private DestroyWallResult? BuildDestroyResult(MazeState w, Entity e)
         {
             if (w.Has<WallDestroyedEvent>(e))
             {
                 var ev = w.Get<WallDestroyedEvent>(e);
-                return DestroyResult.SuccessResult(ev.ConnectionId);
+                return DestroyWallResult.Success(ev.ConnectionId);
             }
 
             if (w.Has<DestroyFailedEvent>(e))
             {
                 var ev = w.Get<DestroyFailedEvent>(e);
-                return DestroyResult.Failure(ev.Reason);
+                return DestroyWallResult.Failure(ev.Reason);
             }
 
             return null;

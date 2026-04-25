@@ -1,7 +1,7 @@
 using System;
 using Maze.Common;
 using MazeGame.Maze;
-using MazeGame.Network;
+using Maze.ClientService;
 using UnityEngine;
 
 namespace MazeGame.Game
@@ -24,7 +24,7 @@ namespace MazeGame.Game
         [SerializeField] private float cellSize = 1f;
         [SerializeField] private float moveSpeed = 8f;
 
-        private MazeSignalRClient _client;
+        private IClientService _client;
         private MazeGrid _grid;
         private CellNavigator _navigator;
 
@@ -36,8 +36,7 @@ namespace MazeGame.Game
 
         private void Awake()
         {
-            _client = gameObject.AddComponent<MazeSignalRClient>();
-            _client.HubUrl = hubUrl;
+            _client = new SignalRClientService(hubUrl);
 
             // MazeGrid
             var gridGO = new GameObject("MazeGridRoot");
@@ -107,7 +106,13 @@ namespace MazeGame.Game
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) dir = MoveDirection.Left;
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) dir = MoveDirection.Right;
 
-            if (dir != MoveDirection.None) ExecuteMove(dir);
+            bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+            if (dir != MoveDirection.None)
+            {
+                if (shift) ExectuteDestroyWall(_navigator.CurrentCellId, dir);
+                else ExecuteMove(dir);
+            }
         }
 
         private async void ExecuteMove(MoveDirection direction)
@@ -142,6 +147,35 @@ namespace MazeGame.Game
             finally
             {
                 _moving = false;
+            }
+        }
+
+        private async void ExectuteDestroyWall(int cellId, MoveDirection direction)
+        {
+            _moving = true;
+            try
+            {
+                var resp = await _client.DestroyWallAsync(_gameId, _userId, direction);
+                if (resp.IsSuccess)
+                {
+                    _grid.HideWall(resp.ConnectionId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[GameManager] Destroy wall error: {ex.Message}");
+            }
+            finally
+            {
+                _moving = false;
+            }
+        }
+
+        private async void OnDestroy()
+        {
+            if (_client != null)
+            {
+                await _client.DisposeAsync();
             }
         }
     }

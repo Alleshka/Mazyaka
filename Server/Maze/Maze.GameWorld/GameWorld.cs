@@ -1,4 +1,5 @@
 using Maze.Common;
+using Maze.Common.DTO;
 using Maze.GameWorld.Components;
 using Maze.GameWorld.Results;
 using Maze.GameWorld.System;
@@ -35,6 +36,7 @@ namespace Maze.GameWorld
             State.Add(player, new PlayerTag());
             State.Add(player, new RoomPosition { RoomId = startRoomId });
             State.Add(player, new PlayerMaze(mazeInfo));
+            State.Add(player, new Grenades { Count = 3 });
 
             _players.Add(playerId, player);
 
@@ -54,7 +56,7 @@ namespace Maze.GameWorld
             return Execute(player).MoveResult!;
         }
 
-        public DestroyResult ExecuteDestroyWall(Guid playerID, MoveDirection dir)
+        public DestroyWallResult ExecuteDestroyWall(Guid playerID, MoveDirection dir)
         {
             var player = GetPlayer(playerID);
             State.Add(player, new DestroyWallIntent { Direction = dir });

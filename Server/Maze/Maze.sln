@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.3.11527.330 d18.3
+VisualStudioVersion = 18.3.11527.330
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.MazeStructure", "Maze.MazeStructure\Maze.MazeStructure.csproj", "{25A489AB-357D-48A8-9DDA-8F1E52B0BABB}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.GameWorld", "Maze.GameWorld\Maze.GameWorld.csproj", "{0B24253F-3564-4169-B4CD-AB5C5F50684C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Server", "Maze.Server\Maze.Server.csproj", "{C1A2B3D4-E5F6-7890-ABCD-EF1234567890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.ClientService", "Maze.ClientService\Maze.ClientService.csproj", "{F7C44AB2-C9B9-4462-9664-CD8CBF96333A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C1A2B3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1A2B3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1A2B3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7C44AB2-C9B9-4462-9664-CD8CBF96333A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C44AB2-C9B9-4462-9664-CD8CBF96333A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C44AB2-C9B9-4462-9664-CD8CBF96333A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C44AB2-C9B9-4462-9664-CD8CBF96333A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

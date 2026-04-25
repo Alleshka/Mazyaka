@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using MazeGame.Maze;
-using MazeGame.Network;
 using MazeGame.Game;
 
 /// <summary>
@@ -116,11 +115,9 @@ public static class MazeSetup
 
         // GameManager (also hosts the SignalR client)
         var gmGO          = new GameObject("GameManager");
-        var signalRClient = gmGO.AddComponent<MazeSignalRClient>();
         var gameManager   = gmGO.AddComponent<GameManager>();
         {
             var so = new SerializedObject(gameManager);
-            so.FindProperty("mazeClient").objectReferenceValue = signalRClient;
             so.FindProperty("mazeGrid").objectReferenceValue   = mazeGrid;
             so.FindProperty("player").objectReferenceValue     = navigator;
             so.ApplyModifiedPropertiesWithoutUndo();

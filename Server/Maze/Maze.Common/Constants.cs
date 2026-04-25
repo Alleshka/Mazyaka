@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Maze.Common
+﻿namespace Maze.Common
 {
     public static class Constants
     {
@@ -12,6 +8,14 @@ namespace Maze.Common
             public const string Exit = "Exit";
             public const string Boundary = "Boundary";
             public const string DestroyedWall = "DestroyedWall";
+        }
+
+        public static class HubMethods
+        {
+            public const string CreateGame = "CreateGame";
+            public const string SetUser = "SetUser";
+            public const string Move = "Move";
+            public const string DestroyWall = "DestroyWall";
         }
     }
 }

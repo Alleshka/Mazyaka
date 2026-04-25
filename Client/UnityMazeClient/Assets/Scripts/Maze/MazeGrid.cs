@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using Maze.Common;
 using Maze.Common.DTO;
-using MazeGame.Network;
-using Microsoft.Extensions.Logging.Abstractions;
 using UnityEngine;
 
 namespace MazeGame.Maze
@@ -66,6 +64,13 @@ namespace MazeGame.Maze
 
             cell.SetRevealed(true);
             return cell;
+        }
+
+        public void HideWall(int connectionId)
+        {
+            if (!_shownWalls.TryGetValue(connectionId, out var w)) return;
+            if (_cells.TryGetValue(w.cellA, out var cellA)) cellA.HideWall(w.dirA);
+            _shownWalls.Remove(connectionId);
         }
 
         /// <summary>
