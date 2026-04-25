@@ -1,4 +1,3 @@
-using Maze.Common;
 using Maze.GameWorld.Components;
 using Maze.GameWorld.Events;
 using Maze.GameWorld.TraversalPolicies;
@@ -7,7 +6,7 @@ using Maze.MazeStructure.MazeSites;
 
 namespace Maze.GameWorld.System
 {
-    internal class MovementSystem : ISystem
+    internal class MovementSystem : BaseSystem
     {
         private static readonly DefaultTraversalPolicy _defaultPolicy = new DefaultTraversalPolicy();
 
@@ -15,16 +14,16 @@ namespace Maze.GameWorld.System
         {
         }
 
-        public void Run(MazeState world)
+        public override void Run(MazeState world)
         {
             foreach (var e in world.Query<MoveIntent>())
             {
                 ref var position = ref world.Get<RoomPosition>(e);
                 var intent = world.Get<MoveIntent>(e);
 
-                var mazeInfo = world.Get<PlayerMaze>(e).MazeInfo;
-                var room = mazeInfo.MazeStructure.GetRoomByID(position.RoomId);
-                var connection = room.GetConnection(intent.Direction);
+                var mazeInfo = GetMazeForPlayerOrDefault(e, world);
+                var room = mazeInfo?.MazeStructure.GetRoomByID(position.RoomId);
+                var connection = room?.GetConnection(intent.Direction);
 
                 if (connection == null)
                 {
