@@ -34,7 +34,9 @@ namespace Maze.GameWorld.System
                     continue;
                 }
 
+
                 var grenades = world.Get<Grenades>(e);
+                
                 if (grenades.Count <= 0)
                 {
                     world.Add(e, new DestroyFailedEvent("no grenades left"));
@@ -42,6 +44,13 @@ namespace Maze.GameWorld.System
                 }
 
                 world.Add(e, new Grenades(grenades.Count - 1));
+
+                if (mazeInfo.Metadata.IsBoundary(connection))
+                {
+                    world.Add(e, new DestroyFailedEvent("cannot destroy boundary wall")); 
+                    continue;
+                }
+
                 world.AddConnectionCondition(connection.Id, ConnectionConditions.Destroyed);
                 world.Add(e, new WallDestroyedEvent(connection.Id));
             }

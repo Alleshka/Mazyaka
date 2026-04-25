@@ -156,9 +156,14 @@ namespace MazeGame.Game
             try
             {
                 var resp = await _client.DestroyWallAsync(_gameId, _userId, direction);
+                Debug.Log($"[GameManager] Destroy wall response: success={resp.IsSuccess} connectionId={resp.ConnectionId} message='{resp.Message}' grenades={resp.Grenades}");
                 if (resp.IsSuccess)
                 {
                     _grid.HideWall(resp.ConnectionId);
+                }
+                else
+                {
+                    Debug.Log("[GameManager] Failed to destroy wall: " + resp.Message);
                 }
             }
             catch (Exception ex)

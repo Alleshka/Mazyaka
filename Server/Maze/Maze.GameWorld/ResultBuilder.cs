@@ -41,16 +41,18 @@ namespace Maze.GameWorld
 
         private DestroyWallResult? BuildDestroyResult(MazeState w, Entity e)
         {
+            int grenadesCount = w.Has<Grenades>(e) ? w.Get<Grenades>(e).Count : 0;
+
             if (w.Has<WallDestroyedEvent>(e))
             {
                 var ev = w.Get<WallDestroyedEvent>(e);
-                return DestroyWallResult.Success(ev.ConnectionId);
+                return DestroyWallResult.Success(ev.ConnectionId, grenadesCount);
             }
 
             if (w.Has<DestroyFailedEvent>(e))
             {
                 var ev = w.Get<DestroyFailedEvent>(e);
-                return DestroyWallResult.Failure(ev.Reason);
+                return DestroyWallResult.Failure(ev.Reason, grenadesCount);
             }
 
             return null;
