@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Maze.Common.Types;
+using System;
 
 namespace Maze.MazeStructure.MazeSites
 {
@@ -8,9 +9,9 @@ namespace Maze.MazeStructure.MazeSites
 
         public IMazeRoom RoomB { get; }
 
-        public int Id { get; }
+        public EntityId Id { get; }
 
-        public BaseMazeConnection(int id, IMazeRoom roomA, IMazeRoom roomB)
+        public BaseMazeConnection(EntityId id, IMazeRoom roomA, IMazeRoom roomB)
         {
             Id = id;
             RoomA = roomA;

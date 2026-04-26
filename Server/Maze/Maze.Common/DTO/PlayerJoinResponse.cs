@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Maze.Common.Types;
 
 namespace Maze.Common.DTO
 {
     public class PlayerJoinResponse
     {
-        public Guid UserId { get; set; }
-        public int CellId { get; set; }
+        public EntityId UserId { get; set; }
+        public EntityId CellId { get; set; }
     }
 
 }

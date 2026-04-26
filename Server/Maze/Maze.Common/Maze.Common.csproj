@@ -5,14 +5,12 @@
 		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
-	<Target
-		Name="CopyToUnity"
-		AfterTargets="Build"
-		Inputs="$(OutputPath)$(AssemblyName).dll"
-		Outputs="..\..\..\Client\UnityMazeClient\Assets\Plugins\$(AssemblyName).dll">
-		<Copy 
-			SourceFiles="$(OutputPath)$(AssemblyName).dll"
-			DestinationFolder="..\..\..\Client\UnityMazeClient\Assets\Plugins\" />
+	<Target Name="CopyToUnity" AfterTargets="Build" Inputs="$(OutputPath)$(AssemblyName).dll" Outputs="..\..\..\Client\UnityMazeClient\Assets\Plugins\$(AssemblyName).dll">
+		<Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="..\..\..\Client\UnityMazeClient\Assets\Plugins\" />
 	</Target>
+
+	<ItemGroup>
+	  <PackageReference Include="System.Text.Json" Version="7.0.1" />
+	</ItemGroup>
 
 </Project>

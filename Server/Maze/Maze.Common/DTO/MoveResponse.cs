@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Maze.Common.Types;
 
 namespace Maze.Common.DTO
 {
@@ -6,9 +6,9 @@ namespace Maze.Common.DTO
     {
         public bool Success { get; set; }
         public bool Win { get; set; }
-        public int CellId { get; set; }
+        public EntityId CellId { get; set; }
 
         public MoveDirection? BlockedDirection { get; set; }
-        public MoveBlocker? MoveBlocker { get; set; }
+        public MoveBlocker MoveBlocker { get; set; }
     }
 }

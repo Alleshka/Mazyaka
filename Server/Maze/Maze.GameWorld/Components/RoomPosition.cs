@@ -1,4 +1,6 @@
+using Maze.Common.Types;
+
 namespace Maze.GameWorld.Components
 {
-    public record struct RoomPosition(int RoomId);
+    public record struct RoomPosition(EntityId RoomId);
 }

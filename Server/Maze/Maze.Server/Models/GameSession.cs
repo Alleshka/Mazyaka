@@ -1,19 +1,18 @@
 using Maze.MazeStructure;
+using Maze.MazeStructure.Topology;
 
 namespace Maze.Server.Models;
 
 public class GameSession
 {
-    public Maze.GameWorld.GameWorld World { get; }
+    public GameWorld.GameWorld World { get; }
     public IMazeInfo MazeInfo { get; }
-    public int Rows { get; }
-    public int Cols { get; }
+    public IMazeTopology Topology { get; }
 
-    public GameSession(Maze.GameWorld.GameWorld world, IMazeInfo mazeInfo, int rows, int cols)
+    public GameSession(GameWorld.GameWorld world, IMazeInfo mazeInfo, IMazeTopology mazeTopology)
     {
         World = world;
         MazeInfo = mazeInfo;
-        Rows = rows;
-        Cols = cols;
+        Topology = mazeTopology;
     }
 }

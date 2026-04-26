@@ -1,4 +1,5 @@
 using Maze.Common;
+using Maze.Common.Types;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,30 +12,30 @@ namespace MazeGame.Maze
     /// </summary>
     public class MazeCell : MonoBehaviour
     {
-        public int CellId { get; private set; }
+        public EntityId CellId { get; private set; }
 
         private readonly Dictionary<MoveDirection, WallSlot> _slots = new();
         private SpriteRenderer _floorRenderer;
 
         /// <summary>Called by MazeGrid after instantiation.</summary>
-        public void Initialize(int cellId, float cellSize)
+        public void Initialize(EntityId cellId, float cellSize)
         {
-            CellId          = cellId;
+            CellId = cellId;
             gameObject.name = $"Cell_{cellId}";
 
             // Floor tile
-            _floorRenderer        = gameObject.AddComponent<SpriteRenderer>();
+            _floorRenderer = gameObject.AddComponent<SpriteRenderer>();
             _floorRenderer.sprite = Sprites.Square;
-            _floorRenderer.color  = new Color(0.12f, 0.12f, 0.12f);
-            transform.localScale  = Vector3.one * cellSize;
+            _floorRenderer.color = new Color(0.12f, 0.12f, 0.12f);
+            transform.localScale = Vector3.one * cellSize;
 
             // Slots sit on the cell boundary (±0.5) and are slightly thicker than the
             // cell gap so they overlap the matching slot on the neighbour — both cells
             // render the same region, making one visually unified wall.
-            CreateSlot(MoveDirection.Up,    new Vector3( 0,     0.50f, 0), new Vector3(1.00f, 0.14f, 1));
-            CreateSlot(MoveDirection.Down,  new Vector3( 0,    -0.50f, 0), new Vector3(1.00f, 0.14f, 1));
-            CreateSlot(MoveDirection.Left,  new Vector3(-0.50f, 0,    0), new Vector3(0.14f, 1.00f, 1));
-            CreateSlot(MoveDirection.Right, new Vector3( 0.50f, 0,    0), new Vector3(0.14f, 1.00f, 1));
+            CreateSlot(MoveDirection.Up, new Vector3(0, 0.50f, 0), new Vector3(1.00f, 0.14f, 1));
+            CreateSlot(MoveDirection.Down, new Vector3(0, -0.50f, 0), new Vector3(1.00f, 0.14f, 1));
+            CreateSlot(MoveDirection.Left, new Vector3(-0.50f, 0, 0), new Vector3(0.14f, 1.00f, 1));
+            CreateSlot(MoveDirection.Right, new Vector3(0.50f, 0, 0), new Vector3(0.14f, 1.00f, 1));
         }
 
         /// <summary>Shows a confirmed wall in the given direction.</summary>
@@ -77,7 +78,7 @@ namespace MazeGame.Maze
             var go = new GameObject($"Slot_{direction}");
             go.transform.SetParent(transform);
             go.transform.localPosition = localPos;
-            go.transform.localScale    = localScale;
+            go.transform.localScale = localScale;
 
             var slot = go.AddComponent<WallSlot>();
             _slots[direction] = slot;

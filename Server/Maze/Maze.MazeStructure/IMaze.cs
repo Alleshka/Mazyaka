@@ -1,5 +1,6 @@
-﻿using Maze.Common;
+﻿using Maze.Common.Types;
 using Maze.MazeStructure.MazeSites;
+using System.Collections.Generic;
 
 namespace Maze.MazeStructure
 {
@@ -9,6 +10,7 @@ namespace Maze.MazeStructure
         void AddConnection(IMazeConnection connection);
 
         IMazeRoom HeadRoom { get; }
-        IMazeRoom GetRoomByID (int id);
+        IMazeRoom GetRoomByID (EntityId id);
+        IEnumerable<IMazeRoom> Rooms { get; }
     }
 }

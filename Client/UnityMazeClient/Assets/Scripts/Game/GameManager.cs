@@ -1,7 +1,8 @@
-using System;
-using Maze.Common;
-using MazeGame.Maze;
 using Maze.ClientService;
+using Maze.Common;
+using Maze.Common.Types;
+using MazeGame.Maze;
+using System;
 using UnityEngine;
 
 namespace MazeGame.Game
@@ -28,8 +29,8 @@ namespace MazeGame.Game
         private MazeGrid _grid;
         private CellNavigator _navigator;
 
-        private Guid _gameId;
-        private Guid _userId;
+        private EntityId _gameId = EntityId.Empty;
+        private EntityId _userId = EntityId.Empty;
         private bool _ready;
         private bool _won;
         private bool _moving;
@@ -72,10 +73,10 @@ namespace MazeGame.Game
 
                 var gameResp = await _client.CreateGameAsync(mazeRows, mazeCols);
                 _gameId = gameResp.GameId;
-                _grid.Initialize(gameResp.Cols, cellSize);
+                _grid.Initialize(cellSize);
                 Debug.Log($"[GameManager] Created game {gameResp.GameId} ({gameResp.Rows}x{gameResp.Cols})");
 
-                if (_gameId == null)
+                if (_gameId == EntityId.Empty)
                 {
                     Debug.LogError("[GameManager] Failed to create game");
                     return;
@@ -132,7 +133,7 @@ namespace MazeGame.Game
                         return;
                     }
 
-                    _grid.RevealCell(resp.CellId);
+                    _grid.RevealCell(resp.CellId, direction);
                     _navigator.MoveTo(resp.CellId);
                 }
                 else
@@ -150,7 +151,7 @@ namespace MazeGame.Game
             }
         }
 
-        private async void ExectuteDestroyWall(int cellId, MoveDirection direction)
+        private async void ExectuteDestroyWall(EntityId cellId, MoveDirection direction)
         {
             _moving = true;
             try

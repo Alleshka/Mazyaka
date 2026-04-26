@@ -1,4 +1,5 @@
 ﻿using Maze.Common;
+using Maze.Common.Types;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,16 +7,19 @@ namespace Maze.MazeStructure.MazeSites
 {
     public class BaseMazeRoom : IMazeRoom
     {
-        public int Id { get; protected set; }
+        public EntityId Id { get; protected set; }
+
+        public IReadOnlyDictionary<MoveDirection, IMazeConnection> Connections => _connections;
+
         private Dictionary<MoveDirection, IMazeConnection> _connections;
 
-        public BaseMazeRoom(int id)
+        public BaseMazeRoom(EntityId id)
         {
             Id = id;
             _connections = new Dictionary<MoveDirection, IMazeConnection>();
         }
 
-        public IMazeConnection? GetConnection(MoveDirection direction)
+        public IMazeConnection GetConnection(MoveDirection direction)
         {
             _connections.TryGetValue(direction, out var connection);
             return connection;

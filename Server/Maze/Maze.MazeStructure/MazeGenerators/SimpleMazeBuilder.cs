@@ -1,14 +1,14 @@
 using Maze.Common;
+using Maze.Common.Types;
 using Maze.MazeStructure.MazeSites;
 using Maze.MazeStructure.Metadata;
 
 namespace Maze.MazeStructure.MazeGenerators
 {
-    class SimpleMazeBuilder : IMazeBuilder
+    public class SimpleMazeBuilder : IMazeBuilder
     {
         private IMaze _curMaze;
         private IMazeMetadata _mazeMetadata;
-        private int _connectionId = 0;
 
         public void BuildEmptyMaze()
         {
@@ -23,27 +23,36 @@ namespace Maze.MazeStructure.MazeGenerators
 
         public void BuildBoundary(IMazeRoom room, MoveDirection direction)
         {
-            IMazeConnection connection = new BaseMazeConnection(_connectionId++, room, WorldEdgeSite.Instance);
-            room.AddConnection(direction, connection);
-            _curMaze.AddConnection(connection);
+            IMazeConnection connection = BuildConnection(room, direction, WorldEdgeSite.Instance);
+        }
+
+        private IMazeConnection BuildConnection(IMazeRoom roomA, MoveDirection direction, IMazeRoom roomB)
+        {
+            IMazeConnection connection = roomA.GetConnection(direction);
+            if (connection != null)
+            {
+                return connection;
+            }
+            else
+            {
+                connection = new BaseMazeConnection(EntityId.New() , roomA, roomB);
+                roomA.AddConnection(direction, connection);
+                roomB.AddConnection(direction.Opposite(), connection);
+                _curMaze.AddConnection(connection);
+                return connection;
+            }
         }
 
         public void BuildPassage(IMazeRoom roomA, MoveDirection direction, IMazeRoom roomB)
         {
-            IMazeConnection connection = new BaseMazeConnection(_connectionId++, roomA, roomB);
-            roomA.AddConnection(direction, connection);
-            roomB.AddConnection(direction.Opposite(), connection);
-            _mazeMetadata.SetClass(connection, ConnectionClass.Passage);
-            _curMaze.AddConnection(connection);
+            IMazeConnection connection = BuildConnection(roomA, direction, roomB);
+            MarkPassage(connection);
         }
 
         public void BuildWall(IMazeRoom roomA, MoveDirection direction, IMazeRoom roomB)
         {
-            IMazeConnection connection = new BaseMazeConnection(_connectionId++, roomA, roomB);
-            roomA.AddConnection(direction, connection);
-            roomB.AddConnection(direction.Opposite(), connection);
-            _mazeMetadata.SetClass(connection, ConnectionClass.Wall);
-            _curMaze.AddConnection(connection);
+            IMazeConnection connection = BuildConnection(roomA, direction, roomB);
+            MarkWall(connection);
         }
 
         public void BuildExit(IMazeRoom room, MoveDirection direction)
@@ -52,6 +61,21 @@ namespace Maze.MazeStructure.MazeGenerators
             if (connection == null)
                 return;
 
+            MarkExit(connection);
+        }
+
+        public void MarkWall(IMazeConnection connection)
+        {
+            _mazeMetadata.SetClass(connection, ConnectionClass.Wall);
+        }
+
+        public void MarkPassage(IMazeConnection connection)
+        {
+            _mazeMetadata.SetClass(connection, ConnectionClass.Passage);
+        }
+
+        public void MarkExit(IMazeConnection connection)
+        {
             // Can only set exit on a boundary connection
             if (!(connection.RoomA is WorldEdgeSite) && !(connection.RoomB is WorldEdgeSite))
                 return;

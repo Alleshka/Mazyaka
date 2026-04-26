@@ -23,6 +23,7 @@ namespace Maze.GameWorld.TraversalPolicies
             };
         }
 
+        // reserved for future use
         private static TraversalResult CanTraverseOneWay(ConnectionContext ctx)
         {
             // Convention: OneWayPassage is traversable from RoomA side only.

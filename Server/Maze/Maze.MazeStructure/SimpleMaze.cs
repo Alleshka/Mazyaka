@@ -1,21 +1,22 @@
-﻿using Maze.Common;
+﻿using Maze.Common.Types;
 using Maze.MazeStructure.MazeSites;
-using System;
 using System.Collections.Generic;
 
 namespace Maze.MazeStructure
 {
     public class SimpleMaze : IMaze
     {
-        private Dictionary<int, IMazeRoom> _rooms;
-        private Dictionary<(int, int), IMazeConnection> _connections;
+        private Dictionary<EntityId, IMazeRoom> _rooms;
+        private Dictionary<(EntityId, EntityId), IMazeConnection> _connections;
 
         public IMazeRoom HeadRoom { get; private set; }
 
+        public IEnumerable<IMazeRoom> Rooms => _rooms.Values;
+
         public SimpleMaze()
         {
-            _rooms = new Dictionary<int, IMazeRoom>();
-            _connections = new Dictionary<(int, int), IMazeConnection>();
+            _rooms = new Dictionary<EntityId, IMazeRoom>();
+            _connections = new Dictionary<(EntityId, EntityId), IMazeConnection>();
         }
 
         public void AddRoom(IMazeRoom room)
@@ -29,10 +30,10 @@ namespace Maze.MazeStructure
 
         public void AddConnection(IMazeConnection connection)
         {
-            IMazeRoom roomA = null;
-            IMazeRoom roomB = null;
+            IMazeRoom roomA = connection.RoomA;
+            IMazeRoom roomB = connection.RoomB;
 
-            if ((connection.RoomA?.Id ?? Int32.MinValue) < (connection.RoomB?.Id ?? Int32.MinValue))
+            if (connection.RoomA.Id <= connection.RoomB.Id)
             {
                 roomA = connection.RoomA;
                 roomB = connection.RoomB;
@@ -43,10 +44,10 @@ namespace Maze.MazeStructure
                 roomB = connection.RoomA;
             }
 
-            _connections[(roomA?.Id ?? Int32.MinValue, roomB?.Id ?? Int32.MinValue)] = connection;
+            _connections[(roomA.Id, roomB.Id)] = connection;
         }
 
-        public IMazeRoom GetRoomByID(int id)
+        public IMazeRoom GetRoomByID(EntityId id)
         {
             return _rooms[id];
         }

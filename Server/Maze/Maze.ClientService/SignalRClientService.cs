@@ -1,8 +1,8 @@
 ﻿using Maze.Common;
 using Maze.Common.DTO;
+using Maze.Common.Types;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
-using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -12,13 +12,6 @@ namespace Maze.ClientService
     {
         protected readonly string _hubUrl;
         private HubConnection _connection;
-
-        private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions()
-        {
-            PropertyNamingPolicy = null,
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
-            IncludeFields = true,
-        };
 
         public SignalRClientService(string hubUrl)
         {
@@ -58,25 +51,25 @@ namespace Maze.ClientService
         public async Task<CreateGameResponse> CreateGameAsync(int rows, int cols)
         {
             var json = await _connection.InvokeAsync<string>(Constants.HubMethods.CreateGame, rows, cols);
-            return JsonSerializer.Deserialize<CreateGameResponse>(json);
+            return JsonSerializer.Deserialize<CreateGameResponse>(json, Constants.JsonSerializerOptions);
         }
 
-        public async Task<PlayerJoinResponse> SetUserAsync(Guid gameId, int startRow, int startCol)
+        public async Task<PlayerJoinResponse> SetUserAsync(EntityId gameId, int startRow, int startCol)
         {
-            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.SetUser, gameId, startRow, startCol);
-            return JsonSerializer.Deserialize<PlayerJoinResponse>(json);
+            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.SetUser, gameId.Value, startRow, startCol);
+            return JsonSerializer.Deserialize<PlayerJoinResponse>(json, Constants.JsonSerializerOptions);
         }
 
-        public async Task<MoveResponse> MoveAsync(Guid gameId, Guid userId, MoveDirection direction)
+        public async Task<MoveResponse> MoveAsync(EntityId gameId, EntityId userId, MoveDirection direction)
         {
-            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.Move, gameId, userId, direction);
-            return JsonSerializer.Deserialize<MoveResponse>(json);
+            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.Move, gameId.Value, userId.Value, direction);
+            return JsonSerializer.Deserialize<MoveResponse>(json, Constants.JsonSerializerOptions);
         }
 
-        public async Task<DestroyWallResult> DestroyWallAsync(Guid gameId, Guid userId, MoveDirection direction)
+        public async Task<DestroyWallResult> DestroyWallAsync(EntityId gameId, EntityId userId, MoveDirection direction)
         {
-            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.DestroyWall, gameId, userId, direction);
-            return JsonSerializer.Deserialize<DestroyWallResult>(json, JsonOptions);
+            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.DestroyWall, gameId.Value, userId.Value, direction);
+            return JsonSerializer.Deserialize<DestroyWallResult>(json, Constants.JsonSerializerOptions);
         }
     }
 }

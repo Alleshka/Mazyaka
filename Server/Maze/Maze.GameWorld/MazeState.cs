@@ -3,6 +3,7 @@ using Maze.GameWorld.Components;
 using Maze.GameWorld.Events;
 using System;
 using System.Collections.Generic;
+using Maze.Common.Types;
 
 namespace Maze.GameWorld
 {
@@ -11,15 +12,15 @@ namespace Maze.GameWorld
         private int _nextEntityId = 1;
         private readonly Dictionary<Type, object> _componentStores = new Dictionary<Type, object>();
 
-        private readonly Dictionary<int, ConnectionConditions> _connectionConditions = new Dictionary<int, ConnectionConditions>();
+        private readonly Dictionary<EntityId, ConnectionConditions> _connectionConditions = new Dictionary<EntityId, ConnectionConditions>();
 
-        public void AddConnectionCondition(int connectionId, ConnectionConditions condition)
+        public void AddConnectionCondition(EntityId connectionId, ConnectionConditions condition)
         {
             _connectionConditions.TryGetValue(connectionId, out var existing);
             _connectionConditions[connectionId] = existing | condition;
         }
 
-        public ConnectionConditions GetConnectionConditions(int connectionId)
+        public ConnectionConditions GetConnectionConditions(EntityId connectionId)
             => _connectionConditions.TryGetValue(connectionId, out var c) ? c : ConnectionConditions.None;
 
         public Entity CreateEntity() => new(_nextEntityId++);

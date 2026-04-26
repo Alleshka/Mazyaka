@@ -1,10 +1,18 @@
 using Maze.Server.Hubs;
 using Maze.Server.Services;
-using System.Text.Json;
+using Maze.Common.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSignalR();
+builder.Services
+     .AddSignalR(options =>
+    {
+        options.EnableDetailedErrors = true;
+    })
+    .AddJsonProtocol(option =>
+    {
+        option.PayloadSerializerOptions.Converters.Add(new EntityIdJsonConverter());
+    });
 builder.Services.AddSingleton<GameSessionManager>();
 
 builder.Services.AddCors(options =>

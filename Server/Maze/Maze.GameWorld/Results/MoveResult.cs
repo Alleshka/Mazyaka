@@ -1,10 +1,12 @@
-﻿namespace Maze.GameWorld.Results
-{
-    public record Blocker(int Id, string Name);
+﻿using Maze.Common.Types;
 
-    public record MoveResult(int RoomId, bool Win, bool SuccessMove, Blocker? BlockedBy)
+namespace Maze.GameWorld.Results
+{
+    public record Blocker(EntityId Id, string Name);
+
+    public record MoveResult(EntityId RoomId, bool Win, bool SuccessMove, Blocker? BlockedBy)
     {
-        public static MoveResult Success(int roomId, bool win = false) => new MoveResult(roomId, win, true, null);
-        public static MoveResult Blocked(int roomId, Blocker blocker) => new MoveResult(roomId, false, false, blocker);
+        public static MoveResult Success(EntityId roomId, bool win = false) => new MoveResult(roomId, win, true, null);
+        public static MoveResult Blocked(Blocker blocker) => new MoveResult(EntityId.Empty, false, false, blocker);
     }
 }

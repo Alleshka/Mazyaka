@@ -1,8 +1,10 @@
-﻿namespace Maze.Common.DTO
+﻿using Maze.Common.Types;
+
+namespace Maze.Common.DTO
 {
     public class MoveBlocker
     {
-        public int BlockerId { get; set; } = -1;
-        public string? BlockedConnectionType { get; set; }
+        public EntityId BlockerId { get; set; } = EntityId.Empty;
+        public string BlockedConnectionType { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+using Maze.Common.Types;
 using System.Collections;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace MazeGame.Maze
 
         private MazeGrid _grid;
 
-        public int CurrentCellId { get; private set; } = -1;
+        public EntityId CurrentCellId { get; private set; } = EntityId.Empty;
 
         private Coroutine _moveCoroutine;
 
@@ -26,14 +27,14 @@ namespace MazeGame.Maze
         public void SetMoveSpeed(float speed) => moveSpeed = speed;
 
         /// <summary>Instantly places the entity at the given cell.</summary>
-        public void PlaceAt(int cellId)
+        public void PlaceAt(EntityId cellId)
         {
             CurrentCellId = cellId;
             transform.position = _grid.GetWorldPos(cellId);
         }
 
         /// <summary>Smoothly moves the entity to the given cell.</summary>
-        public void MoveTo(int cellId)
+        public void MoveTo(EntityId cellId)
         {
             CurrentCellId = cellId;
 

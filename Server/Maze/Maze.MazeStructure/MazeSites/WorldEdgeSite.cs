@@ -1,4 +1,6 @@
 using Maze.Common;
+using Maze.Common.Types;
+using System.Collections.Generic;
 
 namespace Maze.MazeStructure.MazeSites
 {
@@ -7,10 +9,15 @@ namespace Maze.MazeStructure.MazeSites
     public sealed class WorldEdgeSite : IMazeRoom
     {
         public static readonly WorldEdgeSite Instance = new WorldEdgeSite();
+        private static readonly IReadOnlyDictionary<MoveDirection, IMazeConnection> _connections = new Dictionary<MoveDirection, IMazeConnection>();
+
         private WorldEdgeSite() { }
 
-        public int Id => -1;
+        public EntityId Id => EntityId.Empty;
+
+        public IReadOnlyDictionary<MoveDirection, IMazeConnection> Connections => _connections;
+
         public void AddConnection(MoveDirection direction, IMazeConnection connection) { }
-        public IMazeConnection? GetConnection(MoveDirection direction) => null;
+        public IMazeConnection GetConnection(MoveDirection direction) => null;
     }
 }

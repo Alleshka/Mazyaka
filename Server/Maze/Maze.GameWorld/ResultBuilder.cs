@@ -1,4 +1,5 @@
 using Maze.Common.DTO;
+using Maze.Common.Types;
 using Maze.GameWorld.Components;
 using Maze.GameWorld.Events;
 using Maze.GameWorld.Results;
@@ -21,11 +22,11 @@ namespace Maze.GameWorld
             if (w.Has<MoveBlockedByBlockerEvent>(e))
             {
                 var blocker = w.Get<MoveBlockedByBlockerEvent>(e);
-                return MoveResult.Blocked(-1, new Blocker(blocker.Id, blocker.BlockerName));
+                return MoveResult.Blocked(new Blocker(blocker.Id, blocker.BlockerName));
             }
             if (w.Has<MoveBlockedNoConnectionEvent>(e))
             {
-                return MoveResult.Blocked(-1, new Blocker(-1, "No connection"));
+                return MoveResult.Blocked(new Blocker(EntityId.Empty, "No connection"));
             }
             if (w.Has<MoveSuccessEvent>(e))
             {
@@ -34,7 +35,7 @@ namespace Maze.GameWorld
             }
             if (w.Has<MoveExitEvent>(e))
             {
-                return MoveResult.Success(-1, win: true);
+                return MoveResult.Success(EntityId.Empty, win: true);
             }
             return null;
         }

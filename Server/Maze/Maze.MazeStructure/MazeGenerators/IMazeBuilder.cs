@@ -1,5 +1,6 @@
 ﻿using Maze.Common;
 using Maze.MazeStructure.MazeSites;
+using Maze.MazeStructure.Metadata;
 
 namespace Maze.MazeStructure.MazeGenerators
 {
@@ -11,6 +12,10 @@ namespace Maze.MazeStructure.MazeGenerators
         void BuildWall(IMazeRoom roomA, MoveDirection direction, IMazeRoom roomB);
         void BuildBoundary(IMazeRoom room, MoveDirection direction);
         void BuildExit(IMazeRoom room, MoveDirection direction);
+        void MarkWall(IMazeConnection connection);
+        void MarkPassage(IMazeConnection connection);
+        void MarkExit(IMazeConnection connection);
+
         IMazeInfo Build();
     }
 }
