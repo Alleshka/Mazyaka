@@ -14,14 +14,17 @@ namespace Maze.GameWorld.System
         {
         }
 
-        public override void Run(MazeState world)
+        public override void Run(GameContext gameContext)
         {
+            var world = gameContext.State;
+            var mazeRegistry = gameContext.Registry;
+
             foreach (var e in world.Query<MoveIntent>())
             {
                 ref var position = ref world.Get<RoomPosition>(e);
                 var intent = world.Get<MoveIntent>(e);
 
-                var mazeInfo = GetMazeForPlayerOrDefault(e, world);
+                var mazeInfo = GetMazeForPlayerOrDefault(e, world, mazeRegistry);
                 var room = mazeInfo?.MazeStructure.GetRoomByID(position.RoomId);
                 var connection = room?.GetConnection(intent.Direction);
 

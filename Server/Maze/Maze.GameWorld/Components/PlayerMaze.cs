@@ -1,14 +1,14 @@
-﻿using Maze.MazeStructure;
+﻿using Maze.Common.Types;
 
 namespace Maze.GameWorld.Components
 {
     internal struct PlayerMaze
     {
-        public IMazeInfo MazeInfo { get; init; }
+        public EntityId MazeId { get; init; }
 
-        public PlayerMaze(IMazeInfo mazeInfo)
+        public PlayerMaze(EntityId mazeId)
         {
-            MazeInfo = mazeInfo;
+            MazeId = mazeId;
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     internal interface ISystem
     {
-        void Run(MazeState world);
+        void Run(GameContext gameContext);
     }
 }

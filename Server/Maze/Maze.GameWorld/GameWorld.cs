@@ -18,6 +18,8 @@ namespace Maze.GameWorld
         private readonly ResultBuilder _builder = new ResultBuilder();
 
         private Dictionary<EntityId, Entity> _players = new Dictionary<EntityId, Entity>();
+        internal MazeRegistry MazeRegistry { get; private set; } = new MazeRegistry();
+        internal GameContext Context { get; private set; }
 
         public GameWorld()
         {
@@ -28,15 +30,23 @@ namespace Maze.GameWorld
                 new DestroyWallSystem(),
                 new MovementSystem(),
             };
+
+            Context = new GameContext()
+            {
+                State = State,
+                Registry = MazeRegistry
+            };
         }
 
         public EntityId CreatePlayer(IMazeInfo mazeInfo, EntityId startRoomId)
         {
+            EntityId mazeId = MazeRegistry.Register(mazeInfo);
+
             EntityId playerId = EntityId.New();
             var player = State.CreateEntity();
             State.Add(player, new PlayerTag());
             State.Add(player, new RoomPosition { RoomId = startRoomId });
-            State.Add(player, new PlayerMaze(mazeInfo));
+            State.Add(player, new PlayerMaze(mazeId));
             State.Add(player, new Grenades { Count = 3 });
 
             _players.Add(playerId, player);
@@ -85,7 +95,7 @@ namespace Maze.GameWorld
         private void RunPipeline()
         {
             foreach (var s in _pipeline)
-                s.Run(State);
+                s.Run(Context);
         }
     }
 }

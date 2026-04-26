@@ -11,7 +11,6 @@ namespace Maze.GameWorld
     {
         private int _nextEntityId = 1;
         private readonly Dictionary<Type, object> _componentStores = new Dictionary<Type, object>();
-
         private readonly Dictionary<EntityId, ConnectionConditions> _connectionConditions = new Dictionary<EntityId, ConnectionConditions>();
 
         public void AddConnectionCondition(EntityId connectionId, ConnectionConditions condition)
