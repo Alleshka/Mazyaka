@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>EntityId Guid Struct</Title>
+      <Shortcut>entityid_guid</Shortcut>
+      <Description>Generates a strongly typed EntityId struct with a guid PRIMITIVE</Description>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>NAME</ID>
+          <ToolTip>Struct name, e.g. OrderId</ToolTip>
+          <Default>MyEntityId</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp">
+        <![CDATA[public readonly struct $NAME$ : IEquatable<$NAME$>, IComparable<$NAME$>, IEntityId
+{
+    public Guid Value { get; }
+
+    private $NAME$(Guid value) => Value = value;
+
+    public static $NAME$ New()                   => new $NAME$(Guid.NewGuid());
+    public static $NAME$ From(Guid value) => new $NAME$(value);
+    public static $NAME$ Empty                   => new $NAME$(Guid.Empty);
+
+    public bool Equals($NAME$ other)         => Value == other.Value;
+    public override bool Equals(object obj)  => obj is $NAME$ o && Equals(o);
+    public override int  GetHashCode()       => Value.GetHashCode();
+    public override string ToString()        => Value.ToString();
+
+	public int CompareTo($NAME$ other) => Value.CompareTo(other.Value);
+	
+    public static bool operator ==($NAME$ l, $NAME$ r) => l.Equals(r);
+    public static bool operator !=($NAME$ l, $NAME$ r) => !l.Equals(r);
+	public static bool operator <($NAME$ l, $NAME$ r) => l.CompareTo(r) < 0;
+	public static bool operator >($NAME$ l, $NAME$ r) => l.CompareTo(r) > 0;
+	public static bool operator <=($NAME$ l, $NAME$ r) => l.CompareTo(r) <= 0;
+	public static bool operator >=($NAME$ l, $NAME$ r) => l.CompareTo(r) >= 0;
+}$END$]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>EntityId Struct</Title>
+      <Shortcut>entityid_seq</Shortcut>
+      <Description>Generates a strongly typed EntityId struct</Description>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>NAME</ID>
+          <ToolTip>Struct name, e.g. OrderId</ToolTip>
+          <Default>MyEntityId</Default>
+        </Literal>
+        <Literal>
+          <ID>PRIMITIVE</ID>
+          <ToolTip>Primitive type, e.g. int, Guid, string</ToolTip>
+          <Default>int</Default>
+        </Literal>
+        <Literal>
+          <ID>INCREMENT</ID>
+          <ToolTip>How to generate new value, e.g. Interlocked.Increment(ref _counter)</ToolTip>
+          <Default>System.Threading.Interlocked.Increment(ref _counter)</Default>
+        </Literal>
+        <Literal>
+          <ID>EMPTY</ID>
+          <ToolTip>Empty/default value, e.g. int.MinValue or Guid.Empty</ToolTip>
+          <Default>int.MinValue</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp">
+        <![CDATA[public readonly struct $NAME$ : IEquatable<$NAME$>, IComparable<$NAME$>, IEntityId
+{
+    private static $PRIMITIVE$ _counter = default;
+    public $PRIMITIVE$ Value { get; }
+
+    private $NAME$($PRIMITIVE$ value) => Value = value;
+
+    public static $NAME$ New()                   => new $NAME$($INCREMENT$);
+    public static $NAME$ From($PRIMITIVE$ value) => new $NAME$(value);
+    public static $NAME$ Empty                   => new $NAME$($EMPTY$);
+
+    public bool Equals($NAME$ other)         => Value == other.Value;
+    public override bool Equals(object obj)  => obj is $NAME$ o && Equals(o);
+    public override int  GetHashCode()       => Value.GetHashCode();
+    public override string ToString()        => Value.ToString();
+
+	public int CompareTo($NAME$ other) => Value.CompareTo(other.Value);
+	
+    public static bool operator ==($NAME$ l, $NAME$ r) => l.Equals(r);
+    public static bool operator !=($NAME$ l, $NAME$ r) => !l.Equals(r);
+	public static bool operator <($NAME$ l, $NAME$ r) => l.CompareTo(r) < 0;
+	public static bool operator >($NAME$ l, $NAME$ r) => l.CompareTo(r) > 0;
+	public static bool operator <=($NAME$ l, $NAME$ r) => l.CompareTo(r) <= 0;
+	public static bool operator >=($NAME$ l, $NAME$ r) => l.CompareTo(r) >= 0;
+}$END$]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
