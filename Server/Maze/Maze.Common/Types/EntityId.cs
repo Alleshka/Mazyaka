@@ -5,7 +5,7 @@ namespace Maze.Common.Types
 {
     using IdValue = Int32;
 
-    public readonly struct EntityId : IEquatable<EntityId>
+    public readonly struct EntityId : IEquatable<EntityId>, IEntityId
     {
         private static int _counter = 0;
         public IdValue Value { get; }

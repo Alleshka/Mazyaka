@@ -1,46 +1,48 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Maze.Common.Types
 {
-    public class EntityIdJsonConverter : JsonConverter<EntityId>
+    public class EntityIdJsonConverter<T> : JsonConverter<T> where T : struct
     {
-        public override EntityId Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        private static readonly Func<int, T> _from;
+
+        static EntityIdJsonConverter()
         {
-            if (reader.TokenType == JsonTokenType.Number)
-            {
-                return EntityId.From(reader.GetInt32());
-            }
-
-            if (reader.TokenType == JsonTokenType.StartObject)
-            {
-                int value = 0;
-
-                while (reader.Read())
-                {
-                    if (reader.TokenType == JsonTokenType.EndObject) break;
-                    if (reader.TokenType == JsonTokenType.Number)
-                    {
-                        value = reader.GetInt32();
-                        break;
-                    }
-                    if (reader.TokenType == JsonTokenType.PropertyName && reader.GetString() == "Value")
-                    {
-                        reader.Read();
-                        value = reader.GetInt32();
-                    }
-                }
-
-                return EntityId.From(value);
-            }
-
-            return EntityId.Empty;
+            var method = typeof(T).GetMethod("From", new[] { typeof(int) });
+            var param = Expression.Parameter(typeof(int));
+            _from = Expression.Lambda<Func<int, T>>(
+                Expression.Call(method!, param), param).Compile();
         }
 
-        public override void Write(Utf8JsonWriter writer, EntityId value, JsonSerializerOptions options)
+        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            writer.WriteNumberValue(value.Value);
+            if (reader.TokenType == JsonTokenType.Number)
+                return _from(reader.GetInt32());
+
+            return default;
+        }
+
+        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        {
+            var prop = typeof(T).GetProperty("Value")!;
+            writer.WriteNumberValue((int)prop.GetValue(value)!);
+        }
+    }
+
+    public class EntityIdJsonConverterFactory : JsonConverterFactory
+    {
+        public override bool CanConvert(Type typeToConvert)
+        {
+            return typeof(IEntityId).IsAssignableFrom(typeToConvert);
+        }
+
+        public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
+        {
+            return (JsonConverter)Activator.CreateInstance(
+                typeof(EntityIdJsonConverter<>).MakeGenericType(typeToConvert))!;
         }
     }
 }

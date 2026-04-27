@@ -1,7 +1,4 @@
-﻿using Maze.Common.Types;
-using System.Text.Json;
-
-namespace Maze.Common
+﻿namespace Maze.Common
 {
     public static class Constants
     {
@@ -19,21 +16,6 @@ namespace Maze.Common
             public const string SetUser = "SetUser";
             public const string Move = "Move";
             public const string DestroyWall = "DestroyWall";
-        }
-
-        public readonly static JsonSerializerOptions JsonSerializerOptions = CreateDefault();
-
-        private static JsonSerializerOptions CreateDefault()
-        {
-            var options = new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = null,
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
-                IncludeFields = true,
-            };
-            options.Converters.Add(new EntityIdJsonConverter());
-
-            return options;
         }
     }
 }

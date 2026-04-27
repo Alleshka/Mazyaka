@@ -27,7 +27,7 @@ public class MazeHub : Hub
             GameId = gameId,
             Rows = rows,
             Cols = cols
-        }, Constants.JsonSerializerOptions);
+        }, JsonOptions.Default);
     }
 
     [HubMethodName(Constants.HubMethods.SetUser)]
@@ -45,21 +45,21 @@ public class MazeHub : Hub
         {
             UserId = userId,
             CellId = cell
-        }, Constants.JsonSerializerOptions);
+        }, JsonOptions.Default);
     }
 
     [HubMethodName(Constants.HubMethods.Move)]
-    public string Move(int gameId, int userId, MoveDirection direction)
+    public string Move(EntityId gameId, EntityId userId, MoveDirection direction)
     {
-        EntityId game = EntityId.From(gameId);
-        var session = _sessions.Get(game)
+        // EntityId game = EntityId.From(gameId);
+        var session = _sessions.Get(gameId)
             ?? throw new HubException($"Game '{gameId}' not found.");
 
-        EntityId user = EntityId.From(userId);
-        var result = session.World.ExecuteMove(user, direction);
+        //EntityId user = EntityId.From(userId);
+        var result = session.World.ExecuteMove(userId, direction);
 
         if (result.Win == true)
-            return JsonSerializer.Serialize(new MoveResponse { Success = true, Win = true }, Constants.JsonSerializerOptions);
+            return JsonSerializer.Serialize(new MoveResponse { Success = true, Win = true }, JsonOptions.Default);
 
         if (!result.SuccessMove)
         {
@@ -72,14 +72,14 @@ public class MazeHub : Hub
                     BlockerId = result?.BlockedBy?.Id ?? EntityId.Empty,
                     BlockedConnectionType = result?.BlockedBy?.Name
                 }
-            }, Constants.JsonSerializerOptions);
+            }, JsonOptions.Default);
         }
 
         return JsonSerializer.Serialize(new MoveResponse
         {
             Success = true,
             CellId = result.RoomId // CellRevealBuilder.Build(result.RoomId, session)
-        }, Constants.JsonSerializerOptions);
+        }, JsonOptions.Default);
     }
 
     [HubMethodName(Constants.HubMethods.DestroyWall)]
@@ -90,7 +90,7 @@ public class MazeHub : Hub
             ?? throw new HubException($"Game '{game}' not found.");
         EntityId user = EntityId.From(userId);
         var result = session.World.ExecuteDestroyWall(user, direction);
-        string json = JsonSerializer.Serialize(result, Constants.JsonSerializerOptions);
+        string json = JsonSerializer.Serialize(result, JsonOptions.Default);
         return json;
     }
 }

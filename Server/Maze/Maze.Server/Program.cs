@@ -1,6 +1,7 @@
 using Maze.Server.Hubs;
 using Maze.Server.Services;
 using Maze.Common.Types;
+using Maze.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services
     })
     .AddJsonProtocol(option =>
     {
-        option.PayloadSerializerOptions.Converters.Add(new EntityIdJsonConverter());
+        JsonOptions.Configure(option.PayloadSerializerOptions);
     });
 builder.Services.AddSingleton<GameSessionManager>();
 
