@@ -11,7 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.GameWorld", "Maze.Game
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maze.Server", "Maze.Server\Maze.Server.csproj", "{C1A2B3D4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.ClientService", "Maze.ClientService\Maze.ClientService.csproj", "{F7C44AB2-C9B9-4462-9664-CD8CBF96333A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Client.SignalR", "Maze.Client.SignalR\Maze.Client.SignalR.csproj", "{F7C44AB2-C9B9-4462-9664-CD8CBF96333A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Core", "Maze.Core\Maze.Core.csproj", "{1B3CE6F3-C471-4D65-B1AE-C414DEC87DA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze.Client.Abstractions", "Maze.Client.Abstractions\Maze.Client.Abstractions.csproj", "{E9701169-9E5A-46E8-90D6-31C53F05CDC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{F7C44AB2-C9B9-4462-9664-CD8CBF96333A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7C44AB2-C9B9-4462-9664-CD8CBF96333A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7C44AB2-C9B9-4462-9664-CD8CBF96333A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B3CE6F3-C471-4D65-B1AE-C414DEC87DA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B3CE6F3-C471-4D65-B1AE-C414DEC87DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B3CE6F3-C471-4D65-B1AE-C414DEC87DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B3CE6F3-C471-4D65-B1AE-C414DEC87DA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9701169-9E5A-46E8-90D6-31C53F05CDC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9701169-9E5A-46E8-90D6-31C53F05CDC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9701169-9E5A-46E8-90D6-31C53F05CDC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9701169-9E5A-46E8-90D6-31C53F05CDC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -18,18 +18,23 @@
         </Literal>
         <Literal>
           <ID>PRIMITIVE</ID>
-          <ToolTip>Primitive type, e.g. int, Guid, string</ToolTip>
+          <ToolTip>Primitive type, e.g. int, long</ToolTip>
           <Default>int</Default>
         </Literal>
         <Literal>
           <ID>INCREMENT</ID>
-          <ToolTip>How to generate new value, e.g. Interlocked.Increment(ref _counter)</ToolTip>
+          <ToolTip>How to generate new value</ToolTip>
           <Default>System.Threading.Interlocked.Increment(ref _counter)</Default>
         </Literal>
         <Literal>
           <ID>EMPTY</ID>
-          <ToolTip>Empty/default value, e.g. int.MinValue or Guid.Empty</ToolTip>
+          <ToolTip>Empty/default value, e.g. int.MinValue</ToolTip>
           <Default>int.MinValue</Default>
+        </Literal>
+        <Literal>
+          <ID>PARSE</ID>
+          <ToolTip>How to parse from string, e.g. int.Parse(value)</ToolTip>
+          <Default>int.Parse(value)</Default>
         </Literal>
       </Declarations>
       <Code Language="CSharp">
@@ -40,23 +45,37 @@
 
     private $NAME$($PRIMITIVE$ value) => Value = value;
 
-    public static $NAME$ New()                   => new $NAME$($INCREMENT$);
-    public static $NAME$ From($PRIMITIVE$ value) => new $NAME$(value);
-    public static $NAME$ Empty                   => new $NAME$($EMPTY$);
+    public static $NAME$ New()                    => new $NAME$($INCREMENT$);
+    public static $NAME$ From($PRIMITIVE$ value)  => new $NAME$(value);
+    public static $NAME$ From(string value)       => new $NAME$($PARSE$);
+    public static $NAME$ Empty                    => new $NAME$($EMPTY$);
 
-    public bool Equals($NAME$ other)         => Value == other.Value;
-    public override bool Equals(object obj)  => obj is $NAME$ o && Equals(o);
-    public override int  GetHashCode()       => Value.GetHashCode();
-    public override string ToString()        => Value.ToString();
+    public bool Equals($NAME$ other)              => Value == other.Value;
+    public override bool Equals(object obj)       => obj is $NAME$ o && Equals(o);
+    public override int GetHashCode()             => Value.GetHashCode();
+    public override string ToString()             => Value.ToString();
+    public int CompareTo($NAME$ other)            => Value.CompareTo(other.Value);
 
-	public int CompareTo($NAME$ other) => Value.CompareTo(other.Value);
-	
     public static bool operator ==($NAME$ l, $NAME$ r) => l.Equals(r);
     public static bool operator !=($NAME$ l, $NAME$ r) => !l.Equals(r);
-	public static bool operator <($NAME$ l, $NAME$ r) => l.CompareTo(r) < 0;
-	public static bool operator >($NAME$ l, $NAME$ r) => l.CompareTo(r) > 0;
-	public static bool operator <=($NAME$ l, $NAME$ r) => l.CompareTo(r) <= 0;
-	public static bool operator >=($NAME$ l, $NAME$ r) => l.CompareTo(r) >= 0;
+    public static bool operator <($NAME$ l, $NAME$ r)  => l.CompareTo(r) < 0;
+    public static bool operator >($NAME$ l, $NAME$ r)  => l.CompareTo(r) > 0;
+    public static bool operator <=($NAME$ l, $NAME$ r) => l.CompareTo(r) <= 0;
+    public static bool operator >=($NAME$ l, $NAME$ r) => l.CompareTo(r) >= 0;
+
+    public sealed class JsonConverter : System.Text.Json.Serialization.JsonConverter<$NAME$>
+    {
+        public override $NAME$ Read(ref System.Text.Json.Utf8JsonReader reader, System.Type typeToConvert, System.Text.Json.JsonSerializerOptions options)
+        {
+            var value = reader.GetString();
+            return string.IsNullOrEmpty(value) ? Empty : From(value);
+        }
+
+        public override void Write(System.Text.Json.Utf8JsonWriter writer, $NAME$ value, System.Text.Json.JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString());
+        }
+    }
 }$END$]]>
       </Code>
     </Snippet>

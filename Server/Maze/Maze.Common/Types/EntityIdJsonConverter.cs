@@ -7,42 +7,52 @@ namespace Maze.Common.Types
 {
     public class EntityIdJsonConverter<T> : JsonConverter<T> where T : struct
     {
-        private static readonly Func<int, T> _from;
+        private static readonly Func<string, T> _from;
+        private static readonly Func<T, string> _toString;
 
         static EntityIdJsonConverter()
         {
-            var method = typeof(T).GetMethod("From", new[] { typeof(int) });
-            var param = Expression.Parameter(typeof(int));
-            _from = Expression.Lambda<Func<int, T>>(
-                Expression.Call(method!, param), param).Compile();
+            // Find From(string) method
+            var fromMethod = typeof(T).GetMethod("From", new[] { typeof(string) });
+            if (fromMethod == null)
+                throw new InvalidOperationException($"{typeof(T).Name} must have a static From(string) method");
+
+            var param = Expression.Parameter(typeof(string));
+            _from = Expression.Lambda<Func<string, T>>(
+                Expression.Call(fromMethod, param), param).Compile();
+
+            // Use ToString() for serialization
+            var instance = Expression.Parameter(typeof(T));
+            var toStringMethod = typeof(T).GetMethod("ToString", Type.EmptyTypes)!;
+            _toString = Expression.Lambda<Func<T, string>>(
+                Expression.Call(instance, toStringMethod), instance).Compile();
         }
 
         public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (reader.TokenType == JsonTokenType.Number)
-                return _from(reader.GetInt32());
-
-            return default;
+            var value = reader.GetString();
+            if (string.IsNullOrEmpty(value)) return default;
+            return _from(value);
         }
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
-            var prop = typeof(T).GetProperty("Value")!;
-            writer.WriteNumberValue((int)prop.GetValue(value)!);
+            writer.WriteStringValue(_toString(value));
         }
     }
 
     public class EntityIdJsonConverterFactory : JsonConverterFactory
     {
         public override bool CanConvert(Type typeToConvert)
-        {
-            return typeof(IEntityId).IsAssignableFrom(typeToConvert);
-        }
+            => typeof(IEntityId).IsAssignableFrom(typeToConvert);
 
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
-            return (JsonConverter)Activator.CreateInstance(
-                typeof(EntityIdJsonConverter<>).MakeGenericType(typeToConvert))!;
+            var converterType = typeToConvert.GetNestedType("JsonConverter")
+                ?? throw new InvalidOperationException(
+                    $"{typeToConvert.Name} must have a nested JsonConverter class. Did you use the entityid snippet?");
+
+            return (JsonConverter)Activator.CreateInstance(converterType)!;
         }
     }
 }

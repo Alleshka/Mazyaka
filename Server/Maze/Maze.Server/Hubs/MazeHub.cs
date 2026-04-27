@@ -1,96 +1,85 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Maze.Common;
-using Maze.Server.Services;
-using Microsoft.AspNetCore.SignalR;
-using Maze.Common.DTO;
 using Maze.Common.Types;
+using Maze.Core.ConnectionRegistry;
+using Maze.Core.Services;
+using Microsoft.AspNetCore.SignalR;
+using System.Text.Json;
 
 namespace Maze.Server.Hubs;
 
 public class MazeHub : Hub
 {
-    private readonly GameSessionManager _sessions;
+    private readonly GameService _gameService;
+    private readonly IConnectionRegistry _registry;
 
-    public MazeHub(GameSessionManager sessions)
+    public MazeHub(GameService gameService, IConnectionRegistry connectionRegistry)
     {
-        _sessions = sessions;
+        _gameService = gameService;
+        _registry = connectionRegistry;
+    }
+
+    public override async Task OnConnectedAsync()
+    {
+        var playerId = GetPlayerIdFromContext();
+        _registry.Register(playerId, Context.ConnectionId);
+        Context.Items["PlayerId"] = playerId;
+
+        await base.OnConnectedAsync();
+    }
+
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        _registry.Unregister(Context.ConnectionId);
+        await base.OnDisconnectedAsync(exception);
     }
 
     [HubMethodName(Constants.HubMethods.CreateGame)]
     public string CreateGame(int rows, int cols)
     {
-        var (gameId, _) = _sessions.CreateWithId(rows, cols);
-
-        return JsonSerializer.Serialize(new CreateGameResponse
-        {
-            GameId = gameId,
-            Rows = rows,
-            Cols = cols
-        }, JsonOptions.Default);
+        return JsonSerializer.Serialize(_gameService.CreateGame(rows, cols), JsonOptions.Default);
     }
 
     [HubMethodName(Constants.HubMethods.SetUser)]
-    public string SetUser(int gameId, int startRow, int startCol)
+    public string SetUser(EntityId gameId, int startRow, int startCol)
     {
-        EntityId id = EntityId.From(gameId);
-        var session = _sessions.Get(id)
-            ?? throw new HubException($"Game '{gameId}' not found.");
-
-        EntityId startRoomId = session.Topology.GetRoomByCoordinates(startRow, startCol).Id;
-        var userId = session.World.CreatePlayer(session.MazeInfo, startRoomId);
-        var cell = startRoomId;
-
-        return JsonSerializer.Serialize(new PlayerJoinResponse
-        {
-            UserId = userId,
-            CellId = cell
-        }, JsonOptions.Default);
+        var player = GetPlayerId();
+        return JsonSerializer.Serialize(_gameService.SetUser(gameId, player, startRow, startCol), JsonOptions.Default);
     }
 
     [HubMethodName(Constants.HubMethods.Move)]
-    public string Move(EntityId gameId, EntityId userId, MoveDirection direction)
+    public string Move(EntityId gameId, MoveDirection direction)
     {
-        // EntityId game = EntityId.From(gameId);
-        var session = _sessions.Get(gameId)
-            ?? throw new HubException($"Game '{gameId}' not found.");
-
-        //EntityId user = EntityId.From(userId);
-        var result = session.World.ExecuteMove(userId, direction);
-
-        if (result.Win == true)
-            return JsonSerializer.Serialize(new MoveResponse { Success = true, Win = true }, JsonOptions.Default);
-
-        if (!result.SuccessMove)
-        {
-            return JsonSerializer.Serialize(new MoveResponse
-            {
-                Success = false,
-                BlockedDirection = direction,
-                MoveBlocker = new MoveBlocker()
-                {
-                    BlockerId = result?.BlockedBy?.Id ?? EntityId.Empty,
-                    BlockedConnectionType = result?.BlockedBy?.Name
-                }
-            }, JsonOptions.Default);
-        }
-
-        return JsonSerializer.Serialize(new MoveResponse
-        {
-            Success = true,
-            CellId = result.RoomId // CellRevealBuilder.Build(result.RoomId, session)
-        }, JsonOptions.Default);
+        var player = GetPlayerId();
+        return JsonSerializer.Serialize(_gameService.Move(gameId, player, direction), JsonOptions.Default);
     }
 
     [HubMethodName(Constants.HubMethods.DestroyWall)]
-    public string DestroyWall(int gameId, int userId, MoveDirection direction)
+    public string DestroyWall(EntityId gameId, MoveDirection direction)
     {
-        EntityId game = EntityId.From(gameId);
-        var session = _sessions.Get(game)
-            ?? throw new HubException($"Game '{game}' not found.");
-        EntityId user = EntityId.From(userId);
-        var result = session.World.ExecuteDestroyWall(user, direction);
-        string json = JsonSerializer.Serialize(result, JsonOptions.Default);
-        return json;
+        var player = GetPlayerId();
+        return JsonSerializer.Serialize(_gameService.DestroyWall(gameId, player, direction), JsonOptions.Default);
     }
+
+    private PlayerId GetPlayerIdFromContext()
+    {
+        var http = Context.GetHttpContext();
+
+        var authHeader = http?.Request.Headers["Authorization"].FirstOrDefault();
+
+        if (string.IsNullOrEmpty(authHeader))
+            throw new UnauthorizedAccessException("No authorization header");
+
+        // Strip "Bearer " prefix
+        var token = authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
+            ? authHeader["Bearer ".Length..]
+            : authHeader;
+
+        if (string.IsNullOrEmpty(token))
+            throw new UnauthorizedAccessException("No player ID provided");
+
+        return PlayerId.From(token);
+    }
+
+    private PlayerId GetPlayerId() =>
+    Context.Items["PlayerId"] is PlayerId p ? p : throw new HubException("Not authenticated");
 }

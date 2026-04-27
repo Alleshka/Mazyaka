@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Maze.GameWorld.ComponentStore
 {
@@ -8,8 +7,9 @@ namespace Maze.GameWorld.ComponentStore
         private readonly Dictionary<Entity, T> _data = new Dictionary<Entity, T>();
 
         public void Add(Entity e, T component) => _data[e] = component;
+        public void Set(Entity e, T component) => _data[e] = component;
 
-        public ref T Get(Entity e) => ref CollectionsMarshal.GetValueRefOrNullRef(_data, e);
+        public T Get(Entity e) => _data[e]; // ref CollectionsMarshal.GetValueRefOrNullRef(_data, e);
 
         public bool Has(Entity e) => _data.ContainsKey(e);
 

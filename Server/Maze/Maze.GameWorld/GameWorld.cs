@@ -17,7 +17,7 @@ namespace Maze.GameWorld
         private readonly List<ISystem> _pipeline;
         private readonly ResultBuilder _builder = new ResultBuilder();
 
-        private Dictionary<EntityId, Entity> _players = new Dictionary<EntityId, Entity>();
+        private Dictionary<PlayerId, Entity> _players = new Dictionary<PlayerId, Entity>();
         internal MazeRegistry MazeRegistry { get; private set; } = new MazeRegistry();
         internal GameContext Context { get; private set; }
 
@@ -38,11 +38,15 @@ namespace Maze.GameWorld
             };
         }
 
-        public EntityId CreatePlayer(IMazeInfo mazeInfo, EntityId startRoomId)
+        public PlayerId CreatePlayer(IMazeInfo mazeInfo, EntityId startRoomId, PlayerId playerId)
         {
             EntityId mazeId = MazeRegistry.Register(mazeInfo);
 
-            EntityId playerId = EntityId.New();
+            if (playerId == PlayerId.Empty)
+            {
+                playerId = PlayerId.New();
+            }
+
             var player = State.CreateEntity();
             State.Add(player, new PlayerTag());
             State.Add(player, new RoomPosition { RoomId = startRoomId });
@@ -54,14 +58,14 @@ namespace Maze.GameWorld
             return playerId;
         }
 
-        public EntityId GetPlayerRoomId(EntityId playerId)
+        public EntityId GetPlayerRoomId(PlayerId playerId)
         {
             var player = _players[playerId];
             return State.Get<RoomPosition>(player).RoomId;
         }
 
         // not thread-safe: single player per session
-        public MoveResult ExecuteMove(EntityId playerID, MoveDirection dir)
+        public MoveResult ExecuteMove(PlayerId playerID, MoveDirection dir)
         {
             var player = GetPlayer(playerID);
             State.Add(player, new MoveIntent { Direction = dir });
@@ -69,14 +73,14 @@ namespace Maze.GameWorld
         }
 
         // not thread-safe: single player per session
-        public DestroyWallResult ExecuteDestroyWall(EntityId playerID, MoveDirection dir)
+        public DestroyWallResult ExecuteDestroyWall(PlayerId playerID, MoveDirection dir)
         {
             var player = GetPlayer(playerID);
             State.Add(player, new DestroyWallIntent { Direction = dir });
             return Execute(player).DestroyResult!;
         }
         
-        private Entity GetPlayer(EntityId id) =>  _players.TryGetValue(id, out var p) ? p : throw new Exception("Player not found");
+        private Entity GetPlayer(PlayerId id) =>  _players.TryGetValue(id, out var p) ? p : throw new Exception("Player not found");
 
         private ActionResult Execute(Entity player)
         {

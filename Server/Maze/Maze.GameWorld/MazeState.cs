@@ -25,6 +25,7 @@ namespace Maze.GameWorld
         public Entity CreateEntity() => new(_nextEntityId++);
 
         public void Add<T>(Entity e, T component) where T : struct => GetStore<T>().Add(e, component);
+        public void Set<T>(Entity e, T component) where T : struct => GetStore<T>().Set(e, component);
         public bool Has<T>(Entity e) where T : struct => GetStore<T>().Has(e);
 
         private IComponentStore<T> GetStore<T>() where T : struct
@@ -40,7 +41,7 @@ namespace Maze.GameWorld
             return (IComponentStore<T>)store;
         }
 
-        public ref T Get<T>(Entity e) where T : struct => ref GetStore<T>().Get(e);
+        public T Get<T>(Entity e) where T : struct => GetStore<T>().Get(e);
 
         public void Remove<T>(Entity e) where T : struct => GetStore<T>().Remove(e);
 

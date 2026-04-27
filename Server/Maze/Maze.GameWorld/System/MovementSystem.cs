@@ -21,7 +21,7 @@ namespace Maze.GameWorld.System
 
             foreach (var e in world.Query<MoveIntent>())
             {
-                ref var position = ref world.Get<RoomPosition>(e);
+                var position = world.Get<RoomPosition>(e);
                 var intent = world.Get<MoveIntent>(e);
 
                 var mazeInfo = GetMazeForPlayerOrDefault(e, world, mazeRegistry);
@@ -55,6 +55,7 @@ namespace Maze.GameWorld.System
 
                 var nextRoom = connection.GetOther(room);
                 position.RoomId = nextRoom.Id;
+                world.Set(e, position);
                 world.Add(e, new MoveSuccessEvent(position));
             }
         }

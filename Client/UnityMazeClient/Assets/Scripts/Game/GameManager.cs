@@ -1,3 +1,4 @@
+using Maze.Client.Abstractions;
 using Maze.ClientService;
 using Maze.Common;
 using Maze.Common.Types;
@@ -25,19 +26,22 @@ namespace MazeGame.Game
         [SerializeField] private float cellSize = 1f;
         [SerializeField] private float moveSpeed = 8f;
 
-        private IClientService _client;
         private MazeGrid _grid;
         private CellNavigator _navigator;
 
         private EntityId _gameId = EntityId.Empty;
-        private EntityId _userId = EntityId.Empty;
         private bool _ready;
         private bool _won;
         private bool _moving;
 
+        private IGameClient _gameClient;
+        private IConnectable _connectable;
+
         private void Awake()
         {
-            _client = new SignalRClientService(hubUrl);
+            var client = new SignalRClientService(hubUrl);
+            _gameClient = client;
+            _connectable = client;
 
             // MazeGrid
             var gridGO = new GameObject("MazeGridRoot");
@@ -69,9 +73,9 @@ namespace MazeGame.Game
         {
             try
             {
-                await _client.ConnectAsync();
+                await _connectable.ConnectAsync();
 
-                var gameResp = await _client.CreateGameAsync(mazeRows, mazeCols);
+                var gameResp = await _gameClient.CreateGameAsync(mazeRows, mazeCols);
                 _gameId = gameResp.GameId;
                 _grid.Initialize(cellSize);
                 Debug.Log($"[GameManager] Created game {gameResp.GameId} ({gameResp.Rows}x{gameResp.Cols})");
@@ -82,14 +86,14 @@ namespace MazeGame.Game
                     return;
                 }
 
-                var joinResp = await _client.SetUserAsync(_gameId, startRow, startCol);
-                _userId = joinResp.UserId;
+                var joinResp = await _gameClient.SetUserAsync(_gameId, startRow, startCol);
+                // _userId = joinResp.UserId;
 
                 _grid.RevealCell(joinResp.CellId);
                 _navigator.PlaceAt(joinResp.CellId);
 
                 _ready = true;
-                Debug.Log($"[GameManager] Ready. Game={_gameId} Player={_userId}");
+                // Debug.Log($"[GameManager] Ready. Game={_gameId} Player={_userId}");
             }
             catch (Exception ex)
             {
@@ -121,7 +125,7 @@ namespace MazeGame.Game
             _moving = true;
             try
             {
-                var resp = await _client.MoveAsync(_gameId, _userId, direction);
+                var resp = await _gameClient.MoveAsync(_gameId, direction);
 
                 if (resp.Success)
                 {
@@ -156,7 +160,7 @@ namespace MazeGame.Game
             _moving = true;
             try
             {
-                var resp = await _client.DestroyWallAsync(_gameId, _userId, direction);
+                var resp = await _gameClient.DestroyWallAsync(_gameId, direction);
                 Debug.Log($"[GameManager] Destroy wall response: success={resp.IsSuccess} connectionId={resp.ConnectionId} message='{resp.Message}' grenades={resp.Grenades}");
                 if (resp.IsSuccess)
                 {
@@ -179,9 +183,9 @@ namespace MazeGame.Game
 
         private async void OnDestroy()
         {
-            if (_client != null)
+            if (_gameClient != null)
             {
-                await _client.DisposeAsync();
+                await _gameClient.DisposeAsync();
             }
         }
     }

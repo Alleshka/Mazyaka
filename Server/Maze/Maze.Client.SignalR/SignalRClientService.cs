@@ -1,15 +1,17 @@
-﻿using Maze.Common;
+﻿using Maze.Client.Abstractions;
+using Maze.Common;
 using Maze.Common.DTO;
 using Maze.Common.Types;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Maze.ClientService
 {
-    public class SignalRClientService : IClientService
+    public class SignalRClientService : IGameClient, IConnectable, IAsyncDisposable
     {
         protected readonly string _hubUrl;
         private HubConnection _connection;
@@ -19,26 +21,20 @@ namespace Maze.ClientService
             _hubUrl = hubUrl;
         }
 
-        public async Task ConnectAsync(HubConnection connection = null)
+        public async Task ConnectAsync()
         {
-            if (connection != null)
-            {
-                _connection = connection;
-            }
-            else
-            {
-                _connection = new HubConnectionBuilder()
-                    .WithUrl(_hubUrl, options =>
-                    {
-                        options.Transports = HttpTransportType.WebSockets;
-                    })
-                    .AddJsonProtocol(options =>
-                    {
-                        JsonOptions.Configure(options.PayloadSerializerOptions);
-                    })
-                    .WithAutomaticReconnect()
-                    .Build();
-            }
+            _connection = new HubConnectionBuilder()
+                .WithUrl(_hubUrl, options =>
+                {
+                    options.Transports = HttpTransportType.WebSockets;
+                    options.AccessTokenProvider = () => Task.FromResult(Guid.NewGuid().ToString());
+                })
+                .AddJsonProtocol(options =>
+                {
+                    JsonOptions.Configure(options.PayloadSerializerOptions);
+                })
+                .WithAutomaticReconnect()
+                .Build();
 
             await _connection.StartAsync();
         }
@@ -65,15 +61,15 @@ namespace Maze.ClientService
             return JsonSerializer.Deserialize<PlayerJoinResponse>(json, JsonOptions.Default);
         }
 
-        public async Task<MoveResponse> MoveAsync(EntityId gameId, EntityId userId, MoveDirection direction)
+        public async Task<MoveResponse> MoveAsync(EntityId gameId, MoveDirection direction)
         {
-            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.Move, gameId.Value, userId.Value, direction);
+            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.Move, gameId, direction);
             return JsonSerializer.Deserialize<MoveResponse>(json, JsonOptions.Default);
         }
 
-        public async Task<DestroyWallResult> DestroyWallAsync(EntityId gameId, EntityId userId, MoveDirection direction)
+        public async Task<DestroyWallResult> DestroyWallAsync(EntityId gameId, MoveDirection direction)
         {
-            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.DestroyWall, gameId.Value, userId.Value, direction);
+            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.DestroyWall, gameId, direction);
             return JsonSerializer.Deserialize<DestroyWallResult>(json, JsonOptions.Default);
         }
     }

@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+ <?xml version="1.0" encoding="utf-8"?>
 <CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
   <CodeSnippet Format="1.0.0">
     <Header>
       <Title>EntityId Guid Struct</Title>
       <Shortcut>entityid_guid</Shortcut>
-      <Description>Generates a strongly typed EntityId struct with a guid PRIMITIVE</Description>
+      <Description>Generates a strongly typed EntityId struct with a Guid primitive</Description>
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
       </SnippetTypes>
@@ -13,34 +13,48 @@
       <Declarations>
         <Literal>
           <ID>NAME</ID>
-          <ToolTip>Struct name, e.g. OrderId</ToolTip>
+          <ToolTip>Struct name, e.g. PlayerId</ToolTip>
           <Default>MyEntityId</Default>
         </Literal>
       </Declarations>
       <Code Language="CSharp">
         <![CDATA[public readonly struct $NAME$ : IEquatable<$NAME$>, IComparable<$NAME$>, IEntityId
 {
-    public Guid Value { get; }
+    public System.Guid Value { get; }
 
-    private $NAME$(Guid value) => Value = value;
+    private $NAME$(System.Guid value) => Value = value;
 
-    public static $NAME$ New()                   => new $NAME$(Guid.NewGuid());
-    public static $NAME$ From(Guid value) => new $NAME$(value);
-    public static $NAME$ Empty                   => new $NAME$(Guid.Empty);
+    public static $NAME$ New()                     => new $NAME$(System.Guid.NewGuid());
+    public static $NAME$ From(System.Guid value)   => new $NAME$(value);
+    public static $NAME$ From(string value)        => new $NAME$(System.Guid.TryParse(value, out Guid result) ? result : Guid.Empty);
+    public static $NAME$ Empty                     => new $NAME$(System.Guid.Empty);
 
-    public bool Equals($NAME$ other)         => Value == other.Value;
-    public override bool Equals(object obj)  => obj is $NAME$ o && Equals(o);
-    public override int  GetHashCode()       => Value.GetHashCode();
-    public override string ToString()        => Value.ToString();
+    public bool Equals($NAME$ other)               => Value == other.Value;
+    public override bool Equals(object obj)        => obj is $NAME$ o && Equals(o);
+    public override int GetHashCode()              => Value.GetHashCode();
+    public override string ToString()              => Value.ToString();
+    public int CompareTo($NAME$ other)             => Value.CompareTo(other.Value);
 
-	public int CompareTo($NAME$ other) => Value.CompareTo(other.Value);
-	
     public static bool operator ==($NAME$ l, $NAME$ r) => l.Equals(r);
     public static bool operator !=($NAME$ l, $NAME$ r) => !l.Equals(r);
-	public static bool operator <($NAME$ l, $NAME$ r) => l.CompareTo(r) < 0;
-	public static bool operator >($NAME$ l, $NAME$ r) => l.CompareTo(r) > 0;
-	public static bool operator <=($NAME$ l, $NAME$ r) => l.CompareTo(r) <= 0;
-	public static bool operator >=($NAME$ l, $NAME$ r) => l.CompareTo(r) >= 0;
+    public static bool operator <($NAME$ l, $NAME$ r)  => l.CompareTo(r) < 0;
+    public static bool operator >($NAME$ l, $NAME$ r)  => l.CompareTo(r) > 0;
+    public static bool operator <=($NAME$ l, $NAME$ r) => l.CompareTo(r) <= 0;
+    public static bool operator >=($NAME$ l, $NAME$ r) => l.CompareTo(r) >= 0;
+
+    public sealed class JsonConverter : System.Text.Json.Serialization.JsonConverter<$NAME$>
+    {
+        public override $NAME$ Read(ref System.Text.Json.Utf8JsonReader reader, System.Type typeToConvert, System.Text.Json.JsonSerializerOptions options)
+        {
+            var value = reader.GetString();
+            return string.IsNullOrEmpty(value) ? Empty : From(value);
+        }
+
+        public override void Write(System.Text.Json.Utf8JsonWriter writer, $NAME$ value, System.Text.Json.JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString());
+        }
+    }
 }$END$]]>
       </Code>
     </Snippet>

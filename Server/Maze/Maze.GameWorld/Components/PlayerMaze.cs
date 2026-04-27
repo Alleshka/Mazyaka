@@ -1,4 +1,5 @@
 ﻿using Maze.Common.Types;
+using Maze.Common;
 
 namespace Maze.GameWorld.Components
 {

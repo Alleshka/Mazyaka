@@ -1,7 +1,11 @@
-using Maze.Server.Hubs;
-using Maze.Server.Services;
-using Maze.Common.Types;
 using Maze.Common;
+using Maze.Core.ConnectionRegistry;
+using Maze.Core.Services;
+using Maze.Server;
+using Maze.Server.Hubs;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +18,9 @@ builder.Services
     {
         JsonOptions.Configure(option.PayloadSerializerOptions);
     });
-builder.Services.AddSingleton<GameSessionManager>();
+
+builder.Services.AddSingleton<GameService>();
+builder.Services.AddSingleton<IConnectionRegistry, InMemoryConnectionRegistry>();
 
 builder.Services.AddCors(options =>
 {
