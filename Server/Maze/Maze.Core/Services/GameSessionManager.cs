@@ -1,18 +1,25 @@
 ﻿using Maze.Common.Types;
 using Maze.Core.Models;
+using Maze.GameWorld.Services;
 using Maze.MazeStructure.MazeGenerators;
 using Maze.MazeStructure.Topology;
 using System.Collections.Concurrent;
 
 namespace Maze.Core.Services
 {
-    internal class GameSessionManager
+    public class GameSessionManager
     {
         private readonly ConcurrentDictionary<EntityId, GameSession> _sessions = new ConcurrentDictionary<EntityId, GameSession>();
+        private readonly ConnectionContextBuilder _connectionContextBuilder;
 
         internal GameSession? Get(EntityId gameId) => _sessions.TryGetValue(gameId, out var session) ? session : null;
 
-        public (EntityId gameId, GameSession session) CreateWithId(int rows, int cols)
+        public GameSessionManager(ConnectionContextBuilder connectionContextBuilder)
+        {
+            _connectionContextBuilder = connectionContextBuilder;
+        }
+
+        internal (EntityId gameId, GameSession session) CreateWithId(int rows, int cols)
         {
             var mazeTopology = new GridTopology(rows, cols);
             var mazeBuilder = new SimpleMazeBuilder();
@@ -20,7 +27,7 @@ namespace Maze.Core.Services
             // TODO: make configurable in the future
             generator = new BraidMazeGenerator(generator, mazeBuilder, 0.5f);
             var mazeInfo = generator.Generate();
-            var world = new Maze.GameWorld.GameWorld();
+            var world = new Maze.GameWorld.GameWorld(_connectionContextBuilder);
 
             var session = new GameSession(world, mazeInfo, mazeTopology);
             var gameId = EntityId.New();

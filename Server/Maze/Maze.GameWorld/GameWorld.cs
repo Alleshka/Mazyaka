@@ -3,7 +3,9 @@ using Maze.Common.DTO;
 using Maze.Common.Types;
 using Maze.GameWorld.Components;
 using Maze.GameWorld.Results;
+using Maze.GameWorld.Services;
 using Maze.GameWorld.System;
+using Maze.GameWorld.TraversalPolicies;
 using Maze.MazeStructure;
 using System;
 using System.Collections.Generic;
@@ -21,14 +23,17 @@ namespace Maze.GameWorld
         internal MazeRegistry MazeRegistry { get; private set; } = new MazeRegistry();
         internal GameContext Context { get; private set; }
 
-        public GameWorld()
+        private ConnectionContextBuilder _connectionContextBuilder;
+
+        public GameWorld(ConnectionContextBuilder connectionContextBuilder)
         {
+            _connectionContextBuilder = connectionContextBuilder;
             State = new MazeState();
 
             _pipeline = new List<ISystem>
             {
                 new DestroyWallSystem(),
-                new MovementSystem(),
+                new MovementSystem(connectionContextBuilder),
             };
 
             Context = new GameContext()
@@ -52,6 +57,7 @@ namespace Maze.GameWorld
             State.Add(player, new RoomPosition { RoomId = startRoomId });
             State.Add(player, new PlayerMaze(mazeId));
             State.Add(player, new Grenades { Count = 3 });
+            State.Add(player, new TraversalPolicyComponent(DefaultTraversalPolicy.Instance));
 
             _players.Add(playerId, player);
 
@@ -65,9 +71,25 @@ namespace Maze.GameWorld
         }
 
         // not thread-safe: single player per session
-        public MoveResult ExecuteMove(PlayerId playerID, MoveDirection dir)
+        public MoveResponse ExecuteMove(PlayerId playerID, MoveDirection dir)
         {
             var player = GetPlayer(playerID);
+            var policy = State.Get<TraversalPolicyComponent>(player);
+            var ctx = _connectionContextBuilder.BuildContext(Context, player, dir);
+            var traversal = policy.Policy.CanTraverse(ctx);
+            bool? activeKey = null;
+
+            // Now it is always false so we can't win
+            // It is expected behaviour, will fix later
+            if (traversal is ExitReached && activeKey is null)
+            {
+                return MoveResponse.NeedsKey(new EntityId[] { }); // TODO: Impement keys
+            }
+            else
+            {
+                State.Add(player, new CachedTraversalResult(traversal));
+            }
+
             State.Add(player, new MoveIntent { Direction = dir });
             return Execute(player).MoveResult!;
         }
@@ -94,6 +116,7 @@ namespace Maze.GameWorld
         {
             state.ClearIntents();
             state.ClearEvents();
+            state.ClearCache();
         }
 
         private void RunPipeline()

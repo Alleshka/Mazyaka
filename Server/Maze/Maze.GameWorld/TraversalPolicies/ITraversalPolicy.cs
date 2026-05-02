@@ -2,8 +2,8 @@ using Maze.Common;
 
 namespace Maze.GameWorld.TraversalPolicies
 {
-    public interface ITraversalPolicy
+    internal interface ITraversalPolicy
     {
-        TraversalResult CanTraverse(ConnectionContext ctx, MoveDirection dir);
+        TraversalResult CanTraverse(ConnectionContext ctx);
     }
 }

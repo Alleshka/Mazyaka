@@ -4,6 +4,7 @@ using Maze.Common;
 using Maze.Common.Types;
 using MazeGame.Maze;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace MazeGame.Game
@@ -89,8 +90,8 @@ namespace MazeGame.Game
                 var joinResp = await _gameClient.SetUserAsync(_gameId, startRow, startCol);
                 // _userId = joinResp.UserId;
 
-                _grid.RevealCell(joinResp.CellId);
-                _navigator.PlaceAt(joinResp.CellId);
+                var cell = _grid.RevealCell();
+                _navigator.PlaceAt(cell.CellId);
 
                 _ready = true;
                 // Debug.Log($"[GameManager] Ready. Game={_gameId} Player={_userId}");
@@ -127,7 +128,7 @@ namespace MazeGame.Game
             {
                 var resp = await _gameClient.MoveAsync(_gameId, direction);
 
-                if (resp.Success)
+                if (resp.IsSuccess)
                 {
                     if (resp.Win)
                     {
@@ -137,12 +138,19 @@ namespace MazeGame.Game
                         return;
                     }
 
-                    _grid.RevealCell(resp.CellId, direction);
-                    _navigator.MoveTo(resp.CellId);
+                    var cell = _grid.RevealCell(direction);
+                    _navigator.MoveTo(cell.CellId);
                 }
-                else
+                else if (resp.Blocker != null)
                 {
-                    _grid.MarkWall(_navigator.CurrentCellId, resp.BlockedDirection.Value, resp.MoveBlocker);
+                    _grid.MarkWall(_navigator.CurrentCellId, direction, resp.Blocker);
+                }
+                else if (resp.RequiresKeySelection)
+                {
+                    _grid.MarkExit(_navigator.CurrentCellId, direction);
+                    Debug.Log("[Need a key");
+                    Debug.Log(resp.AvailableKeys.Count > 0 ? string.Join("; ", resp.AvailableKeys) : "No keys available");
+                    return;
                 }
             }
             catch (Exception ex)

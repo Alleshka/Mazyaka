@@ -350,7 +350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c22e304867efe1441a3986aee8c84f85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <HubUrl>k__BackingField: http://localhost:50774/mazehub
 --- !u!4 &1504103455
 Transform:
   m_ObjectHideFlags: 0

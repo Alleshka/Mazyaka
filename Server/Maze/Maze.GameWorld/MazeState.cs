@@ -61,6 +61,11 @@ namespace Maze.GameWorld
             GetStore<DestroyFailedEvent>().Clear();
         }
 
+        public void ClearCache()
+        {
+            GetStore<CachedTraversalResult>().Clear();
+        }
+
         public IEnumerable<Entity> Query<T>() where T : struct
         {
             var store = GetStore<T>();

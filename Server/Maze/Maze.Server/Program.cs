@@ -1,11 +1,9 @@
 using Maze.Common;
 using Maze.Core.ConnectionRegistry;
 using Maze.Core.Services;
+using Maze.GameWorld.Services;
 using Maze.Server;
 using Maze.Server.Hubs;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +19,8 @@ builder.Services
 
 builder.Services.AddSingleton<GameService>();
 builder.Services.AddSingleton<IConnectionRegistry, InMemoryConnectionRegistry>();
+builder.Services.AddSingleton<ConnectionContextBuilder>();
+builder.Services.AddSingleton<GameSessionManager>();
 
 builder.Services.AddCors(options =>
 {

@@ -1,17 +1,18 @@
 using Maze.GameWorld.Components;
 using Maze.GameWorld.Events;
+using Maze.GameWorld.Services;
 using Maze.GameWorld.TraversalPolicies;
 using Maze.MazeStructure;
-using Maze.MazeStructure.MazeSites;
 
 namespace Maze.GameWorld.System
 {
     internal class MovementSystem : BaseSystem
     {
-        private static readonly DefaultTraversalPolicy _defaultPolicy = new DefaultTraversalPolicy();
+        private ConnectionContextBuilder _connectionContextBuilder;
 
-        public MovementSystem()
+        public MovementSystem(ConnectionContextBuilder connectionContextBuilder)
         {
+            _connectionContextBuilder = connectionContextBuilder;
         }
 
         public override void Run(GameContext gameContext)
@@ -19,55 +20,57 @@ namespace Maze.GameWorld.System
             var world = gameContext.State;
             var mazeRegistry = gameContext.Registry;
 
+            TraversalResult result;
             foreach (var e in world.Query<MoveIntent>())
             {
                 var position = world.Get<RoomPosition>(e);
-                var intent = world.Get<MoveIntent>(e);
 
-                var mazeInfo = GetMazeForPlayerOrDefault(e, world, mazeRegistry);
-                var room = mazeInfo?.MazeStructure.GetRoomByID(position.RoomId);
-                var connection = room?.GetConnection(intent.Direction);
-
-                if (connection == null)
+                if (world.Has<CachedTraversalResult>(e))
                 {
-                    world.Add(e, new MoveBlockedNoConnectionEvent());
-                    continue;
+                    result = world.Get<CachedTraversalResult>(e).Result;
+                }
+                else
+                {
+                    var intent = world.Get<MoveIntent>(e);
+                    var mazeInfo = GetMazeForPlayerOrDefault(e, world, mazeRegistry);
+                    var room = mazeInfo?.MazeStructure.GetRoomByID(position.RoomId);
+                    var connection = room?.GetConnection(intent.Direction);
+
+                    if (connection == null)
+                    {
+                        world.Add(e, new MoveBlockedNoConnectionEvent());
+                        continue;
+                    }
+
+                    var ctx = _connectionContextBuilder.BuildContext(mazeInfo, connection, room, world);
+                    var policy = world.Has<TraversalPolicyComponent>(e)
+                        ? world.Get<TraversalPolicyComponent>(e).Policy
+                        : DefaultTraversalPolicy.Instance;
+
+                    result = policy.CanTraverse(ctx);
                 }
 
-                var ctx = BuildContext(mazeInfo, connection, room, world);
-                var policy = world.Has<TraversalPolicyComponent>(e)
-                    ? world.Get<TraversalPolicyComponent>(e).Policy
-                    : _defaultPolicy;
-
-                var result = policy.CanTraverse(ctx, intent.Direction);
-
-                if (result.IsExit)
+                switch (result)
                 {
-                    world.Add(e, new MoveExitEvent());
-                    continue;
+                    case ExitReached:
+                        {
+                            world.Add(e, new MoveExitEvent());
+                            break;
+                        }
+                    case Blocked blocked:
+                        {
+                            world.Add(e, new MoveBlockedByBlockerEvent(blocked.ConnectionId, blocked.Reason ?? "unknown"));
+                            break;
+                        }
+                    case Success success:
+                        {
+                            position.RoomId = success.NextRoomId;
+                            world.Set(e, position);
+                            world.Add(e, new MoveSuccessEvent());
+                            break;
+                        }
                 }
-
-                if (!result.CanPass)
-                {
-                    world.Add(e, new MoveBlockedByBlockerEvent(connection.Id, result.Blocker ?? "unknown"));
-                    continue;
-                }
-
-                var nextRoom = connection.GetOther(room);
-                position.RoomId = nextRoom.Id;
-                world.Set(e, position);
-                world.Add(e, new MoveSuccessEvent(position));
             }
-        }
-
-        private ConnectionContext BuildContext(IMazeInfo mazeInfo, IMazeConnection connection, IMazeRoom fromRoom, MazeState maze)
-        {
-            return new ConnectionContext(
-                connection,
-                fromRoom,
-                mazeInfo.Metadata,
-                maze.GetConnectionConditions(connection.Id)
-            );
         }
     }
 }

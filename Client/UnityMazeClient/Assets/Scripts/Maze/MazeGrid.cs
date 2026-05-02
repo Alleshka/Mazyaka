@@ -22,7 +22,7 @@ namespace MazeGame.Maze
 
         private Transform _container;                         // moves for centering
 
-        private readonly Dictionary<EntityId, MazeCell> _cells = new();
+        private readonly Dictionary<(int row, int col), MazeCell> _cells = new();
         private readonly Dictionary<EntityId, (int row, int col)> _gridPositions = new();
 
         // Canonical connection key: min(a,b) * 1_000_000 + max(a,b)
@@ -50,23 +50,24 @@ namespace MazeGame.Maze
         }
 
         /// <summary>Creates (or updates) a cell when the player enters it, then recenters.</summary>
-        public MazeCell RevealCell(EntityId cellId, MoveDirection moveDirection = MoveDirection.None)
+        public MazeCell RevealCell(MoveDirection moveDirection = MoveDirection.None)
         {
             ChangeCur(moveDirection);
-            if (!_cells.TryGetValue(cellId, out var cell))
+            var cellPosition = (_curRow, _curCol);
+
+            if (!_cells.TryGetValue(cellPosition, out var cell))
             {
+                EntityId cellId = EntityId.New();
                 _gridPositions.Add(cellId, (_curRow, _curCol));
 
                 var go = new GameObject(); // named inside MazeCell.Initialize
-                Debug.Log(cellId);
                 go.transform.SetParent(_container);
                 go.transform.localPosition = LocalPos(cellId);
 
                 cell = go.AddComponent<MazeCell>();
                 cell.Initialize(cellId, _cellSize);
-                _cells[cellId] = cell;
+                _cells[cellPosition] = cell;
                 
-
                 UpdateBounds(cellId);
                 Recenter();
             }
@@ -78,7 +79,9 @@ namespace MazeGame.Maze
         public void HideWall(EntityId connectionId)
         {
             if (!_shownWalls.TryGetValue(connectionId, out var w)) return;
-            if (_cells.TryGetValue(w.cellA, out var cellA)) cellA.HideWall(w.dirA);
+
+            var cellPosition = _gridPositions[w.cellA];
+            if (_cells.TryGetValue(cellPosition, out var cellA)) cellA.HideWall(w.dirA);
             _shownWalls.Remove(connectionId);
         }
 
@@ -98,13 +101,15 @@ namespace MazeGame.Maze
             MoveDirection oppositeDir = direction.Opposite();
             _shownWalls[key] = (fromCellId, direction);
 
-            if (_cells.TryGetValue(fromCellId, out var cell))
+            var cellPosition = _gridPositions[fromCellId];
+            if (_cells.TryGetValue(cellPosition, out var cell))
                 cell.ShowWall(direction);
         }
 
         public void MarkExit(EntityId fromCellId, MoveDirection direction)
         {
-            if (_cells.TryGetValue(fromCellId, out var cell))
+            var cellPosition = _gridPositions[fromCellId];
+            if (_cells.TryGetValue(cellPosition, out var cell))
                 cell.ShowExit(direction);
         }
 
@@ -113,7 +118,8 @@ namespace MazeGame.Maze
         {
             if (!_shownWalls.TryGetValue(wallId, out var w)) return;
 
-            if (_cells.TryGetValue(w.cellA, out var cellA)) cellA.HideWall(w.dirA);
+            var cellPosition = _gridPositions[w.cellA];
+            if (_cells.TryGetValue(cellPosition, out var cellA)) cellA.HideWall(w.dirA);
 
             _shownWalls.Remove(wallId);
         }

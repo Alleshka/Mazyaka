@@ -3,6 +3,7 @@ using Maze.Common.Types;
 using Maze.GameWorld.Components;
 using Maze.GameWorld.Events;
 using Maze.GameWorld.Results;
+using Maze.MazeStructure.MazeSites;
 
 namespace Maze.GameWorld
 {
@@ -17,30 +18,31 @@ namespace Maze.GameWorld
             };
         }
 
-        private MoveResult? BuildMoveResult(MazeState w, Entity e)
+        private MoveResponse BuildMoveResult(MazeState w, Entity e)
         {
             if (w.Has<MoveBlockedByBlockerEvent>(e))
             {
                 var blocker = w.Get<MoveBlockedByBlockerEvent>(e);
-                return MoveResult.Blocked(new Blocker(blocker.Id, blocker.BlockerName));
+                return MoveResponse.Blocked(new MoveBlocker() { BlockerId = blocker.Id, BlockedConnectionType = blocker.BlockerName });
             }
+
             if (w.Has<MoveBlockedNoConnectionEvent>(e))
             {
-                return MoveResult.Blocked(new Blocker(EntityId.Empty, "No connection"));
+                return MoveResponse.Blocked(new MoveBlocker() { BlockerId = EntityId.Empty, BlockedConnectionType = WorldEdgeSite.Instance.GetType().Name });
             }
             if (w.Has<MoveSuccessEvent>(e))
             {
-                var pos = w.Get<RoomPosition>(e);
-                return MoveResult.Success(pos.RoomId);
+                return MoveResponse.Success();
             }
             if (w.Has<MoveExitEvent>(e))
             {
-                return MoveResult.Success(EntityId.Empty, win: true);
+                return MoveResponse.Won();
             }
+
             return null;
         }
 
-        private DestroyWallResult? BuildDestroyResult(MazeState w, Entity e)
+        private DestroyWallResult BuildDestroyResult(MazeState w, Entity e)
         {
             int grenadesCount = w.Has<Grenades>(e) ? w.Get<Grenades>(e).Count : 0;
 
