@@ -7,7 +7,7 @@ using Maze.Server.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-     .AddSignalR(options =>
+    .AddSignalR(options =>
     {
         options.EnableDetailedErrors = true;
     })
@@ -19,6 +19,7 @@ builder.Services
 builder.Services.AddSingleton<GameService>();
 builder.Services.AddSingleton<IConnectionRegistry, InMemoryConnectionRegistry>();
 builder.Services.AddSingleton<GameSessionManager>();
+builder.Services.AddSingleton<TokenService>();
 
 builder.Services.AddCors(options =>
 {
@@ -31,6 +32,13 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 app.UseCors();
+
+app.MapPost("/api/token", (TokenService tokens) =>
+{
+    var (token, playerId) = tokens.Issue();
+    return Results.Ok(new { token, playerId = playerId.ToString() });
+});
+
 app.MapHub<MazeHub>("/mazehub");
 
 app.Run();

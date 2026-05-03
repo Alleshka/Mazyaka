@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@ namespace Maze.ClientService
         protected readonly string _hubUrl;
         private HubConnection _connection;
 
+        public PlayerId PlayerId { get; private set; }
+
         public SignalRClientService(string hubUrl)
         {
             _hubUrl = hubUrl;
@@ -23,11 +26,23 @@ namespace Maze.ClientService
 
         public async Task ConnectAsync()
         {
+            var tokenUrl = new Uri(new Uri(_hubUrl), "/api/token").ToString();
+            string jwt;
+            using (var http = new HttpClient())
+            {
+                var response = await http.PostAsync(tokenUrl, null);
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                using var doc = JsonDocument.Parse(json);
+                jwt = doc.RootElement.GetProperty("token").GetString();
+                PlayerId = PlayerId.From(doc.RootElement.GetProperty("playerId").GetString());
+            }
+
             _connection = new HubConnectionBuilder()
                 .WithUrl(_hubUrl, options =>
                 {
                     options.Transports = HttpTransportType.WebSockets;
-                    options.AccessTokenProvider = () => Task.FromResult(Guid.NewGuid().ToString());
+                    options.AccessTokenProvider = () => Task.FromResult(jwt);
                 })
                 .AddJsonProtocol(options =>
                 {

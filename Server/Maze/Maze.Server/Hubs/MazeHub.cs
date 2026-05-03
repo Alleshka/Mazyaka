@@ -11,16 +11,29 @@ public class MazeHub : Hub
 {
     private readonly GameService _gameService;
     private readonly IConnectionRegistry _registry;
+    private readonly TokenService _tokenService;
 
-    public MazeHub(GameService gameService, IConnectionRegistry connectionRegistry)
+    public MazeHub(GameService gameService, IConnectionRegistry connectionRegistry, TokenService tokenService)
     {
         _gameService = gameService;
         _registry = connectionRegistry;
+        _tokenService = tokenService;
     }
 
     public override async Task OnConnectedAsync()
     {
-        var playerId = GetPlayerIdFromContext();
+        var httpContext = Context.GetHttpContext();
+
+        // .NET SignalR client sends via Authorization header; browsers use access_token query param
+        var authHeader = httpContext?.Request.Headers["Authorization"].FirstOrDefault();
+        string? token = authHeader?.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase) == true
+            ? authHeader["Bearer ".Length..]
+            : httpContext?.Request.Query["access_token"].FirstOrDefault();
+
+        if (string.IsNullOrEmpty(token))
+            throw new HubException("No token provided");
+
+        var playerId = await _tokenService.ValidateAsync(token);
         _registry.Register(playerId, Context.ConnectionId);
         Context.Items["PlayerId"] = playerId;
 
@@ -60,26 +73,6 @@ public class MazeHub : Hub
         return JsonSerializer.Serialize(_gameService.DestroyWall(gameId, player, direction), JsonOptions.Default);
     }
 
-    private PlayerId GetPlayerIdFromContext()
-    {
-        var http = Context.GetHttpContext();
-
-        var authHeader = http?.Request.Headers["Authorization"].FirstOrDefault();
-
-        if (string.IsNullOrEmpty(authHeader))
-            throw new UnauthorizedAccessException("No authorization header");
-
-        // Strip "Bearer " prefix
-        var token = authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
-            ? authHeader["Bearer ".Length..]
-            : authHeader;
-
-        if (string.IsNullOrEmpty(token))
-            throw new UnauthorizedAccessException("No player ID provided");
-
-        return PlayerId.From(token);
-    }
-
     private PlayerId GetPlayerId() =>
-    Context.Items["PlayerId"] is PlayerId p ? p : throw new HubException("Not authenticated");
+        Context.Items["PlayerId"] is PlayerId p ? p : throw new HubException("Not authenticated");
 }
