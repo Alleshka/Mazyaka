@@ -1,4 +1,7 @@
-﻿using Maze.MazeStructure.Metadata;
+﻿using Maze.Common.Types;
+using Maze.MazeStructure.Items;
+using Maze.MazeStructure.Metadata;
+using System.Collections.Generic;
 
 namespace Maze.MazeStructure
 {
@@ -6,5 +9,6 @@ namespace Maze.MazeStructure
     {
         IMaze MazeStructure { get; }
         IMazeMetadata Metadata { get; }
+        IReadOnlyDictionary<EntityId, IReadOnlyList<IRoomItem>> RoomItems { get; }
     }
 }

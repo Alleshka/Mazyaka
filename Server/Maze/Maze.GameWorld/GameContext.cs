@@ -2,7 +2,8 @@
 {
     internal class GameContext
     {
-        public MazeState State{ get; set; }
+        public MazeState WorldState{ get; set; }
+        public MazeRuntimeState MazeRuntime { get; set; }
         public MazeRegistry Registry{ get; set; }
     }
 }

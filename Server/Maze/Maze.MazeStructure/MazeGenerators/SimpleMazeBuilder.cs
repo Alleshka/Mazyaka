@@ -1,7 +1,10 @@
 using Maze.Common;
 using Maze.Common.Types;
+using Maze.MazeStructure.Items;
 using Maze.MazeStructure.MazeSites;
 using Maze.MazeStructure.Metadata;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Maze.MazeStructure.MazeGenerators
 {
@@ -9,6 +12,7 @@ namespace Maze.MazeStructure.MazeGenerators
     {
         private IMaze _curMaze;
         private IMazeMetadata _mazeMetadata;
+        private readonly Dictionary<EntityId, List<IRoomItem>> _roomItems = new Dictionary<EntityId, List<IRoomItem>>();
 
         public void BuildEmptyMaze()
         {
@@ -83,9 +87,20 @@ namespace Maze.MazeStructure.MazeGenerators
             _mazeMetadata.MarkExit(connection);
         }
 
+        public void PlaceItem(EntityId roomId, IRoomItem item)
+        {
+            if (!_roomItems.TryGetValue(roomId, out var list))
+                _roomItems[roomId] = list = new List<IRoomItem>();
+            list.Add(item);
+        }
+
         public IMazeInfo Build()
         {
-            return new SimpleMazeInfo(_curMaze, _mazeMetadata);
+            var ro = _roomItems.ToDictionary(
+                kv => kv.Key,
+                kv => (IReadOnlyList<IRoomItem>)kv.Value.AsReadOnly());
+
+            return new SimpleMazeInfo(_curMaze, _mazeMetadata, ro);
         }
     }
 }

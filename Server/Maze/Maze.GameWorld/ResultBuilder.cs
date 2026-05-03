@@ -4,12 +4,14 @@ using Maze.GameWorld.Components;
 using Maze.GameWorld.Events;
 using Maze.GameWorld.Results;
 using Maze.MazeStructure.MazeSites;
+using System;
+using System.Linq;
 
 namespace Maze.GameWorld
 {
     internal class ResultBuilder
     {
-        public ActionResult Build(MazeState w, Entity e)
+        public ActionResult Build(MazeState w, EcsEntity e)
         {
             return new ActionResult()
             {
@@ -18,8 +20,15 @@ namespace Maze.GameWorld
             };
         }
 
-        private MoveResponse BuildMoveResult(MazeState w, Entity e)
+        private MoveResponse BuildMoveResult(MazeState w, EcsEntity e)
         {
+            PickedUpItem[] pickedUp = null;
+            if (w.Has<ItemsPickedUpEvent>(e))
+            {
+                var ev = w.Get<ItemsPickedUpEvent>(e);
+                pickedUp = ev.Items.Select(x => new PickedUpItem(x.ItemId, x.GetType().Name)).ToArray();
+            }
+
             if (w.Has<MoveBlockedByBlockerEvent>(e))
             {
                 var blocker = w.Get<MoveBlockedByBlockerEvent>(e);
@@ -30,10 +39,12 @@ namespace Maze.GameWorld
             {
                 return MoveResponse.Blocked(new MoveBlocker() { BlockerId = EntityId.Empty, BlockedConnectionType = WorldEdgeSite.Instance.GetType().Name });
             }
+
             if (w.Has<MoveSuccessEvent>(e))
             {
-                return MoveResponse.Success();
+                return new MoveResponse { IsSuccess = true, PickedUpItems = pickedUp };
             }
+
             if (w.Has<MoveExitEvent>(e))
             {
                 return MoveResponse.Won();
@@ -42,7 +53,7 @@ namespace Maze.GameWorld
             return null;
         }
 
-        private DestroyWallResult BuildDestroyResult(MazeState w, Entity e)
+        private DestroyWallResult BuildDestroyResult(MazeState w, EcsEntity e)
         {
             int grenadesCount = w.Has<Grenades>(e) ? w.Get<Grenades>(e).Count : 0;
 

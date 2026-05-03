@@ -1,4 +1,6 @@
 ﻿using Maze.Common;
+using Maze.Common.Types;
+using Maze.MazeStructure.Items;
 using Maze.MazeStructure.MazeSites;
 using Maze.MazeStructure.Metadata;
 
@@ -15,6 +17,7 @@ namespace Maze.MazeStructure.MazeGenerators
         void MarkWall(IMazeConnection connection);
         void MarkPassage(IMazeConnection connection);
         void MarkExit(IMazeConnection connection);
+        void PlaceItem(EntityId roomId, IRoomItem item);
 
         IMazeInfo Build();
     }

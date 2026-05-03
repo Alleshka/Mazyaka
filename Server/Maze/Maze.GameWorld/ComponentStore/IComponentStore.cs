@@ -2,14 +2,14 @@
 
 namespace Maze.GameWorld.ComponentStore
 {
-    internal interface IComponentStore<T> where T : struct
+    internal interface IComponentStore<T>
     {
-        void Add(Entity e, T component);
-        void Set(Entity e, T component);
-        T Get(Entity e);
-        bool Has(Entity e);
-        void Remove(Entity e);
-        IEnumerable<KeyValuePair<Entity, T>> All();
+        void Add(EcsEntity e, T component);
+        void Set(EcsEntity e, T component);
+        T Get(EcsEntity e);
+        bool Has(EcsEntity e);
+        void Remove(EcsEntity e);
+        IEnumerable<KeyValuePair<EcsEntity, T>> All();
         void Clear();
     }
 }

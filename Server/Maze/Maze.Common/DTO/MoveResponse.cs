@@ -10,10 +10,10 @@ namespace Maze.Common.DTO
         public MoveBlocker Blocker { get; init; }
         public bool RequiresKeySelection { get; init; }
         public IReadOnlyList<EntityId> AvailableKeys { get; init; }
+        public IReadOnlyList<PickedUpItem> PickedUpItems { get; init; }
 
         public MoveResponse()
         {
-
         }
 
         public static MoveResponse Success() => new MoveResponse() { IsSuccess = true };

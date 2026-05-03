@@ -4,6 +4,7 @@ using Maze.Common;
 using Maze.Common.Types;
 using MazeGame.Maze;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -38,17 +39,23 @@ namespace MazeGame.Game
         private IGameClient _gameClient;
         private IConnectable _connectable;
 
+        // Key inventory
+        private readonly List<EntityId> _inventoryKeys = new List<EntityId>();
+        private EntityId? _activeKey;
+
+        // Key selection state (shown when server returns RequiresKeySelection)
+        private bool _selectingKey;
+        private MoveDirection _pendingDirection;
+
         private void Awake()
         {
             var client = new SignalRClientService(hubUrl);
             _gameClient = client;
             _connectable = client;
 
-            // MazeGrid
             var gridGO = new GameObject("MazeGridRoot");
             _grid = gridGO.AddComponent<MazeGrid>();
 
-            // Player — yellow square, renders above cells
             var playerGO = new GameObject("Player");
             var sr = playerGO.AddComponent<SpriteRenderer>();
             sr.sprite = Sprites.Square;
@@ -60,7 +67,6 @@ namespace MazeGame.Game
             _navigator.SetMoveSpeed(moveSpeed);
             _navigator.Initialize(_grid);
 
-            // Camera
             if (Camera.main != null)
             {
                 Camera.main.orthographic = true;
@@ -87,14 +93,12 @@ namespace MazeGame.Game
                     return;
                 }
 
-                var joinResp = await _gameClient.SetUserAsync(_gameId, startRow, startCol);
-                // _userId = joinResp.UserId;
+                await _gameClient.SetUserAsync(_gameId, startRow, startCol);
 
                 var cell = _grid.RevealCell();
                 _navigator.PlaceAt(cell.CellId);
 
                 _ready = true;
-                // Debug.Log($"[GameManager] Ready. Game={_gameId} Player={_userId}");
             }
             catch (Exception ex)
             {
@@ -106,6 +110,55 @@ namespace MazeGame.Game
         {
             if (!_ready || _won || _moving) return;
 
+            // Key-selection dialog: number keys pick from available list, Escape cancels
+            if (_selectingKey)
+            {
+                for (int i = 0; i < _inventoryKeys.Count && i < 9; i++)
+                {
+                    if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+                    {
+                        _activeKey = _inventoryKeys[i];
+                        _selectingKey = false;
+                        ExecuteMove(_pendingDirection);
+                        return;
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    _selectingKey = false;
+                    _pendingDirection = MoveDirection.None;
+                }
+                return;
+            }
+
+            // Tab: cycle active key (none → key 1 → key 2 → … → none)
+            if (Input.GetKeyDown(KeyCode.Tab) && _inventoryKeys.Count > 0)
+            {
+                if (!_activeKey.HasValue)
+                {
+                    _activeKey = _inventoryKeys[0];
+                }
+                else
+                {
+                    int idx = _inventoryKeys.IndexOf(_activeKey.Value);
+                    _activeKey = (idx < 0 || idx >= _inventoryKeys.Count - 1)
+                        ? (EntityId?)null
+                        : _inventoryKeys[idx + 1];
+                }
+                return;
+            }
+
+            // Number keys 1–9: pre-select key by index
+            for (int i = 0; i < _inventoryKeys.Count && i < 9; i++)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+                {
+                    _activeKey = _inventoryKeys[i];
+                    return;
+                }
+            }
+
+            // Movement
             MoveDirection dir = MoveDirection.None;
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) dir = MoveDirection.Up;
             else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) dir = MoveDirection.Down;
@@ -116,7 +169,7 @@ namespace MazeGame.Game
 
             if (dir != MoveDirection.None)
             {
-                if (shift) ExectuteDestroyWall(_navigator.CurrentCellId, dir);
+                if (shift) ExecuteDestroyWall(_navigator.CurrentCellId, dir);
                 else ExecuteMove(dir);
             }
         }
@@ -124,9 +177,32 @@ namespace MazeGame.Game
         private async void ExecuteMove(MoveDirection direction)
         {
             _moving = true;
+            var sentKey = _activeKey;
             try
             {
-                var resp = await _gameClient.MoveAsync(_gameId, direction);
+                var resp = await _gameClient.MoveAsync(_gameId, direction, sentKey);
+
+                // Pickups — add keys to local inventory
+                if (resp.PickedUpItems != null)
+                {
+                    foreach (var item in resp.PickedUpItems)
+                    {
+                        if (item.ItemType == "KeyRoomItem" && !_inventoryKeys.Contains(item.ItemId))
+                        {
+                            _inventoryKeys.Add(item.ItemId);
+                            Debug.Log($"[GameManager] Picked up key {item.ItemId.Value}");
+                        }
+                    }
+                }
+
+                bool keyConsumed = sentKey.HasValue &&
+                    (resp.Win || resp.Blocker?.BlockedConnectionType == "Sealed");
+                if (keyConsumed)
+                {
+                    _inventoryKeys.Remove(sentKey.Value);
+                    if (_activeKey.HasValue && _activeKey.Value == sentKey.Value)
+                        _activeKey = null;
+                }
 
                 if (resp.IsSuccess)
                 {
@@ -148,9 +224,19 @@ namespace MazeGame.Game
                 else if (resp.RequiresKeySelection)
                 {
                     _grid.MarkExit(_navigator.CurrentCellId, direction);
-                    Debug.Log("[Need a key");
-                    Debug.Log(resp.AvailableKeys.Count > 0 ? string.Join("; ", resp.AvailableKeys) : "No keys available");
-                    return;
+
+                    if (resp.AvailableKeys != null && resp.AvailableKeys.Count > 0)
+                    {
+                        // Sync local inventory with server's authoritative list
+                        _inventoryKeys.Clear();
+                        _inventoryKeys.AddRange(resp.AvailableKeys);
+                        _pendingDirection = direction;
+                        _selectingKey = true;
+                    }
+                    else
+                    {
+                        Debug.Log("[GameManager] Exit requires a key — none collected yet");
+                    }
                 }
             }
             catch (Exception ex)
@@ -163,21 +249,17 @@ namespace MazeGame.Game
             }
         }
 
-        private async void ExectuteDestroyWall(EntityId cellId, MoveDirection direction)
+        private async void ExecuteDestroyWall(EntityId cellId, MoveDirection direction)
         {
             _moving = true;
             try
             {
                 var resp = await _gameClient.DestroyWallAsync(_gameId, direction);
-                Debug.Log($"[GameManager] Destroy wall response: success={resp.IsSuccess} connectionId={resp.ConnectionId} message='{resp.Message}' grenades={resp.Grenades}");
+                Debug.Log($"[GameManager] Destroy wall: success={resp.IsSuccess} grenades={resp.Grenades}");
                 if (resp.IsSuccess)
-                {
                     _grid.HideWall(resp.ConnectionId);
-                }
                 else
-                {
                     Debug.Log("[GameManager] Failed to destroy wall: " + resp.Message);
-                }
             }
             catch (Exception ex)
             {
@@ -189,12 +271,64 @@ namespace MazeGame.Game
             }
         }
 
+        private void OnGUI()
+        {
+            var style = new GUIStyle(GUI.skin.label) { fontSize = 16 };
+
+            // Inventory panel (top-left)
+            int y = 10;
+            style.normal.textColor = Color.white;
+            GUI.Label(new Rect(10, y, 300, 24), _inventoryKeys.Count == 0 ? "Keys: none" : $"Keys ({_inventoryKeys.Count}):", style);
+            y += 24;
+
+            for (int i = 0; i < _inventoryKeys.Count; i++)
+            {
+                bool isActive = _activeKey.HasValue && _activeKey.Value == _inventoryKeys[i];
+                style.normal.textColor = isActive ? Color.cyan : Color.white;
+                string prefix = isActive ? "► " : $"{i + 1}. ";
+                GUI.Label(new Rect(10, y, 300, 22), $"{prefix}Key #{_inventoryKeys[i].Value}", style);
+                y += 22;
+            }
+
+            if (_activeKey.HasValue)
+            {
+                style.normal.textColor = Color.cyan;
+                GUI.Label(new Rect(10, y + 4, 300, 22), $"Active: Key #{_activeKey.Value.Value}", style);
+            }
+
+            // Key-selection dialog (centred)
+            if (_selectingKey)
+            {
+                float cx = Screen.width * 0.5f;
+                float cy = Screen.height * 0.5f;
+
+                style.fontSize = 20;
+                style.normal.textColor = Color.yellow;
+                GUI.Label(new Rect(cx - 200, cy - 60, 400, 30), "Exit is locked — choose a key:", style);
+
+                style.fontSize = 16;
+                style.normal.textColor = Color.white;
+                for (int i = 0; i < _inventoryKeys.Count && i < 9; i++)
+                    GUI.Label(new Rect(cx - 200, cy - 20 + i * 24, 400, 24), $"[{i + 1}]  Key #{_inventoryKeys[i].Value}", style);
+
+                style.normal.textColor = new Color(0.6f, 0.6f, 0.6f);
+                GUI.Label(new Rect(cx - 200, cy - 20 + _inventoryKeys.Count * 24 + 8, 400, 22), "Escape — cancel", style);
+            }
+
+            // Win banner
+            if (_won)
+            {
+                style.fontSize = 48;
+                style.normal.textColor = Color.green;
+                float tw = Screen.width * 0.5f;
+                GUI.Label(new Rect(Screen.width * 0.5f - tw * 0.5f, Screen.height * 0.5f - 40, tw, 80), "YOU WIN!", style);
+            }
+        }
+
         private async void OnDestroy()
         {
             if (_gameClient != null)
-            {
                 await _gameClient.DisposeAsync();
-            }
         }
     }
 }

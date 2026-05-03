@@ -61,9 +61,9 @@ namespace Maze.ClientService
             return JsonSerializer.Deserialize<PlayerJoinResponse>(json, JsonOptions.Default);
         }
 
-        public async Task<MoveResponse> MoveAsync(EntityId gameId, MoveDirection direction)
+        public async Task<MoveResponse> MoveAsync(EntityId gameId, MoveDirection direction, EntityId? keyId = null)
         {
-            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.Move, gameId, direction);
+            var json = await _connection.InvokeAsync<string>(Constants.HubMethods.Move, gameId, direction, keyId);
             return JsonSerializer.Deserialize<MoveResponse>(json, JsonOptions.Default);
         }
 

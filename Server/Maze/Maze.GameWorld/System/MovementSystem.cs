@@ -1,6 +1,6 @@
+using Maze.Common.Types;
 using Maze.GameWorld.Components;
 using Maze.GameWorld.Events;
-using Maze.GameWorld.Services;
 using Maze.GameWorld.TraversalPolicies;
 using Maze.MazeStructure;
 
@@ -8,16 +8,15 @@ namespace Maze.GameWorld.System
 {
     internal class MovementSystem : BaseSystem
     {
-        private ConnectionContextBuilder _connectionContextBuilder;
 
-        public MovementSystem(ConnectionContextBuilder connectionContextBuilder)
+        public MovementSystem()
         {
-            _connectionContextBuilder = connectionContextBuilder;
+            
         }
 
         public override void Run(GameContext gameContext)
         {
-            var world = gameContext.State;
+            var world = gameContext.WorldState;
             var mazeRegistry = gameContext.Registry;
 
             TraversalResult result;
@@ -32,6 +31,7 @@ namespace Maze.GameWorld.System
                 else
                 {
                     var intent = world.Get<MoveIntent>(e);
+                    var mazeId = world.Get<PlayerMaze>(e).MazeId;
                     var mazeInfo = GetMazeForPlayerOrDefault(e, world, mazeRegistry);
                     var room = mazeInfo?.MazeStructure.GetRoomByID(position.RoomId);
                     var connection = room?.GetConnection(intent.Direction);
@@ -42,7 +42,7 @@ namespace Maze.GameWorld.System
                         continue;
                     }
 
-                    var ctx = _connectionContextBuilder.BuildContext(mazeInfo, connection, room, world);
+                    var ctx = ConnectionContext.Build(connection, room, mazeId, gameContext);
                     var policy = world.Has<TraversalPolicyComponent>(e)
                         ? world.Get<TraversalPolicyComponent>(e).Policy
                         : DefaultTraversalPolicy.Instance;

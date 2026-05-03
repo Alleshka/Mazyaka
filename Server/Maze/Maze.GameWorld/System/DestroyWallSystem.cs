@@ -1,3 +1,4 @@
+using Maze.Common.Types;
 using Maze.GameWorld.Components;
 using Maze.GameWorld.Events;
 
@@ -12,7 +13,8 @@ namespace Maze.GameWorld.System
 
         public override void Run(GameContext gameContext)
         {
-            var world = gameContext.State;
+            var world = gameContext.WorldState;
+            var mazeRuntime = gameContext.MazeRuntime;
             var mazeRegistry = gameContext.Registry;
 
             foreach (var e in world.Query<DestroyWallIntent>())
@@ -20,6 +22,7 @@ namespace Maze.GameWorld.System
                 var position = world.Get<RoomPosition>(e);
                 var intent = world.Get<DestroyWallIntent>(e);
 
+                var mazeId = world.Get<PlayerMaze>(e).MazeId;
                 var mazeInfo = GetMazeForPlayerOrDefault(e, world, mazeRegistry);
                 var room = mazeInfo?.MazeStructure.GetRoomByID(position.RoomId);
                 var connection = room?.GetConnection(intent.Direction);
@@ -37,7 +40,7 @@ namespace Maze.GameWorld.System
                 }
 
                 var grenades = world.Get<Grenades>(e);
-                
+
                 if (grenades.Count <= 0)
                 {
                     world.Add(e, new DestroyFailedEvent("no grenades left"));
@@ -48,11 +51,11 @@ namespace Maze.GameWorld.System
 
                 if (mazeInfo.Metadata.IsBoundary(connection))
                 {
-                    world.Add(e, new DestroyFailedEvent("cannot destroy boundary wall")); 
+                    world.Add(e, new DestroyFailedEvent("cannot destroy boundary wall"));
                     continue;
                 }
 
-                world.AddConnectionCondition(connection.Id, ConnectionConditions.Destroyed);
+                mazeRuntime.AddConnectionCondition(mazeId, connection.Id, ConnectionConditions.Destroyed);
                 world.Add(e, new WallDestroyedEvent(connection.Id));
             }
         }

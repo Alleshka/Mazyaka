@@ -17,6 +17,7 @@ namespace Maze.GameWorld.TraversalPolicies
         public TraversalResult CanTraverse(ConnectionContext ctx)
         {
             if (ctx.IsBoundary && !ctx.IsExit) return TraversalResult.Blocked(ctx);
+            if (ctx.Conditions.HasFlag(ConnectionConditions.Sealed)) return TraversalResult.Blocked(ctx);
             if (ctx.IsExit) return TraversalResult.ExitReached();
 
             // Runtime conditions checked before structural class — they override defaults.

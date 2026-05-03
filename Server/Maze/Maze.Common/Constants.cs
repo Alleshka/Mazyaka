@@ -10,6 +10,11 @@
             public const string DestroyedWall = "DestroyedWall";
         }
 
+        public static class ItemTypes
+        {
+            public const string Key = "Key";
+        }
+
         public static class HubMethods
         {
             public const string CreateGame = "CreateGame";

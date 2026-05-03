@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Maze.MazeStructure.MazeGenerators
+namespace Maze.MazeStructure.MazeGenerators.Generators
 {
     public class RecursiveBacktrackerGenerator : IMazeGenerator
     {

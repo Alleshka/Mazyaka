@@ -47,10 +47,10 @@ public class MazeHub : Hub
     }
 
     [HubMethodName(Constants.HubMethods.Move)]
-    public string Move(EntityId gameId, MoveDirection direction)
+    public string Move(EntityId gameId, MoveDirection direction, EntityId? keyId = null)
     {
         var player = GetPlayerId();
-        return JsonSerializer.Serialize(_gameService.Move(gameId, player, direction), JsonOptions.Default);
+        return JsonSerializer.Serialize(_gameService.Move(gameId, player, direction, keyId), JsonOptions.Default);
     }
 
     [HubMethodName(Constants.HubMethods.DestroyWall)]

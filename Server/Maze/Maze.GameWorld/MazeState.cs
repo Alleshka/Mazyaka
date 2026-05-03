@@ -11,24 +11,14 @@ namespace Maze.GameWorld
     {
         private int _nextEntityId = 1;
         private readonly Dictionary<Type, object> _componentStores = new Dictionary<Type, object>();
-        private readonly Dictionary<EntityId, ConnectionConditions> _connectionConditions = new Dictionary<EntityId, ConnectionConditions>();
 
-        public void AddConnectionCondition(EntityId connectionId, ConnectionConditions condition)
-        {
-            _connectionConditions.TryGetValue(connectionId, out var existing);
-            _connectionConditions[connectionId] = existing | condition;
-        }
+        public EcsEntity CreateEntity() => new(_nextEntityId++);
 
-        public ConnectionConditions GetConnectionConditions(EntityId connectionId)
-            => _connectionConditions.TryGetValue(connectionId, out var c) ? c : ConnectionConditions.None;
+        public void Add<T>(EcsEntity e, T component) => GetStore<T>().Add(e, component);
+        public void Set<T>(EcsEntity e, T component) => GetStore<T>().Set(e, component);
+        public bool Has<T>(EcsEntity e) => GetStore<T>().Has(e);
 
-        public Entity CreateEntity() => new(_nextEntityId++);
-
-        public void Add<T>(Entity e, T component) where T : struct => GetStore<T>().Add(e, component);
-        public void Set<T>(Entity e, T component) where T : struct => GetStore<T>().Set(e, component);
-        public bool Has<T>(Entity e) where T : struct => GetStore<T>().Has(e);
-
-        private IComponentStore<T> GetStore<T>() where T : struct
+        private IComponentStore<T> GetStore<T>()
         {
             var type = typeof(T);
 
@@ -41,9 +31,9 @@ namespace Maze.GameWorld
             return (IComponentStore<T>)store;
         }
 
-        public T Get<T>(Entity e) where T : struct => GetStore<T>().Get(e);
+        public T Get<T>(EcsEntity e) => GetStore<T>().Get(e);
 
-        public void Remove<T>(Entity e) where T : struct => GetStore<T>().Remove(e);
+        public void Remove<T>(EcsEntity e) => GetStore<T>().Remove(e);
 
         public void ClearIntents()
         {
@@ -59,6 +49,7 @@ namespace Maze.GameWorld
             GetStore<MoveBlockedByBlockerEvent>().Clear();
             GetStore<WallDestroyedEvent>().Clear();
             GetStore<DestroyFailedEvent>().Clear();
+            GetStore<ItemsPickedUpEvent>().Clear();
         }
 
         public void ClearCache()
@@ -66,7 +57,7 @@ namespace Maze.GameWorld
             GetStore<CachedTraversalResult>().Clear();
         }
 
-        public IEnumerable<Entity> Query<T>() where T : struct
+        public IEnumerable<EcsEntity> Query<T>()
         {
             var store = GetStore<T>();
             foreach (var kvp in store.All())
@@ -75,7 +66,7 @@ namespace Maze.GameWorld
             }
         }
 
-        public IEnumerable<(Entity, T1, T2)> Query<T1, T2>()
+        public IEnumerable<(EcsEntity, T1, T2)> Query<T1, T2>()
             where T1 : struct
             where T2 : struct
         {
@@ -91,7 +82,7 @@ namespace Maze.GameWorld
             }
         }
 
-        public IEnumerable<(Entity, T1, T2, T3)> Query<T1, T2, T3>()
+        public IEnumerable<(EcsEntity, T1, T2, T3)> Query<T1, T2, T3>()
             where T1 : struct
             where T2 : struct
             where T3 : struct

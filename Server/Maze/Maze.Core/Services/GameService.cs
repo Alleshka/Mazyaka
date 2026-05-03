@@ -31,7 +31,7 @@ namespace Maze.Core.Services
             var session = _gameSessionManager.Get(gameId) ?? throw new Exception($"Game '{gameId}' not found.");
 
             EntityId startRoomId = session.Topology.GetRoomByCoordinates(startRow, startCol).Id;
-            var userId = session.World.CreatePlayer(session.MazeInfo, startRoomId, player);
+            var userId = session.World.CreatePlayer(session.MazeId, startRoomId, player);
             var cell = startRoomId;
 
             return new PlayerJoinResponse
@@ -41,10 +41,10 @@ namespace Maze.Core.Services
             };
         }
 
-        public MoveResponse Move(EntityId gameId, PlayerId userId, MoveDirection direction)
+        public MoveResponse Move(EntityId gameId, PlayerId userId, MoveDirection direction, EntityId? keyId = null)
         {
             var session = _gameSessionManager.Get(gameId) ?? throw new Exception($"Game '{gameId}' not found.");
-            return session.World.ExecuteMove(userId, direction);
+            return session.World.ExecuteMove(userId, direction, keyId);
         }
 
         public DestroyWallResult DestroyWall(EntityId gameId, PlayerId userId, MoveDirection direction)

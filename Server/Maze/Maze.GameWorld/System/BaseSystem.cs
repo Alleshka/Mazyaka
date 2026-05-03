@@ -7,7 +7,7 @@ namespace Maze.GameWorld.System
     {
         public abstract void Run(GameContext gameContext);
 
-        protected IMazeInfo GetMazeForPlayerOrDefault(Entity entity, MazeState world, MazeRegistry mazeRegistry)
+        protected IMazeInfo GetMazeForPlayerOrDefault(EcsEntity entity, MazeState world, MazeRegistry mazeRegistry)
         {
             if (!world.Has<PlayerMaze>(entity)) return null;
             return mazeRegistry.Get(world.Get<PlayerMaze>(entity).MazeId);
